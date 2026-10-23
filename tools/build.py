@@ -134,6 +134,9 @@ def main(argv):
     import hintlib
 
     hintlib.apply_all()
+    import complexity
+
+    complexity.apply_all()
 
 
 if __name__ == "__main__":

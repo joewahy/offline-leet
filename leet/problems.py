@@ -23,6 +23,7 @@ class Problem:
     design: str = None
     roundtrip: dict = None
     checker: bool = False
+    complexity: dict = None
 
     @property
     def key(self):
