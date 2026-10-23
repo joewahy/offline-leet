@@ -21,3 +21,7 @@ Or open the folder in VS Code and choose "Reopen in Container" (uses `.devcontai
 ```
 
 In VS Code, run the task "Leet: test current file" (Terminal > Run Task, or bind a key to it) while a `solution.py` is open. Every case also appears in the Testing panel.
+
+## Web UI (no commands needed)
+
+Double-click `Start.command` (or run `leet serve`). Your browser opens `http://localhost:8765` with the problem list, statement, editor, and test results. Press Cmd+Enter to run. Your code autosaves to each problem's `solution.py`. Everything is served from this folder, so it works with no internet (for example, on a plane).

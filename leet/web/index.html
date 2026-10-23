@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>offline-leet</title>
+  <link rel="stylesheet" href="/app.css">
+  <link rel="stylesheet" href="/vendor/monaco/vs/editor/editor.main.css">
+</head>
+<body>
+  <header>
+    <button id="menu-btn" class="ghost" aria-label="Show problem list">&#9776; Problems</button>
+    <div id="title"><span id="title-text">Loading…</span><span id="difficulty" class="pill"></span></div>
+    <div class="spacer"></div>
+    <span id="save-state"></span>
+    <button id="prev-btn" class="ghost" aria-label="Previous problem">&larr;</button>
+    <button id="next-btn" class="ghost" aria-label="Next problem">&rarr;</button>
+    <button id="run-btn" class="primary">Run <kbd id="run-hint"></kbd></button>
+  </header>
+
+  <main>
+    <section id="statement" aria-label="Problem statement"></section>
+    <section id="work">
+      <div id="editor" aria-label="Code editor"></div>
+      <div id="results" aria-live="polite"><p class="muted">Run your code to see results here.</p></div>
+    </section>
+  </main>
+
+  <aside id="drawer" hidden>
+    <div id="drawer-head">
+      <strong>Problems</strong>
+      <span id="progress-count" class="muted"></span>
+      <button id="close-drawer" class="ghost" aria-label="Close">&times;</button>
+    </div>
+    <div id="problem-list"></div>
+  </aside>
+  <div id="scrim" hidden></div>
+
+  <script src="/vendor/monaco/vs/loader.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>

@@ -95,6 +95,12 @@ def cmd_validate(args):
     sys.exit(1 if failed else 0)
 
 
+def cmd_serve(args):
+    from leet.server import serve
+
+    serve(port=args.port, open_browser=not args.no_open)
+
+
 def main():
     parser = argparse.ArgumentParser(prog="leet")
     sub = parser.add_subparsers(dest="command", required=True)
@@ -115,6 +121,11 @@ def main():
     p = sub.add_parser("validate", help="run reference solutions against the tests")
     p.add_argument("problem", nargs="?")
     p.set_defaults(func=cmd_validate)
+
+    p = sub.add_parser("serve", help="start the local web UI")
+    p.add_argument("--port", type=int, default=8765)
+    p.add_argument("--no-open", action="store_true", help="don't open the browser")
+    p.set_defaults(func=cmd_serve)
 
     args = parser.parse_args()
     args.func(args)
