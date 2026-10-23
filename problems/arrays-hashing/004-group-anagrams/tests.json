@@ -1,0 +1,9 @@
+[
+  {"args": [["act", "pots", "tops", "cat", "stop", "hat"]], "expected": [["hat"], ["act", "cat"], ["stop", "pots", "tops"]]},
+  {"args": [[""]], "expected": [[""]]},
+  {"args": [["a"]], "expected": [["a"]]},
+  {"args": [["eat", "tea", "tan", "ate", "nat", "bat"]], "expected": [["bat"], ["nat", "tan"], ["ate", "eat", "tea"]]},
+  {"args": [["abc", "bca", "cab", "xyz"]], "expected": [["abc", "bca", "cab"], ["xyz"]]},
+  {"args": [["", ""]], "expected": [["", ""]]},
+  {"args": [["ab", "ba", "ab"]], "expected": [["ab", "ba", "ab"]]}
+]

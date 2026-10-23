@@ -1,0 +1,9 @@
+[
+  {"args": [[1, 2, 3, 1]], "expected": true},
+  {"args": [[1, 2, 3, 4]], "expected": false},
+  {"args": [[1]], "expected": false},
+  {"args": [[5, 5]], "expected": true},
+  {"args": [[0, 4, 5, 0, 3, 6]], "expected": true},
+  {"args": [[1000000000, -1000000000]], "expected": false},
+  {"args": [[-7, -7, -7]], "expected": true}
+]

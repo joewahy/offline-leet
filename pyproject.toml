@@ -1,0 +1,22 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "offline-leet"
+version = "0.1.0"
+description = "Practice the NeetCode 150 offline, in Python, from VS Code"
+requires-python = ">=3.11"
+dependencies = []
+
+[project.optional-dependencies]
+dev = ["pytest>=8"]
+
+[project.scripts]
+leet = "leet.cli:main"
+
+[tool.setuptools]
+packages = ["leet"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

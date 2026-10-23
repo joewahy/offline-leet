@@ -1,0 +1,10 @@
+[
+  {"args": ["racecar", "carrace"], "expected": true},
+  {"args": ["jar", "jam"], "expected": false},
+  {"args": ["a", "a"], "expected": true},
+  {"args": ["ab", "a"], "expected": false},
+  {"args": ["aabb", "abab"], "expected": true},
+  {"args": ["aab", "abb"], "expected": false},
+  {"args": ["anagram", "nagaram"], "expected": true},
+  {"args": ["rat", "car"], "expected": false}
+]
