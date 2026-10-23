@@ -4,7 +4,8 @@ import subprocess
 import sys
 
 from leet import progress
-from leet.execute import run_problem
+from leet import perf
+from leet.execute import run_perf, run_problem
 from leet.problems import all_problems, find
 
 
@@ -76,6 +77,14 @@ def cmd_test(args):
     sys.exit(0 if ok else 1)
 
 
+def cmd_perf(args):
+    problem = _resolve(args.problem)
+    print(f"{problem.title} ({problem.difficulty})")
+    report = run_perf(problem)
+    print(perf.format_report(report))
+    sys.exit(1 if "error" in report else 0)
+
+
 def cmd_validate(args):
     problems = [_resolve(args.problem)] if args.problem else all_problems()
     failed = 0
@@ -117,6 +126,10 @@ def main():
         p = sub.add_parser(name, help=help_)
         p.add_argument("problem", nargs="?", help="id, slug, or a path inside the problem")
         p.set_defaults(func=func)
+
+    p = sub.add_parser("perf", help="compare your passing solution's speed and memory with the reference")
+    p.add_argument("problem", nargs="?", help="id, slug, or a path inside the problem")
+    p.set_defaults(func=cmd_perf)
 
     p = sub.add_parser("validate", help="run reference solutions against the tests")
     p.add_argument("problem", nargs="?")

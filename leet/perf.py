@@ -189,6 +189,43 @@ def measure(problem, solution_path=None):
     }
 
 
+def format_seconds(seconds):
+    if seconds < 0.001:
+        return f"{seconds * 1e6:.0f} us"
+    if seconds < 1:
+        return f"{seconds * 1000:.1f} ms"
+    return f"{seconds:.2f} s"
+
+
+def format_bytes(count):
+    if count < 1024:
+        return f"{count} B"
+    if count < 1024 * 1024:
+        return f"{count / 1024:.0f} KB"
+    return f"{count / 1024 / 1024:.1f} MB"
+
+
+def format_report(report):
+    """Plain-text version of a measure() report."""
+    if "error" in report:
+        return report["error"]
+    lines = []
+    target = report.get("target")
+    if target:
+        lines.append(f"Target:  {target['time']} time, {target['space']} space")
+    worst = max(report["cases"], key=lambda r: r["time_ratio"])
+    time_note = f"{report['time']['ratio']:.1f}x the reference" if report["time"]["ratio"] else ""
+    lines.append(f"Time:    {report['time']['message']} {time_note}".rstrip())
+    lines.append(f"Memory:  {report['memory']['message']}")
+    lines.append("")
+    lines.append(f"Heaviest {len(report['cases'])} inputs (yours vs the reference):")
+    for r in report["cases"]:
+        mine = "timed out" if r["timed_out"] else format_seconds(r["time"])
+        memory = "" if r["memory"] is None else f"   memory {format_bytes(r['memory'])} vs {format_bytes(r['ref_memory'])}"
+        lines.append(f"  case {r['case']:>2}  input {format_bytes(r['input_bytes']):>7}   time {mine} vs {format_seconds(r['ref_time'])}{memory}")
+    return "\n".join(lines)
+
+
 def main(argv):
     problem = find(argv[0])
     print(json.dumps(measure(problem, argv[1] if len(argv) > 1 else None)))

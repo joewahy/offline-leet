@@ -17,3 +17,18 @@ def run_problem(problem, reference=False):
         return json.loads(proc.stdout)
     except json.JSONDecodeError:
         return {"load_error": proc.stderr.strip() or "runner produced no output"}
+
+
+def run_perf(problem, solution_path=None):
+    """Compare a solution's speed and memory with the reference, in a subprocess."""
+    cmd = [sys.executable, "-m", "leet.perf", problem.key]
+    if solution_path:
+        cmd.append(str(solution_path))
+    try:
+        proc = subprocess.run(cmd, capture_output=True, text=True, timeout=180)
+    except subprocess.TimeoutExpired:
+        return {"error": "The performance check took too long and was stopped."}
+    try:
+        return json.loads(proc.stdout)
+    except json.JSONDecodeError:
+        return {"error": proc.stderr.strip() or "The performance check produced no output."}
