@@ -8,7 +8,7 @@ from pathlib import Path
 from urllib.parse import urlparse
 
 from leet import progress
-from leet.execute import run_problem
+from leet.execute import run_perf, run_problem
 from leet.problems import all_problems, find
 
 WEB_DIR = Path(__file__).resolve().parent / "web"
@@ -27,9 +27,7 @@ def _problem_summary(p):
     }
 
 
-def make_handler(port):
-    allowed_hosts = {f"localhost:{port}", f"127.0.0.1:{port}"}
-
+def make_handler():
     class Handler(BaseHTTPRequestHandler):
         def log_message(self, fmt, *args):
             pass
@@ -53,6 +51,8 @@ def make_handler(port):
 
             The API writes and runs code, so only the page we serve may call it.
             """
+            port = self.server.server_address[1]
+            allowed_hosts = {f"localhost:{port}", f"127.0.0.1:{port}"}
             if self.headers.get("Host") not in allowed_hosts:
                 return False
             origin = self.headers.get("Origin")
@@ -89,6 +89,7 @@ def make_handler(port):
                 "readme": HINTS_BLOCK.sub("\n", p.readme_path.read_text()),
                 "code": p.solution_path.read_text(),
                 "hint_count": len(p.load_hints()),
+                "complexity": p.complexity,
             })
 
         def _get_hint(self, key, n):
@@ -137,14 +138,21 @@ def make_handler(port):
                 progress.record(p.key, bool(results) and all(r["ok"] for r in results))
                 outcome["status"] = progress.status(p.key)
                 return self._json(outcome)
+            if parts[3] == "perf":
+                p.solution_path.write_text(code)
+                return self._json(run_perf(p))
             self._error(404, "not found")
 
     return Handler
 
 
+def make_server(port):
+    return ThreadingHTTPServer(("127.0.0.1", port), make_handler())
+
+
 def serve(port=8765, open_browser=True):
     try:
-        server = ThreadingHTTPServer(("127.0.0.1", port), make_handler(port))
+        server = make_server(port)
     except OSError as exc:
         raise SystemExit(f"cannot listen on port {port}: {exc}")
     url = f"http://localhost:{port}/"
