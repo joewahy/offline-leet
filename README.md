@@ -13,6 +13,7 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Press **Run** or Cmd+Enter (Ctrl+Enter elsewhere). Failures show the input, the expected value, your output, any error, and anything you printed.
 - Your code autosaves to the problem's `solution.py`.
 - Stuck on a Medium or Hard problem? Click **Show hint** under the statement. There are three hints per problem, each more revealing than the last, and they stay hidden until you ask. Hints you have opened are remembered in your browser.
+- Once every test passes, the results show the problem's target time and space complexity and a **Compare with reference** button. It re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
 
 If macOS refuses to open `Start.command`, right-click it, choose Open, then Open again. Or run `python3 -m leet serve` in a terminal.
 
@@ -29,6 +30,7 @@ python3.12 -m venv .venv
 .venv/bin/leet list                # problems and status (--todo, --category <name>)
 .venv/bin/leet start 3             # open the statement and solution.py in VS Code
 .venv/bin/leet test                # test the current problem (or pass an id, slug or file path)
+.venv/bin/leet perf                # compare a passing solution's speed and memory with the reference
 .venv/bin/leet serve               # start the web UI (--port, --no-open)
 .venv/bin/leet validate            # check every reference solution against its tests
 ```
@@ -63,12 +65,28 @@ Other notes:
 - Each case has a time limit of 5 seconds, and a run stops at the first timeout.
 - `solution.py` files are tracked by git, so your solutions are committed along with everything else.
 
+## Performance check
+
+`leet perf` (or the button in the web UI) answers "is my solution in the right ballpark?" without internet or any model. It first checks that your solution passes every test, then takes the three test inputs the reference solution finds heaviest and measures both solutions on them:
+
+- **Time:** the best of several runs of just your function call (inputs are prepared beforehand, garbage collection is paused).
+- **Memory:** the peak extra memory allocated during the call, measured with `tracemalloc`. The input itself is not counted, and Python's call stack depth is not included.
+
+You get a verdict ("About as fast as the reference", "Much slower ... usually means a worse time complexity", and so on), the ratio, a per-input table, and the target complexity for the problem (for example `O(n)` time, `O(1)` space).
+
+This is an estimate, not a proof, and it cannot tell you your exact Big-O:
+
+- It only says how you compare with the reference on this machine, on these inputs. A ratio above roughly 8x usually means a worse complexity class, and a ratio near 1x means a similar one.
+- If the inputs are small or the worst case for your approach is not in the tests, a slow solution can look fine. Inputs top out around 10,000 elements.
+- Tiny inputs run too fast to time reliably, so some Easy problems report "too fast to compare".
+- Timings vary a little from run to run.
+
 ## Limitations
 
 - The large test cases have at most about 10,000 elements, to keep the repo small. A slow solution (for example O(n^2)) can still pass on a fast machine, so these tests are weaker than LeetCode's at catching inefficiency.
 - Your code runs as a normal process on your machine, with no sandbox and no memory limit. Use the Dev Container if that matters to you.
 - Timeouts rely on Unix signals, so macOS and Linux work but Windows does not.
-- Hints are static text, so they cannot react to your code. There is also no hidden-test submit step, reset-to-starter button, or timer yet.
+- Hints and the performance check are fixed rules and measurements, so they cannot explain why your code is slow or react to what you wrote. There is also no hidden-test submit step, reset-to-starter button, or timer yet.
 
 ## Regenerating problems (for contributors)
 
@@ -81,7 +99,9 @@ Problems are defined in `tools/specs/*.py`. Each defines the statement, starter 
 .venv/bin/python tools/hintlib.py               # re-apply hints and list Medium/Hard problems without any
 ```
 
-Hints live in `tools/hints/<category>.py` as `{problem_id: [hint1, hint2, hint3]}`, and `build.py` re-applies them after every build.
+Hints live in `tools/hints/<category>.py` as `{problem_id: [hint1, hint2, hint3]}`, and target complexities live in `tools/complexity_data/<category>.py` as `{problem_id: (time, space)}`. `build.py` re-applies both after every build (`tools/complexity.py` lists any problem without a target). Problems 1 to 5 predate the build pipeline; `tools/extend_basic_cases.py` adds their large test cases.
+
+The unit tests for the performance check and the web API are in `tests/test_perf.py` and `tests/test_server.py`: `.venv/bin/pytest tests/test_perf.py tests/test_server.py`.
 
 `build.py` checks each reference solution against the hand-written cases, generates the larger cases, and cross-checks the reference against the brute-force solution on random small inputs. The build stops at the first problem that fails a check.
 
