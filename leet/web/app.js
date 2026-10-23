@@ -205,6 +205,74 @@ function step(delta) {
   if (next) openProblem(next.key);
 }
 
+function fmtSeconds(seconds) {
+  if (seconds < 0.001) return `${Math.round(seconds * 1e6)} \u00b5s`;
+  if (seconds < 1) return `${(seconds * 1000).toFixed(1)} ms`;
+  return `${seconds.toFixed(2)} s`;
+}
+
+function fmtBytes(count) {
+  if (count < 1024) return `${count} B`;
+  if (count < 1024 * 1024) return `${Math.round(count / 1024)} KB`;
+  return `${(count / 1024 / 1024).toFixed(1)} MB`;
+}
+
+const VERDICT_CLASS = {
+  faster: "good", similar: "good", less: "good",
+  slower: "warn", more: "warn",
+  much_slower: "bad", much_more: "bad", timeout: "bad",
+};
+
+function renderPerf(report) {
+  if (report.error) return `<p class="muted">${esc(report.error)}</p>`;
+  const ratio = (r) => (r ? ` (${r < 10 ? r.toFixed(1) : Math.round(r)}x the reference)` : "");
+  const line = (label, v, extra) =>
+    `<p class="verdict ${VERDICT_CLASS[v.verdict] || "muted"}"><strong>${label}:</strong> ${esc(v.message)}${extra}</p>`;
+  const rows = report.cases.map((c) => `<tr>
+      <td>Case ${c.case}</td>
+      <td>${fmtBytes(c.input_bytes)}</td>
+      <td>${c.timed_out ? "timed out" : fmtSeconds(c.time)} <span class="muted">vs ${fmtSeconds(c.ref_time)}</span></td>
+      <td>${c.memory === null ? "" : `${fmtBytes(c.memory)} <span class="muted">vs ${fmtBytes(c.ref_memory)}</span>`}</td>
+    </tr>`).join("");
+  return `${line("Time", report.time, ratio(report.time.ratio))}
+    ${line("Memory", report.memory, "")}
+    <table class="perf-table">
+      <thead><tr><th></th><th>Input</th><th>Time (yours vs reference)</th><th>Extra memory</th></tr></thead>
+      <tbody>${rows}</tbody>
+    </table>
+    <p class="muted small">An estimate, not a proof: it compares your timing with the reference solution on this machine, using the heaviest test inputs. A large ratio usually means a worse complexity class.</p>`;
+}
+
+function perfBlock() {
+  const target = current && current.complexity
+    ? `<span class="muted">Target: ${esc(current.complexity.time)} time, ${esc(current.complexity.space)} space</span>`
+    : "";
+  return `<div class="perf">
+    <div class="perf-head"><strong>Performance</strong>${target}
+      <button id="perf-btn" class="ghost">Compare with reference</button></div>
+    <div id="perf-body"></div>
+  </div>`;
+}
+
+async function runPerf() {
+  const btn = $("#perf-btn");
+  const body = $("#perf-body");
+  btn.disabled = true;
+  body.innerHTML = '<p class="muted">Measuring against the reference solution\u2026</p>';
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  try {
+    const report = await api(`/api/problems/${current.key}/perf`, { code: editor.getValue() });
+    body.innerHTML = renderPerf(report);
+    $("#save-state").textContent = "Saved";
+  } catch (err) {
+    body.innerHTML = `<pre class="error-box">${esc(err.message)}</pre>`;
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "Measure again";
+  }
+}
+
 function renderResults(outcome) {
   if (outcome.load_error) {
     return `<div class="summary fail">Could not run your code</div><pre class="error-box">${esc(outcome.load_error)}</pre>`;
@@ -227,7 +295,7 @@ function renderResults(outcome) {
     </div>`;
   }).join("");
   const label = allPass ? `Accepted: ${passed}/${results.length} passed` : `${passed}/${results.length} passed`;
-  return `<div class="summary ${allPass ? "pass" : "fail"}">${label}</div><div class="cases">${cases}</div>`;
+  return `<div class="summary ${allPass ? "pass" : "fail"}">${label}</div><div class="cases">${cases}</div>${allPass ? perfBlock() : ""}`;
 }
 
 async function run() {
@@ -290,6 +358,10 @@ async function start() {
     if (row) openProblem(row.dataset.key);
   };
   $("#results").onclick = (e) => {
+    if (e.target.closest("#perf-btn")) {
+      runPerf();
+      return;
+    }
     const btn = e.target.closest(".case > button");
     if (!btn) return;
     const detail = btn.nextElementSibling;
