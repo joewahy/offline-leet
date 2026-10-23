@@ -40,42 +40,64 @@ def load_checker(problem):
     return module.check
 
 
-def execute(problem, module, args):
-    """Run one case. Returns (encoded result, raw result, decoded inputs)."""
+def prepare(problem, module, args):
+    """Decode one case. Returns (call, finish).
+
+    call() does only the solution's work and returns its raw result, so it can
+    be timed on its own. finish(raw) turns that into (encoded result, raw
+    result, decoded inputs).
+    """
     args = copy.deepcopy(args)
 
     if problem.design:
         ops, params = args
-        cls = getattr(module, problem.design)
-        instance, out = None, []
-        for i, (op, p) in enumerate(zip(ops, params)):
-            if i == 0:
-                instance = cls(*p)
-                out.append(None)
-            else:
-                out.append(getattr(instance, op)(*p))
-        return out, out, []
+
+        def call():
+            cls = getattr(module, problem.design)
+            instance, out = None, []
+            for i, (op, p) in enumerate(zip(ops, params)):
+                if i == 0:
+                    instance = cls(*p)
+                    out.append(None)
+                else:
+                    out.append(getattr(instance, op)(*p))
+            return out
+
+        return call, lambda out: (out, out, [])
 
     if problem.roundtrip:
         rt = problem.roundtrip
         value = structures.decode(rt["type"], args[0], [])
-        cls = getattr(module, rt["class"])
-        data = getattr(cls(), rt["encode"])(value)
-        if not isinstance(data, str):
-            raise TypeError(f"{rt['encode']} must return a str, got {type(data).__name__}")
-        back = getattr(cls(), rt["decode"])(data)
-        return structures.encode(rt["type"], back), back, [value]
+
+        def call():
+            cls = getattr(module, rt["class"])
+            data = getattr(cls(), rt["encode"])(value)
+            if not isinstance(data, str):
+                raise TypeError(f"{rt['encode']} must return a str, got {type(data).__name__}")
+            return getattr(cls(), rt["decode"])(data)
+
+        return call, lambda back: (structures.encode(rt["type"], back), back, [value])
 
     types = problem.arg_types or ("plain",) * len(args)
     decoded = []
     for kind, value in zip(types, args):
         decoded.append(structures.decode(kind, value, decoded))
     inputs = list(decoded)
-    returned = getattr(module.Solution(), problem.method)(*decoded)
-    if problem.inplace is not None:
-        i = problem.inplace
-        return structures.encode(types[i], decoded[i]), decoded[i], inputs
-    return structures.encode(problem.return_type, returned), returned, inputs
+    method = getattr(module.Solution(), problem.method)
+
+    def finish(returned):
+        if problem.inplace is not None:
+            i = problem.inplace
+            return structures.encode(types[i], decoded[i]), decoded[i], inputs
+        return structures.encode(problem.return_type, returned), returned, inputs
+
+    return (lambda: method(*decoded)), finish
+
+
+def execute(problem, module, args):
+    """Run one case. Returns (encoded result, raw result, decoded inputs)."""
+    call, finish = prepare(problem, module, args)
+    return finish(call())
 
 
 def check_case(problem, checker, case, got, raw, inputs, result):
