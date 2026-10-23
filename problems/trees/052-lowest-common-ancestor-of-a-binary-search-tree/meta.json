@@ -1,0 +1,1 @@
+{"id": 52, "title": "Lowest Common Ancestor of a Binary Search Tree", "category": "trees", "difficulty": "Medium", "method": "lowestCommonAncestor", "arg_types": ["tree", "tree_ref", "tree_ref"], "return_type": "node_val"}

@@ -1,0 +1,1 @@
+{"id": 40, "title": "Copy List with Random Pointer", "category": "linked-list", "difficulty": "Medium", "method": "copyRandomList", "arg_types": ["random_list"], "return_type": "random_list", "checker": true}

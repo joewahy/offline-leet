@@ -20,6 +20,10 @@ function py(v) {
   return JSON.stringify(v);
 }
 
+function short(s, n = 600) {
+  return s.length > n ? s.slice(0, n) + `… (${s.length - n} more characters)` : s;
+}
+
 function inline(text) {
   return esc(text).replace(/`([^`]+)`/g, "<code>$1</code>");
 }
@@ -58,6 +62,18 @@ async function api(path, body) {
   return data;
 }
 
+const CATEGORY_NAMES = {
+  "arrays-hashing": "Arrays & Hashing",
+  "heap-priority-queue": "Heap / Priority Queue",
+  "1d-dp": "1-D DP",
+  "2d-dp": "2-D DP",
+  "math-geometry": "Math & Geometry",
+};
+
+function categoryName(cat) {
+  return CATEGORY_NAMES[cat] || cat.replace(/-/g, " ");
+}
+
 function renderList() {
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#progress-count").textContent = `${solved} / ${problems.length} solved`;
@@ -73,7 +89,7 @@ function renderList() {
         <span class="pill ${p.difficulty}">${p.difficulty}</span>
       </button>`;
     }).join("");
-    return `<h3>${esc(cat.replace(/-/g, " "))}</h3>${rows}`;
+    return `<h3>${esc(categoryName(cat))}</h3>${rows}`;
   }).join("");
   $("#problem-list").innerHTML = html;
 }
@@ -143,14 +159,14 @@ function renderResults(outcome) {
   const firstBad = results.findIndex((r) => !r.ok);
   const cases = results.map((r, i) => {
     const detail = [
-      `<dt>Input</dt><dd><pre>${esc(r.args.map(py).join(", "))}</pre></dd>`,
-      `<dt>Expected</dt><dd><pre>${esc(py(r.expected))}</pre></dd>`,
-      r.error ? `<dt>Error</dt><dd><pre class="error-box">${esc(r.error)}</pre></dd>` : `<dt>Your output</dt><dd><pre>${esc(py(r.got))}</pre></dd>`,
+      `<dt>Input</dt><dd><pre>${esc(short(r.args.map(py).join(", ")))}</pre></dd>`,
+      `<dt>Expected</dt><dd><pre>${esc(short(py(r.expected)))}</pre></dd>`,
+      r.error ? `<dt>Error</dt><dd><pre class="error-box">${esc(r.error)}</pre></dd>` : `<dt>Your output</dt><dd><pre>${esc(short(py(r.got)))}</pre></dd>`,
       r.stdout ? `<dt>Printed</dt><dd><pre>${esc(r.stdout)}</pre></dd>` : "",
     ].join("");
     return `<div class="case ${r.ok ? "ok" : "bad"}">
       <button aria-expanded="${i === firstBad}"><span class="mark">${r.ok ? "&#10003;" : "&#10007;"}</span>Case ${i + 1}
-        <span class="preview">${esc(r.args.map(py).join(", "))}</span></button>
+        <span class="preview">${esc(short(r.args.map(py).join(", "), 120))}</span></button>
       <dl class="detail" ${i === firstBad ? "" : "hidden"}>${detail}</dl>
     </div>`;
   }).join("");

@@ -1,0 +1,20 @@
+[
+  {"args": [["z", "o"]], "expected": "zo"},
+  {"args": [["hrn", "hrf", "er", "enn", "rfnn"]], "expected": "hernf"},
+  {"args": [["wrt", "wrf", "er", "ett", "rftt"]], "expected": "wertf"},
+  {"args": [["abc", "ab"]], "expected": ""},
+  {"args": [["a", "b", "a"]], "expected": ""},
+  {"args": [["z", "x"]], "expected": "zx"},
+  {"args": [["z", "x", "z"]], "expected": ""},
+  {"args": [["a"]], "expected": "a"},
+  {"args": [["ab", "ac"]], "expected": "abc"},
+  {"args": [["a", "caa", "dacb", "ba", "bcd"]], "expected": "acdb"},
+  {"args": [["a", "aad", "ab", "ca", "b"]], "expected": "adcb"},
+  {"args": [["dcbd", "daaa", "c", "adaa", "b"]], "expected": "dcab"},
+  {"args": [["b", "bc", "dbc", "da", "de", "adce", "aee", "e", "eaa"]], "expected": "bcdae"},
+  {"args": [["e", "ecf", "c", "cbaa", "aeb", "ab", "ad", "f", "fc", "fbb", "bd", "db"]], "expected": "ecafbd"},
+  {"args": [["ddee", "addd", "dbbb", "ed", "eedc", "bd", "bed", "bb"]], "expected": ""},
+  {"args": [["cded", "aec", "e", "ea", "da", "edb", "dea"]], "expected": ""},
+  {"args": [["e", "edcb", "ec", "eb", "d", "aa", "bec", "c"]], "expected": ""},
+  {"args": [["k", "kcpi", "kcvf", "km", "ksvs", "kzr", "kai", "kv", "kdgp", "t", "tkni", "tm", "tpj", "tocd", "tace", "tua", "tfi", "tq", "th", "td", "b", "btwn", "bmm", "brcb", "bws", "bxp", "bvlr", "bf", "bqmb", "bjtj", "bh", "bhp", "c", "ckpi", "cm", "cg", "ca", "cum", "m", "mep", "myus", "mw", "ma", "marw", "mvaw", "r", "rtl", "rbq", "rm", "rw", "rwv", "rzt", "rige", "riyk", "e", "eeri", "ei", "eigi", "g", "gk", "gko", "gbm", "grmg", "geic", "gg", "gp", "gwz", "gq", "s", "sc", "se", "sgpg", "sl", "sw", "so", "sxsk", "sn", "p", "pkn", "pm", "pe", "pyc", "plc", "px", "pu", "pqj", "pjp", "y", "yckh", "ypas", "yyj", "yl", "yw", "ynk", "ynfb", "yqt", "yqr", "yqyf", "yqwr", "l", "ltvv", "lb", "lmxc", "lsk", "lw", "lo", "lodv", "lvu", "lu", "lhx", "li", "liy", "w", "wtt", "wthw", "wbxv", "wmw", "wr", "we", "ws", "ww", "wwue", "wnm", "wa", "whho", "wdu", "o", "oc", "ocj", "opuz", "oyhu", "oa", "oiru", "oiyt", "z", "zk", "zko", "zcss", "zwn", "zwd", "zzgn", "zf", "zfv", "zda", "zivk", "x", "xtbr", "xbkv", "xr", "xrzf", "xgoe", "xw", "xwcl", "xnxr", "xqdt", "xi", "n", "nk", "nl", "nxx", "nn", "a", "at", "attk", "ab", "acjf", "ar", "asv", "aol", "az", "anfm", "aada", "av", "aq", "v", "vmw", "vsd", "vli", "vvap", "vqs", "vd", "u", "uy", "uz", "uvhg", "uu", "f", "fb", "fbi", "frny", "fruy", "fglf", "fsk", "fwmw", "fvbe", "ff", "q", "qbs", "qcp", "ql", "qlz", "qn", "qq", "qj", "qdt", "qi", "jg", "jzoy", "jvp", "jjl", "jjd", "jh", "jhc", "jifz", "h", "hk", "hebk", "hs", "hsw", "hp", "hpqx", "hydu", "hzcv", "hzr", "hvo", "hq", "hjh", "hhyj", "hiod", "d", "dkku", "drlr", "dydy", "dhdh", "ddti", "ddol", "i", "ikxb", "id"]], "expected": "ktbcmregspylwozxnavufqjhdi"}
+]

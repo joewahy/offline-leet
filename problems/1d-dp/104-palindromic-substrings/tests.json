@@ -1,0 +1,14 @@
+[
+  {"args": ["abc"], "expected": 3},
+  {"args": ["aaa"], "expected": 6},
+  {"args": ["a"], "expected": 1},
+  {"args": ["aa"], "expected": 3},
+  {"args": ["abba"], "expected": 6},
+  {"args": ["racecar"], "expected": 10},
+  {"args": ["abab"], "expected": 6},
+  {"args": ["aaabb"], "expected": 9},
+  {"args": ["aaaaaaaabbaa"], "expected": 44},
+  {"args": ["bbbabbabbabaaaaaabbbabaaabbaaaaaabaabaab"], "expected": 115},
+  {"args": ["aaaaaaaaabbbabbaabaabaabbaaaaabaaaabaabbaaaaaaaaaabaababaababaaabababbbaabaabaabbabbbaaaabababaabbaababaababbbbbaaabaababbaaaabaaaabaaabbaaabaabaabaaabbaaaabbbbbbabbabbababbaababaabaababaabbaabbabbaabaaabaabaabaaabaaaaaaabbaabaaaabbaaababaabaaaabbaaaaaabbbaabaaabbabbaabbbbaaabbabbaaabbbaabbbbbbbaaaaabaabbbbaaaaabbbaaababbaaababaaabbbababbbaabaaabbbbababababbbbabbbaaaaaabababbbbbaabbaaabaaabababababbbbabaabbaabaabbbbaabaaabbaababbbbabbaaabbabaababbabbbbbaaabaaabaabbbbbaaabbaabbaabbbbbbbababaaabbbbbbbabbaababaabbaaaaaabbbaababbabbbbbaababbababbbabbaabbbbbaaababbaabbbababbabbbaabbbbbbaaabaabbabbababbbbbbbbbbbbbbbaaabbbabbabababbaabbaaaaabbaaabbbabbbbbaaaaaababbaabbaaabbbaababbababaaaabbaaabbbaaaabbbabababaabbbaaabbbbabaaabbaabbabaaabaabbabaaaabbbabaaaabbbbbaababbbababaaabbaababbbbabbabaaabaabbbbaabbababbbbbbababbaabbabbabbaaaaabaabaaabbbbbabbbbabaaaaaabbbbbabaabaaaababaababaabaaaabbbaabaaabbabbaababaabaaaaaabbbbaaaababaaaababaaaaaabaabaabaabbababbbbaaaabbabbaaabbaaabbabaaabbabaaaaaaaaabab"], "expected": 3064},
+  {"args": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"], "expected": 500500}
+]

@@ -1,0 +1,1 @@
+{"id": 60, "title": "Serialize and Deserialize Binary Tree", "category": "trees", "difficulty": "Hard", "method": "serialize", "arg_types": null, "roundtrip": {"type": "tree", "class": "Codec", "encode": "serialize", "decode": "deserialize"}}

@@ -11,31 +11,93 @@ import signal
 import sys
 import traceback
 
-from leet.compare import matches
+from leet import structures
+from leet.compare import matches, norm
 from leet.problems import find
+
+sys.setrecursionlimit(10000)
 
 
 def _on_alarm(signum, frame):
     raise TimeoutError("time limit exceeded")
 
 
-def _load_solution(path):
+def load_module(path, problem):
+    """Import a solution file with NeetCode's predefined names already in scope."""
     spec = importlib.util.spec_from_file_location("solution", path)
     module = importlib.util.module_from_spec(spec)
+    module.__dict__.update(structures.prelude(problem.arg_types))
     spec.loader.exec_module(module)
     return module
 
 
-def run_case(method, mode, timeout, case):
+def load_checker(problem):
+    if not problem.checker:
+        return None
+    spec = importlib.util.spec_from_file_location("check", problem.checker_path)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module.check
+
+
+def execute(problem, module, args):
+    """Run one case. Returns (encoded result, raw result, decoded inputs)."""
+    args = copy.deepcopy(args)
+
+    if problem.design:
+        ops, params = args
+        cls = getattr(module, problem.design)
+        instance, out = None, []
+        for i, (op, p) in enumerate(zip(ops, params)):
+            if i == 0:
+                instance = cls(*p)
+                out.append(None)
+            else:
+                out.append(getattr(instance, op)(*p))
+        return out, out, []
+
+    if problem.roundtrip:
+        rt = problem.roundtrip
+        value = structures.decode(rt["type"], args[0], [])
+        cls = getattr(module, rt["class"])
+        data = getattr(cls(), rt["encode"])(value)
+        if not isinstance(data, str):
+            raise TypeError(f"{rt['encode']} must return a str, got {type(data).__name__}")
+        back = getattr(cls(), rt["decode"])(data)
+        return structures.encode(rt["type"], back), back, [value]
+
+    types = problem.arg_types or ("plain",) * len(args)
+    decoded = []
+    for kind, value in zip(types, args):
+        decoded.append(structures.decode(kind, value, decoded))
+    inputs = list(decoded)
+    returned = getattr(module.Solution(), problem.method)(*decoded)
+    if problem.inplace is not None:
+        i = problem.inplace
+        return structures.encode(types[i], decoded[i]), decoded[i], inputs
+    return structures.encode(problem.return_type, returned), returned, inputs
+
+
+def check_case(problem, checker, case, got, raw, inputs, result):
+    if checker:
+        verdict = checker(case["args"], raw, case["expected"], inputs)
+        if isinstance(verdict, str):
+            result["error"] = verdict
+        return verdict is True
+    return matches(problem.compare, got, case["expected"])
+
+
+def run_case(problem, module, checker, case):
     result = {"args": case["args"], "expected": case["expected"], "stdout": ""}
     buf = io.StringIO()
     signal.signal(signal.SIGALRM, _on_alarm)
-    signal.setitimer(signal.ITIMER_REAL, timeout)
+    signal.setitimer(signal.ITIMER_REAL, problem.timeout)
     try:
         with contextlib.redirect_stdout(buf):
-            got = method(*copy.deepcopy(case["args"]))
-        result["got"] = got
-        result["ok"] = matches(mode, got, case["expected"])
+            got, raw, inputs = execute(problem, module, case["args"])
+            got = norm(got)
+            result["got"] = got
+            result["ok"] = check_case(problem, checker, case, got, raw, inputs, result)
     except BaseException as exc:
         result["ok"] = False
         result["error"] = (
@@ -52,8 +114,8 @@ def main(argv):
     path = problem.reference_path if "--reference" in argv else problem.solution_path
     try:
         with contextlib.redirect_stdout(io.StringIO()):
-            module = _load_solution(path)
-        method = getattr(module.Solution(), problem.method)
+            module = load_module(path, problem)
+            checker = load_checker(problem)
     except BaseException:
         print(json.dumps({"load_error": traceback.format_exc(limit=-3)}))
         return
@@ -64,7 +126,7 @@ def main(argv):
             results.append({**case, "ok": False, "got": None, "stdout": "",
                             "error": "skipped after an earlier timeout"})
             continue
-        result = run_case(method, problem.compare, problem.timeout, case)
+        result = run_case(problem, module, checker, case)
         timed_out = result.get("error") == "time limit exceeded"
         results.append(result)
     print(json.dumps({"results": results}, default=repr))

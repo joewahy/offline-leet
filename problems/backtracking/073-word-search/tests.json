@@ -1,0 +1,22 @@
+[
+  {"args": [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCCED"], "expected": true},
+  {"args": [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "SEE"], "expected": true},
+  {"args": [[["A", "B", "C", "E"], ["S", "F", "C", "S"], ["A", "D", "E", "E"]], "ABCB"], "expected": false},
+  {"args": [[["a"]], "a"], "expected": true},
+  {"args": [[["a"]], "b"], "expected": false},
+  {"args": [[["a", "b"]], "ba"], "expected": true},
+  {"args": [[["a", "b"], ["c", "d"]], "abdca"], "expected": false},
+  {"args": [[["a", "b"], ["c", "d"]], "acdb"], "expected": true},
+  {"args": [[["C", "A", "A"], ["A", "A", "A"], ["B", "C", "D"]], "AAB"], "expected": true},
+  {"args": [[["b"], ["a"], ["b"]], "abb"], "expected": false},
+  {"args": [[["a", "a", "b", "b"], ["a", "b", "b", "b"]], "baab"], "expected": false},
+  {"args": [[["b"], ["b"]], "aaa"], "expected": false},
+  {"args": [[["b", "a", "a"], ["a", "b", "a"]], "a"], "expected": true},
+  {"args": [[["a", "b"], ["b", "b"]], "abbaab"], "expected": false},
+  {"args": [[["b", "a", "a", "b"]], "abba"], "expected": false},
+  {"args": [[["a", "b"], ["b", "b"]], "bab"], "expected": true},
+  {"args": [[["a"]], "bbaaba"], "expected": false},
+  {"args": [[["a", "a", "a", "a"], ["a", "a", "a", "a"], ["a", "a", "a", "a"], ["a", "a", "a", "a"]], "aaaaaaaaaab"], "expected": false},
+  {"args": [[["a", "a", "a", "a"], ["a", "a", "a", "a"], ["a", "a", "a", "a"], ["a", "a", "a", "a"]], "aaaaaaaaaaaaaaaa"], "expected": true},
+  {"args": [[["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"], ["a", "a", "a", "a", "a"]], "aaaaaaaaaaaab"], "expected": false}
+]

@@ -1,0 +1,20 @@
+[
+  {"args": ["neetcode", ["neet", "code"]], "expected": true},
+  {"args": ["applepenapple", ["apple", "pen"]], "expected": true},
+  {"args": ["catsincars", ["cats", "cat", "sin", "in", "car"]], "expected": false},
+  {"args": ["leetcode", ["leet", "code"]], "expected": true},
+  {"args": ["catsandog", ["cats", "dog", "sand", "and", "cat"]], "expected": false},
+  {"args": ["a", ["a"]], "expected": true},
+  {"args": ["ab", ["a"]], "expected": false},
+  {"args": ["aaaaaaa", ["aaaa", "aaa"]], "expected": true},
+  {"args": ["aaaaab", ["a", "aa"]], "expected": false},
+  {"args": ["aaaba", ["a", "bbb"]], "expected": false},
+  {"args": ["aababba", ["a", "b"]], "expected": true},
+  {"args": ["ababababaa", ["a", "b"]], "expected": true},
+  {"args": ["baacaaaabaac", ["aa", "ac", "baac", "ca"]], "expected": true},
+  {"args": ["bbccbbcc", ["abcb", "bbcc", "cabc"]], "expected": true},
+  {"args": ["bba", ["aa", "b", "ba"]], "expected": true},
+  {"args": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab", ["a", "aa", "aaa", "aaaa"]], "expected": false},
+  {"args": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", ["aa", "aaa", "aaaaa"]], "expected": true},
+  {"args": ["abababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababababab", ["a", "b", "ab", "ba"]], "expected": true}
+]

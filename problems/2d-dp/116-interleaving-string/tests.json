@@ -1,0 +1,21 @@
+[
+  {"args": ["aabcc", "dbbca", "aadbbcbcac"], "expected": true},
+  {"args": ["aabcc", "dbbca", "aadbbbaccc"], "expected": false},
+  {"args": ["", "", ""], "expected": true},
+  {"args": ["a", "", "a"], "expected": true},
+  {"args": ["", "", "a"], "expected": false},
+  {"args": ["a", "b", "ab"], "expected": true},
+  {"args": ["a", "b", "ba"], "expected": true},
+  {"args": ["ab", "cd", "acbd"], "expected": true},
+  {"args": ["ab", "cd", "abdc"], "expected": false},
+  {"args": ["aa", "ab", "aaba"], "expected": true},
+  {"args": ["ba", "aa", "baaa"], "expected": true},
+  {"args": ["abb", "bab", "ababab"], "expected": false},
+  {"args": ["bbab", "ababa", "abababbab"], "expected": true},
+  {"args": ["ababa", "baab", "ababbabba"], "expected": false},
+  {"args": ["", "aab", "aab"], "expected": true},
+  {"args": ["aab", "", "aab"], "expected": true},
+  {"args": ["baabbaababbbbbbbaaabbbabbbbbaabbbaaaaabaabbabbbbaaabbbbbabaabaabbbbbabbabaaaaaaaabbabbbabbaaabbaabab", "bbabbaaabaababbbabaaabbbaaabbaabababaaaaabbbbbaaabaaabaaabaabbbaaabbbbabbababbbaaabaababababaabbabbb", "bbbabbaabaaabbaaabaabbabbbbbbbabbbaaaaabbabbbbaaababbbbbbaabaabaabbbbaaaaaaabbabababbaaaabababaaabbbbbaaaaabbabbaabbbaaabbbbabbababababbababbababbbaababbaabbabaabaaabaaaaaabaabbbbaabbbbbbabbaaabbaabab"], "expected": true},
+  {"args": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaab"], "expected": false},
+  {"args": ["bbaaabacccccbabacaacaccbcbcbbcbaabaabaaabcbbbbacbccbbcccaacaacbbccccabacbabbaababcacbcbcbcaabcbacbca", "cbaccbcbcbcaabcbcbcccaabcbcccbabcaccccacccaabcbccbcacbbcabccccacccbaacbbbcccbbcbbabcbbabbbabcccccab", "bcbbaaccaabcbbcabcccaacccbcbbcbabaccaccaacabcbacccccbcbcbabbbccabacabcccaacabccaaabcbbabbaacbbcbccbcbccbcacccabacaabccabbccccbcaccccbaccabaacbabcbbbabcccababbbccacbcbbbabcbccababbcbaacbbcabbabcccccab"], "expected": true}
+]

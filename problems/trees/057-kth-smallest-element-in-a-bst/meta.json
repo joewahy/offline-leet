@@ -1,0 +1,1 @@
+{"id": 57, "title": "Kth Smallest Element in a BST", "category": "trees", "difficulty": "Medium", "method": "kthSmallest", "arg_types": ["tree", "plain"]}

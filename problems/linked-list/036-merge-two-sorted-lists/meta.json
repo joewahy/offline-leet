@@ -1,0 +1,1 @@
+{"id": 36, "title": "Merge Two Sorted Lists", "category": "linked-list", "difficulty": "Easy", "method": "mergeTwoLists", "arg_types": ["list_node", "list_node"], "return_type": "list_node"}

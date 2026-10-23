@@ -81,3 +81,8 @@ Runs happen in a subprocess with a per-case timeout (default 5s) and, inside the
 - Reveal reference solutions after solving, or never ship them?
 - Keep progress in-repo (gitignored) or in `~/.offline-leet`?
 - Is a timer / interview-mode wanted in v1?
+
+## Status
+
+- Done: all 150 NeetCode problems, the web UI, the harness for lists, trees, graphs, intervals, design classes, in-place edits, and custom checkers (see `leet/structures.py`, `leet/runner.py`).
+- Not done: hidden tests / a separate submit step, reset-to-starter, timer, spaced repetition, solution write-ups.

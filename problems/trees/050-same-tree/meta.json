@@ -1,0 +1,1 @@
+{"id": 50, "title": "Same Tree", "category": "trees", "difficulty": "Easy", "method": "isSameTree", "arg_types": ["tree", "tree"]}

@@ -1,0 +1,1 @@
+{"id": 38, "title": "Reorder List", "category": "linked-list", "difficulty": "Medium", "method": "reorderList", "arg_types": ["list_node"], "inplace": 0}

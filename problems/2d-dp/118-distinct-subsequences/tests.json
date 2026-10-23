@@ -1,0 +1,19 @@
+[
+  {"args": ["caat", "cat"], "expected": 2},
+  {"args": ["rabbbit", "rabbit"], "expected": 3},
+  {"args": ["babgbag", "bag"], "expected": 5},
+  {"args": ["a", "a"], "expected": 1},
+  {"args": ["a", "b"], "expected": 0},
+  {"args": ["aaa", "aa"], "expected": 3},
+  {"args": ["abc", "abc"], "expected": 1},
+  {"args": ["aaaa", "aa"], "expected": 6},
+  {"args": ["bab", "abb"], "expected": 0},
+  {"args": ["b", "aaa"], "expected": 0},
+  {"args": ["abbaabbbba", "abab"], "expected": 16},
+  {"args": ["ba", "a"], "expected": 1},
+  {"args": ["bbaa", "bb"], "expected": 1},
+  {"args": ["aaaaaaaaaaaaaaaaaaaaaaaaaaaaaa", "aaaaaaaaaaaaaaa"], "expected": 155117520},
+  {"args": ["eciqfygudftqguyrifeskoeyynyxdzrhedeybxdyvfbxogvougjwlkkzfxmewsbhasjwobepbjayupbnesfxwnkclpnxrlxmtuksmtcrlkdkqtqmaaevrwzmsuuvdiieshaqxdjeojuabudxoevaeztptrnqvyodozljaubzxuxuimfrxzrexvuflptzihgvyrqdaausckhzrehmrxzfjitpfmqwwanjdcjxzleokpxlcdjzoiqqlckhimdlktikurtxrkjxgbvzdhycmmakyinkpfodfptnbojcfdvnpmlnjjetdwzwutxzisfuoknoemvcyudxydiyyjllzcprssprkgrpujonoqylslrnyyaikawbkfodrmukdyrhkynyztfwmwubqfvwfrdymnaaocnrbfaegehytgnrlumvgjqazgjjdcljzxdzitmajczbrpubasqyusqfcrtiydmikmzipufbgbsjiikwoqfawhwylyaamyoxggeckeowihmupwtyqczmncaksyqjatzvdhhhmlkdckhygjditauopqshrzwzsvlyamexkzgjnodqfuomjzsfaqaoyjovyjptogpepzqakymvaebeljygzikyqynfysnoucvzqkibebneqxrzjzslezavduzplpbuwfcphlohlujakdfxzempcftgmzujntjghhhquwoqdnegilieyjkpxolhbntwrqpggudtulvrsoflzegrxvkispdjrudnivlvoejtqkfdvhjhrabeyqcmaqreszfpdocnffzjutrpoxacrxxepmgrxzjdrbcvzxiekpuarkfvufpbndbpbayxizrmswrdeyyodwlgsqmmvurewdxlyilzfusmezcibjkxicmuarwsiasnkxjijhrntaknbzfhpwmfnsivvoimzlulsvyzddylhnbbklukggrlswtuhyqlegyohwpvhzimidfylhjcadnrqxonimfchtokxsmjlwao", "qzut"], "expected": 81025},
+  {"args": ["bbabbbbbbbaaaaabababbaaaaaabbaaabaabaaaaababbaabaabbbbbabbabbabbbbbabbbaaabbaabbbaaabbbaaababbbaabbaaaaabbaaababaaaaabaaabaaaaaaaabaaaaaaabaababbaabbababbbabbabbbbabaabbababaaaabbbbbaaabaaaaaaaabbabaaaabaabaaaababaababaabbaaabbbaabbbaaabababbbaabaaabbabaaabaaabaabbababaabbbabbaabbbabaabbabbbbbaabababaaaabababbabbbbaabbbbbbbabbbbbabaaaabaaaaabaabbbabbbabaaabaabbaaaaaaaaabababaabaaabaaaabbaaabaaaabbbbbaaabbbbbabbaabbaabbbaaabbababaaaaababbaaababaabbbbbbbaabababbbbbbaaaabaabaabbababbaabbaaabaabbbbabaaaabaabbbaabaabbbabbaaabaaabbaabaabaaabaabaaababbaaabaabbbabbabbabaaabbbabbbbbbbbbabbbbaaababbbbbbbbbababbaababbaababbabaaaabbbabbabbbabababbabbabbbabbbbaaaabaaabbbaaabbaabbaaaaabaabaaabbbbbaaababbabbbbababbbaaaaabbaababaabbbabbaaaabababaabbaaaaaaabaabaabbbaaabaabbbbababbbaaaababbabbbabbbababababaabababbbaababaababbabbbabaababaabaabbbbaabaaaaabbaaaabababbbaaabbaabaaabbbababaaaaabaabaabaabbaaaababbbabbbabaabaaaaaaababbabbbbabbbababababbabbaaabbabbaababbababbbaaaabbbbbbababbaaabbabaababbabbaaaba", "abab"], "expected": 2677162918},
+  {"args": ["ababababababababababababababab", "abababababab"], "expected": 293930}
+]

@@ -17,6 +17,12 @@ class Problem:
     method: str
     compare: str = "exact"
     timeout: float = 5.0
+    arg_types: tuple = None
+    return_type: str = "plain"
+    inplace: int = None
+    design: str = None
+    roundtrip: dict = None
+    checker: bool = False
 
     @property
     def key(self):
@@ -31,6 +37,10 @@ class Problem:
         return self.dir / "README.md"
 
     @property
+    def checker_path(self):
+        return self.dir / "check.py"
+
+    @property
     def reference_path(self):
         return REFERENCE_DIR / f"{self.key}.py"
 
@@ -40,6 +50,8 @@ class Problem:
 
 def _load(meta_path):
     meta = json.loads(meta_path.read_text())
+    if meta.get("arg_types") is not None:
+        meta["arg_types"] = tuple(meta["arg_types"])
     return Problem(dir=meta_path.parent, **meta)
 
 

@@ -1,0 +1,1 @@
+{"id": 35, "title": "Reverse Linked List", "category": "linked-list", "difficulty": "Easy", "method": "reverseList", "arg_types": ["list_node"], "return_type": "list_node"}
