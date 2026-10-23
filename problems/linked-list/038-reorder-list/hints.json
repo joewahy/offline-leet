@@ -1,0 +1,5 @@
+[
+  "The new order alternates between the front of the list and the back. You cannot walk backwards in a singly linked list, so what can you prepare?",
+  "Split the list at its middle, reverse the second half, then weave the two halves together one node at a time.",
+  "Find the middle with slow and fast pointers, cut the list there (`slow.next = None`), reverse the second part, then repeatedly link `first -> second -> first's old next -> ...`. This needs O(1) extra space."
+]

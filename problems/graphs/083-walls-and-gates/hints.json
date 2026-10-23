@@ -1,0 +1,5 @@
+[
+  "A distance to the 'nearest gate' is a shortest path. What search finds shortest paths in an unweighted grid?",
+  "Breadth-first search. Instead of starting from each empty room, start from all the gates together.",
+  "Put every gate in the queue at distance 0. Pop a cell and, for each neighbour that is still `2147483647`, set it to `dist + 1` and enqueue it. Walls are never entered, and each cell is set only once."
+]

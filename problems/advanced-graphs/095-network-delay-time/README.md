@@ -20,6 +20,11 @@ Output: -1
 - `0 <= len(times) <= 5000`
 - `1 <= w <= 100`, and each `(u, v)` pair appears at most once
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Dijkstra's algorithm gives the shortest time to every node. The answer is the largest of those times.
+1. The signal takes the fastest route to each node. Which algorithm finds shortest paths with positive weights?
+2. Dijkstra's algorithm from node `k`, using a min-heap.
+3. Pop the smallest `(time, node)`, skip it if the node is already finalized, record its time, and push its neighbours with `time + w`. The answer is the largest finalized time, or `-1` if fewer than `n` nodes were reached.
+
+</details>

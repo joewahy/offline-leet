@@ -22,6 +22,11 @@ Output: 0
 - `1 <= rows, cols <= 60`
 - `grid[i][j]` is `0` or `1`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Flood-fill each island and count the cells you visit; keep the maximum.
+1. It is the same flood fill as counting islands, but now you want the size of each island.
+2. While filling an island, count how many cells you visit.
+3. Take the maximum of those counts over all islands. Mark visited cells so you never count one twice.
+
+</details>

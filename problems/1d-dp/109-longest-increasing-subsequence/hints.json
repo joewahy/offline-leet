@@ -1,0 +1,5 @@
+[
+  "For each element, what is the longest increasing subsequence that ends there?",
+  "It is 1 plus the best among the earlier, smaller elements. This gives an O(n^2) solution.",
+  "For O(n log n), keep a list `tails` where `tails[k]` is the smallest possible last value of an increasing subsequence of length `k + 1`. For each number, binary search (`bisect_left`) its place: replace that entry, or append if it is larger than all of them. The answer is `len(tails)`."
+]

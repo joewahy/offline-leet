@@ -19,6 +19,11 @@ Output: False
 - `0 <= len(s1), len(s2) <= 100`, and `0 <= len(s3) <= 200`
 - All strings consist of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `dp[i][j]` says whether the first `i` letters of `s1` and the first `j` of `s2` can form the first `i + j` letters of `s3`.
+1. If the lengths of `s1` and `s2` do not add up to `len(s3)`, you can stop right away. Otherwise, each next character of `s3` has to come from one of the two strings.
+2. Let `dp[i][j]` be whether the first `i` letters of `s1` and the first `j` letters of `s2` can form the first `i + j` letters of `s3`.
+3. `dp[i][j]` is true if `dp[i-1][j]` is true and `s1[i-1] == s3[i+j-1]`, or `dp[i][j-1]` is true and `s2[j-1] == s3[i+j-1]`. `dp[0][0]` is true. One row is enough.
+
+</details>

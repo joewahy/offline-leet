@@ -19,7 +19,11 @@ Output: 7          # 0 through 6
 - `0 <= len(nums) <= 100000`
 - `-10^9 <= nums[i] <= 10^9`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sorting works but is O(n log n).
-- Put everything in a set. Only start counting from numbers that have no predecessor (`x - 1` not in the set).
+1. Sorting works but costs O(n log n). Which numbers can possibly be the start of a run?
+2. Put all numbers in a set. A number `x` starts a run only if `x - 1` is not in the set.
+3. From each start, count upward while `x + 1` is in the set. Each number belongs to exactly one run, so the total work is O(n).
+
+</details>

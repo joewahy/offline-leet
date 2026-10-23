@@ -19,6 +19,11 @@ Output: []
 - `0 <= len(digits) <= 4`
 - Each digit is between `'2'` and `'9'`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Build one letter per digit, trying every letter that digit maps to.
+1. Each digit contributes exactly one letter. How many choices does each digit give?
+2. Store the letters for each digit in a map, and build the combinations digit by digit.
+3. Iterative: start with `['']` and, for each digit, replace the list by every existing prefix plus each letter of that digit. Return `[]` for empty input.
+
+</details>

@@ -17,6 +17,11 @@ Output: [[], [7], [7, 7]]
 - `1 <= len(nums) <= 10`
 - `-10 <= nums[i] <= 10`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sort first. When you skip a value at some position, skip all of its equal neighbours too.
+1. With duplicates, skipping 'the first 2' and skipping 'the second 2' give the same subset. How do you stop that?
+2. Sort the numbers so equal values are next to each other, then use a start index when recursing.
+3. In the loop over candidates at one recursion level, skip `nums[i]` if `i > start` and `nums[i] == nums[i - 1]`. That keeps each distinct subset exactly once.
+
+</details>

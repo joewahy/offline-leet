@@ -17,6 +17,11 @@ Output: [11]
 - `1 <= k <= len(nums) <= 10000`
 - `-10000 <= nums[i] <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A deque of indices, kept in decreasing order of value, gives each maximum in amortised O(1).
+1. Recomputing `max` for every window works but is slow. Which elements could never be the maximum of any future window?
+2. If a newer element is larger than an older one in the window, the older one can never be the maximum again. Keep candidates in decreasing order.
+3. Use a deque of indices with decreasing values. Before pushing index `i`, pop smaller values from the back; pop the front if it has left the window. The front is the maximum, and the total work is O(n).
+
+</details>

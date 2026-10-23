@@ -22,7 +22,11 @@ A board with only 5 at (0,0) and 3 at (0,1)                  ->  True
 - `len(board) == 9` and `len(board[i]) == 9`
 - Each cell is `"1"` to `"9"` or `"."`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep one set per row, per column, and per box.
-- The box for cell `(r, c)` is `(r // 3, c // 3)`.
+1. You never need to solve the puzzle, only to detect a repeated digit in a row, a column, or a 3x3 box.
+2. Keep a set of seen digits for each row, each column, and each box, and check them as you scan each filled cell once.
+3. The box for cell `(r, c)` is `(r // 3, c // 3)`. One set of tuples like `('r', r, digit)`, `('c', c, digit)`, `('b', r // 3, c // 3, digit)` covers all three rules.
+
+</details>

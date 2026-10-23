@@ -1,0 +1,5 @@
+[
+  "From a cell, the longest path never depends on how you arrived there, because you only move to larger values.",
+  "Use DFS from every cell, and remember the answer for each cell so you compute it only once (memoization).",
+  "`longest(r, c) = 1 + max(longest(neighbour))` over neighbours with a larger value, or `1` if there are none. Strictly increasing paths cannot loop, so caching is safe. The total time is O(rows * cols)."
+]

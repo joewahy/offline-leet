@@ -1,0 +1,5 @@
+[
+  "Choosing the first balloon to burst is hard, because the neighbours change. Try thinking about the last balloon to burst instead.",
+  "If balloon `k` is the last one burst in a range, its neighbours are the fixed borders of the range, and the two sides become independent subproblems.",
+  "Pad `nums` with `1` on both ends. `dp[l][r]` is the best for the balloons strictly between `l` and `r`: the maximum over `k` of `dp[l][k] + dp[k][r] + a[l] * a[k] * a[r]`. Fill it by increasing range length. This is O(n^3)."
+]

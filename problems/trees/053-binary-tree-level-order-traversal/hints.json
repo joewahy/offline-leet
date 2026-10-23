@@ -1,0 +1,5 @@
+[
+  "You want to visit the tree one level at a time, not depth first. Which structure visits nodes in the order they were discovered?",
+  "Use a queue (breadth-first search), starting with the root.",
+  "In each round, take `len(queue)` nodes (exactly one level), record their values in one list, and enqueue their children. Use `collections.deque` for O(1) pops from the front."
+]

@@ -1,0 +1,5 @@
+[
+  "Comparing a node only with its direct children is not enough: a deeper node must also respect ancestors further up.",
+  "Each node must lie strictly inside a range `(low, high)` that gets narrower as you go down.",
+  "Start with `(-inf, +inf)`. Going left, the new upper bound is the node's value. Going right, the new lower bound is the node's value. Fail if a value falls outside its range. An in-order traversal that is strictly increasing also works."
+]

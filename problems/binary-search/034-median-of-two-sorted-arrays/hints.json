@@ -1,0 +1,5 @@
+[
+  "Merging both arrays and taking the middle is O(m + n). To do better you cannot look at every element.",
+  "Binary search how many elements of the smaller array belong in the left half of the merged order. The rest of the left half comes from the other array.",
+  "A split is right when `maxLeftA <= minRightB` and `maxLeftB <= minRightA` (use infinity for empty sides). Then the median comes from those four values: the larger left value, and for an even total also the smaller right value."
+]

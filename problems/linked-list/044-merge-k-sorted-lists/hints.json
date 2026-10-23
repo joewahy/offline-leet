@@ -1,0 +1,5 @@
+[
+  "Merging two sorted lists is easy. How could you reuse that idea for `k` lists?",
+  "Either merge pairs of lists repeatedly (like merge sort), or keep a min-heap holding the current head of each list.",
+  "With a heap, pop the smallest node, append it to the result, and push that node's `next`. Store `(value, list_index, node)` so ties never compare nodes. This is O(N log k) for N total nodes."
+]

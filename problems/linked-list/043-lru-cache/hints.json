@@ -1,0 +1,5 @@
+[
+  "You need O(1) lookup by key and O(1) updates to the usage order. One structure alone cannot do both.",
+  "Combine a hash map (key to node) with a doubly linked list ordered from least to most recently used.",
+  "On `get` or `put`, move the node to the most-recent end. When the size exceeds the capacity, remove the node at the least-recent end and delete its key from the map. Dummy head and tail nodes avoid edge cases. (In Python, `OrderedDict` with `move_to_end` does the same job.)"
+]

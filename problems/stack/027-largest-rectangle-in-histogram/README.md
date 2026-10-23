@@ -19,7 +19,11 @@ Output: 7
 - `1 <= len(heights) <= 8000`
 - `0 <= heights[i] <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- For each bar, how far can a rectangle of that bar's height extend left and right?
-- A stack of increasing heights finds those boundaries in one pass.
+1. For any bar, the best rectangle that uses its full height extends left and right until it meets a shorter bar.
+2. So for each bar you need the nearest shorter bar on each side. A stack of increasing heights finds those in one pass.
+3. Keep a stack of `(start_index, height)`. When a new bar is shorter, pop the taller bars, compute `height * (i - start)` for each, and give the new bar the earliest `start` among the popped ones. Append a `0` bar at the end to flush the stack.
+
+</details>

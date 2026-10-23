@@ -19,7 +19,11 @@ Output: -1
 - `1 <= n <= 10000`
 - `0 <= gas[i], cost[i] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- If the total gas is less than the total cost, no start works.
-- If you run out of fuel going from `i` to `j`, no station in between can be the start; try `j + 1`.
+1. If the total gas is less than the total cost, can any start work?
+2. No, so return `-1`. Otherwise a start exists. If the tank goes negative going from station `a` to `b`, no station between them can be the start.
+3. Scan once keeping `tank += gas[i] - cost[i]`. When `tank < 0`, set the candidate start to `i + 1` and reset `tank = 0`. After the scan (and the total check), the candidate is the answer.
+
+</details>

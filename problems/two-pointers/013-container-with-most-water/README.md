@@ -19,6 +19,11 @@ Output: 4
 - `2 <= len(heights) <= 12000`
 - `0 <= heights[i] <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Start with the widest container. Moving which pointer could ever help?
+1. Area is width times the shorter of two heights. Starting with the widest pair, what could you gain by narrowing?
+2. Use two pointers at the ends and compute the area, keeping the best. Then move one pointer inward.
+3. Always move the pointer at the shorter line. Moving the taller one can only shrink the width without raising the limiting height.
+
+</details>

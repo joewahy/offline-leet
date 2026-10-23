@@ -1,0 +1,5 @@
+[
+  "Look at the last characters of both words. What if they are equal? If they differ, what are your options?",
+  "Let `dp[i][j]` be the distance between the first `i` letters of `word1` and the first `j` letters of `word2`.",
+  "If the letters match, `dp[i][j] = dp[i-1][j-1]`. Otherwise it is 1 plus the minimum of `dp[i-1][j]` (delete), `dp[i][j-1]` (insert) and `dp[i-1][j-1]` (replace). The first row and column are `0, 1, 2, ...`."
+]

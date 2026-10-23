@@ -17,7 +17,11 @@ Output: [[0, 0, 0, 0], [0, 4, 5, 0], [0, 3, 1, 0]]
 - `1 <= m, n <= 100`
 - `-1000 <= matrix[i][j] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Zeros you create must not cause more zeros. First record which rows and columns to clear, then clear them.
-- You can store those markers in the first row and first column to use O(1) extra space.
+1. If you zero rows and columns as you scan, the new zeros will cause more zeros. How can you avoid that?
+2. First find all the rows and columns that contain a zero, then clear them in a second pass.
+3. Use two sets for the row and column indices. For O(1) extra space, store the markers in the first row and first column, remembering separately whether the first row and the first column themselves contained a zero.
+
+</details>

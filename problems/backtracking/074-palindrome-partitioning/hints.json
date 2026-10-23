@@ -1,0 +1,5 @@
+[
+  "Choose where the first piece ends. Which choices are allowed?",
+  "Only prefixes that are palindromes. For each such prefix, recursively partition the rest of the string.",
+  "Recurse on a start index: for each `end > start`, if `s[start:end]` is a palindrome, append it, recurse from `end`, then remove it. When `start == len(s)`, record the path. You can precompute a palindrome table to speed up the checks."
+]

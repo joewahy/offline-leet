@@ -1,0 +1,5 @@
+[
+  "A plain shortest-path search ignores the limit on stops. What extra information does each state need?",
+  "Allow at most `k + 1` flights: use Bellman-Ford for `k + 1` rounds, or a heap that tracks the number of stops used.",
+  "Bellman-Ford: keep a `dist` array. In each of `k + 1` rounds, relax every flight using a copy of the previous round's distances (so one round adds at most one flight). The answer is `dist[dst]`, or `-1` if it is still infinite."
+]

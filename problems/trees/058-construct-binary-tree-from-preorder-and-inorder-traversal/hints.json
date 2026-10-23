@@ -1,0 +1,5 @@
+[
+  "In preorder the first value is always the root. Where does that value sit in the inorder list?",
+  "Everything left of the root in the inorder list is the left subtree, and everything right of it is the right subtree. Their sizes tell you how to split the preorder list too.",
+  "Store each value's inorder index in a dictionary. Recurse on inorder ranges, consuming preorder values one at a time: build the left subtree first, then the right. That is O(n)."
+]

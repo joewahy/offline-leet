@@ -20,7 +20,11 @@ Output: -1
 - `1 <= coins[i] <= 10000`, all distinct
 - `0 <= amount <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `fewest(a) = 1 + min(fewest(a - c))` over the coins `c <= a`. Build the table from `0` upwards.
-- A greedy "largest coin first" approach does not always work.
+1. Taking the biggest coin each time can give the wrong answer. Think about the fewest coins for every smaller amount.
+2. Let `dp[a]` be the fewest coins for amount `a`. To make `a`, the last coin is some `c`, so look at `dp[a - c]`.
+3. `dp[0] = 0` and `dp[a] = 1 + min(dp[a - c])` over coins `c <= a` (use infinity when impossible). Fill from 1 up to `amount`, and return `-1` if `dp[amount]` is still infinity.
+
+</details>

@@ -20,6 +20,11 @@ Output: -1
 - `-10000 <= nums[i], target <= 10000`
 - All values are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- At every step, at least one half of the current range is properly sorted. Check whether the target lies in it.
+1. After splitting at the middle, at least one half is still in normal sorted order. How can you tell which?
+2. Compare `nums[left]` with `nums[mid]`: if `nums[left] <= nums[mid]`, the left half is sorted; otherwise the right half is.
+3. Check whether `target` lies inside the sorted half's range. If yes, search that half; if not, search the other half. Repeat until found, in O(log n).
+
+</details>

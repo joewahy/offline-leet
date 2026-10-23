@@ -18,7 +18,11 @@ Output: [[""]]
 - `0 <= len(strs[i]) <= 100`
 - `strs[i]` consists of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Anagrams share a common "signature". What could it be?
-- Use that signature as a dictionary key.
+1. Two words are anagrams exactly when they contain the same letters the same number of times. What single value could describe that for a word?
+2. Compute a canonical key for each word (for example its sorted letters, or a count of each letter) and group the words in a dictionary by that key.
+3. Sorting each word costs O(k log k); counting letters into a 26-tuple makes the key O(k). Use `defaultdict(list)` and return the dictionary's values.
+
+</details>

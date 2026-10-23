@@ -1,0 +1,5 @@
+[
+  "What two properties define a tree? How many edges does it have, and what must be true about its connectivity?",
+  "A tree on `n` nodes has exactly `n - 1` edges and is connected (equivalently, it has no cycle).",
+  "Check `len(edges) == n - 1` first. Then verify connectivity with a DFS from node 0, or add the edges with union-find and fail if an edge joins two nodes that are already connected."
+]

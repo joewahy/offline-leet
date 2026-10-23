@@ -21,6 +21,11 @@ deserialize(serialize(root)) must give back []
 - `0 <= number of nodes <= 3000`
 - `-1000 <= node.val <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A preorder traversal that also records the empty children (for example as `N`) is enough to rebuild the tree uniquely.
+1. A traversal alone does not identify a tree unless you also record where children are missing.
+2. Do a preorder traversal and write a marker such as `N` for every missing child. The result describes the shape uniquely.
+3. Join the values with a separator, like `1,2,N,N,3,N,N`. To deserialize, read the tokens in order: a marker returns `None`, otherwise create a node and recursively build its left child, then its right child, from the next tokens.
+
+</details>

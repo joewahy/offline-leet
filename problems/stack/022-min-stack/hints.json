@@ -1,0 +1,5 @@
+[
+  "`getMin` must be O(1), so you cannot scan the stack. What extra information could each stack entry carry?",
+  "Along with each value, store the minimum of the stack at the moment it was pushed.",
+  "Push `(val, min(val, previous_min))`. Then `getMin` reads the top entry's second item, and `pop` automatically restores the earlier minimum."
+]

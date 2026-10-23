@@ -1,0 +1,5 @@
+[
+  "Each day you are in one of a few states: holding a share, just sold, or resting. What can you do from each?",
+  "Track the best profit for each state at the end of each day: `hold`, `sold`, and `rest`.",
+  "`hold = max(hold, rest - price)`, `sold = old_hold + price`, `rest = max(rest, old_sold)`. Use the old values on the right side of each update. The answer is `max(sold, rest)` after the last day."
+]

@@ -19,6 +19,11 @@ Output: False
 - `1 <= len(nums) <= 10000`
 - `0 <= nums[i] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Track the farthest index you can reach so far. If you ever stand on an index beyond it, you are stuck.
+1. You do not have to find the exact jumps, only whether the end is reachable.
+2. Track the farthest index you can reach so far.
+3. Scan left to right. If your index is beyond the farthest reach, return false. Otherwise update `reach = max(reach, i + nums[i])`. If you finish the scan, return true.
+
+</details>

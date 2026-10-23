@@ -20,7 +20,11 @@ Output: 5
 - `0 <= nums[i] <= 1000`, and `sum(nums) <= 1000`
 - `-1000 <= target <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Track how many ways each running total can be reached. The totals form a small dictionary.
-- Or turn it into "how many subsets sum to `(total + target) / 2`".
+1. Each number gets a plus or a minus. How many different running totals can exist?
+2. Track how many ways each running total can be reached, one number at a time.
+3. Keep a dictionary `ways[total] = count`. For each number `x`, build a new dictionary where each `total` contributes to `total + x` and to `total - x`. The answer is `ways[target]`. (Alternative: count the subsets that sum to `(total + target) / 2`.)
+
+</details>

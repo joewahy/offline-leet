@@ -17,6 +17,11 @@ Output: 2
 - `1 <= len(intervals) <= 10000`
 - `0 <= start < end <= 10^6`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Greedy: sort by end. Keep an interval if it starts at or after the end of the last kept one; otherwise remove it.
+1. When two intervals overlap, you must remove one. Which one is the better choice to keep?
+2. Keep the one that ends earlier, since it leaves the most room for the rest.
+3. Sort by end time. Track the end of the last kept interval. For each interval, if its start is `>=` that end, keep it; otherwise count one removal.
+
+</details>

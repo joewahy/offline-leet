@@ -1,0 +1,5 @@
+[
+  "Checking every cell against both oceans is slow. What if you search backwards from the oceans instead?",
+  "Water flows downhill, so going backwards means moving to neighbours that are the same height or higher. Start from each ocean's border cells.",
+  "Run a DFS or BFS from all Pacific border cells and another from all Atlantic border cells, collecting the cells each one reaches. The answer is the intersection of the two sets."
+]

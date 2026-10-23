@@ -1,0 +1,5 @@
+[
+  "Try splitting off the first word. What is left to solve?",
+  "Let `can[i]` mean the first `i` letters can be split into words. It is true if some earlier `can[j]` is true and `s[j:i]` is a word.",
+  "Put the words in a set for O(1) lookup. `can[0] = True`. For each `i`, try every `j < i` (you can limit `j` to the longest word length). Return `can[len(s)]`."
+]

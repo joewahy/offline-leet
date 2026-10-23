@@ -20,7 +20,11 @@ Output: []
 - `1 <= len(words[i]) <= 10`
 - `board` and `words[i]` consist of lowercase letters; all words are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Searching each word separately repeats a lot of work. Put all the words in a trie and search the board once.
-- Prune trie branches that cannot lead to a word any more.
+1. Running Word Search once per word repeats a lot of work. How could you search for all the words at once?
+2. Insert all the words into a trie, then explore the board with DFS, following trie children as you move.
+3. Stop exploring a path as soon as the current prefix is not in the trie. Store the full word at its end node so you can collect it, and remove found words (or prune empty branches) to avoid duplicates and speed up later searches.
+
+</details>

@@ -21,6 +21,11 @@ Output: [[3, 3, 3, 3, 4], [3, 3, 5, 5], [4, 4, 4, 4], [3, 4, 4, 5]]
 - `2 <= target <= 40`
 - The number of combinations is at most 150.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Pick a number, subtract it from the target, and recurse. Move forward in the list so you do not produce the same combination in a different order.
+1. You may reuse a number, but the same combination in a different order must not appear twice.
+2. Recurse with a start index: at each step choose a number at an index `>= start` and subtract it from the remaining target.
+3. When choosing `nums[i]`, recurse with the same `i` (reuse is allowed) so you never go back to earlier numbers. Stop when the remaining target is `0` (record it) or negative (prune). Sorting lets you stop even earlier.
+
+</details>

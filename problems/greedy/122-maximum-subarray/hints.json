@@ -1,0 +1,5 @@
+[
+  "If the sum of a prefix is negative, can it help any later subarray?",
+  "No. A negative running sum should be thrown away and a new subarray started.",
+  "Keep `cur = max(x, cur + x)` and the best `cur` seen. This is Kadane's algorithm, O(n) time and O(1) space."
+]

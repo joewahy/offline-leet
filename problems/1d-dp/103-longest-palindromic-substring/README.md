@@ -17,6 +17,11 @@ Output: "bb"
 - `1 <= len(s) <= 1000`
 - `s` consists of digits and English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Every palindrome has a centre (a character or the gap between two). Expand outwards from each centre.
+1. Every palindrome has a centre. How many possible centres does a string of length `n` have?
+2. Expand outwards from each centre while the two ends match, and remember the longest result.
+3. There are `2n - 1` centres: each character, and each gap between two characters (for even lengths). Expansion costs O(n) per centre, so O(n^2) overall.
+
+</details>

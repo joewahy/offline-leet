@@ -1,0 +1,5 @@
+[
+  "Taking the biggest coin each time can give the wrong answer. Think about the fewest coins for every smaller amount.",
+  "Let `dp[a]` be the fewest coins for amount `a`. To make `a`, the last coin is some `c`, so look at `dp[a - c]`.",
+  "`dp[0] = 0` and `dp[a] = 1 + min(dp[a - c])` over coins `c <= a` (use infinity when impossible). Fill from 1 up to `amount`, and return `-1` if `dp[amount]` is still infinity."
+]

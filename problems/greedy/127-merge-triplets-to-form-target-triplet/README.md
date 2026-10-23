@@ -21,6 +21,11 @@ Output: False
 - `1 <= len(triplets) <= 10000`
 - `1 <= a, b, c, x, y, z <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A triplet with any value larger than the target can never be used. Among the rest, check that each target position gets matched.
+1. Merging takes the maximum at each position, so it can only increase values. Which triplets can never be used?
+2. Any triplet with a value larger than the target in some position can never be used, because the maximum would overshoot.
+3. Among the usable triplets, take the position-wise maximum. If it equals the target, return true. Equivalently, check that each target position is matched by some usable triplet.
+
+</details>

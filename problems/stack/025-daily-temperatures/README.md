@@ -17,6 +17,11 @@ Output: [1, 4, 1, 2, 1, 0, 0]
 - `1 <= len(temperatures) <= 10000`
 - `30 <= temperatures[i] <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep a stack of days still waiting for a warmer day. When a warmer day arrives, pop everything it beats.
+1. For each day you want the next warmer day. Checking every later day is O(n^2). What is waiting for an answer at any moment?
+2. Keep a stack of days that have not found a warmer day yet. Their temperatures are non-increasing from bottom to top.
+3. For each new day, while the top of the stack is colder, pop it and set its answer to `today - popped_index`. Then push today. Each day is pushed and popped once, so it is O(n).
+
+</details>

@@ -1,0 +1,5 @@
+[
+  "Overlaps are hard to see when the intervals are in random order. What if they were sorted?",
+  "Sort by start. Then only the previous merged interval can overlap the next one.",
+  "Keep a result list. For each interval, if its start is `<=` the last result's end, set that end to the larger of the two ends; otherwise append a new interval."
+]

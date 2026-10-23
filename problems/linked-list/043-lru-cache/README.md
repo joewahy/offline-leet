@@ -30,6 +30,11 @@ get(4)      -> 4
 - `0 <= key <= 1000`, `0 <= value <= 10^5`
 - At most `10000` calls are made.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A hash map gives O(1) lookup; a doubly linked list gives O(1) reordering and eviction.
+1. You need O(1) lookup by key and O(1) updates to the usage order. One structure alone cannot do both.
+2. Combine a hash map (key to node) with a doubly linked list ordered from least to most recently used.
+3. On `get` or `put`, move the node to the most-recent end. When the size exceeds the capacity, remove the node at the least-recent end and delete its key from the map. Dummy head and tail nodes avoid edge cases. (In Python, `OrderedDict` with `move_to_end` does the same job.)
+
+</details>

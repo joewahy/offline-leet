@@ -19,7 +19,11 @@ Output: []
 - `3 <= len(nums) <= 3000`
 - `-10^5 <= nums[i] <= 10^5`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sort first. Fix one number, then look for the other two with two pointers.
-- Skip equal neighbours to avoid duplicate triplets.
+1. Reduce it to a problem you know: if you fix one number, what remains is a two-sum for the negative of it.
+2. Sort the array, fix each number `a` in turn, and use two pointers on the part to its right to find pairs summing to `-a`.
+3. To avoid duplicate triplets, skip a value equal to the previous one for `a`, and after finding a triplet move the left pointer past equal values. Stop early when `a > 0`.
+
+</details>

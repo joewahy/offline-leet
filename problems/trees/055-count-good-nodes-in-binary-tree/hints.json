@@ -1,0 +1,5 @@
+[
+  "Whether a node is good depends only on the nodes above it on its own path.",
+  "Pass the largest value seen so far down the recursion.",
+  "At each node, count it as good if `node.val >= max_so_far`. Then recurse into both children with `max(max_so_far, node.val)`. The root is always good."
+]

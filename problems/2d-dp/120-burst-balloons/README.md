@@ -19,6 +19,11 @@ Output: 10
 - `1 <= len(nums) <= 60`
 - `0 <= nums[i] <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Think of the last balloon to burst inside a range. Its neighbours are then fixed (the range's borders), which splits the problem into two independent smaller ranges.
+1. Choosing the first balloon to burst is hard, because the neighbours change. Try thinking about the last balloon to burst instead.
+2. If balloon `k` is the last one burst in a range, its neighbours are the fixed borders of the range, and the two sides become independent subproblems.
+3. Pad `nums` with `1` on both ends. `dp[l][r]` is the best for the balloons strictly between `l` and `r`: the maximum over `k` of `dp[l][k] + dp[k][r] + a[l] * a[k] * a[r]`. Fill it by increasing range length. This is O(n^3).
+
+</details>

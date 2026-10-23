@@ -1,0 +1,5 @@
+[
+  "To reach a cell you must come from the cell above it or the cell to its left.",
+  "So the number of ways to a cell is the sum of the ways to those two cells. The first row and first column each have one way.",
+  "Keep one row of the table and update it row by row: `row[j] += row[j - 1]`. It is also the binomial coefficient `C(m + n - 2, m - 1)`."
+]

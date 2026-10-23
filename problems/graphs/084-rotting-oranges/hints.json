@@ -1,0 +1,5 @@
+[
+  "Rot spreads one step per minute from every rotten orange at the same time.",
+  "That is a multi-source BFS, processed in rounds. Each round is one minute.",
+  "Start the queue with all rotten oranges and count the fresh ones. Process the queue level by level, rot the adjacent fresh oranges, and count one minute per level. If fresh oranges are left at the end, return `-1`."
+]

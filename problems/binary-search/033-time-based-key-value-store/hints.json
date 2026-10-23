@@ -1,0 +1,5 @@
+[
+  "For each key, the values come with increasing timestamps. What does that let you do when looking one up?",
+  "Store a sorted list of timestamps (and the matching values) per key, and use binary search in `get`.",
+  "In `get`, find the rightmost timestamp `<= t` with `bisect_right(times, t) - 1`. If the index is negative, return an empty string. `set` just appends."
+]

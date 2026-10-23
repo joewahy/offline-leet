@@ -1,0 +1,5 @@
+[
+  "Handle one group at a time. First check whether `k` nodes are left.",
+  "For a full group, reverse just those `k` nodes, then reconnect the group to the part before it and the part after it.",
+  "Keep `group_prev` (the node before the group). Find the `k`-th node; if it does not exist, stop. Reverse the nodes up to `kth.next`, then set `group_prev.next = kth` and move `group_prev` to the old first node of the group. A dummy head helps."
+]

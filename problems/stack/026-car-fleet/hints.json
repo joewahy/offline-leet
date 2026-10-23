@@ -1,0 +1,5 @@
+[
+  "A car's own arrival time is easy to compute if nothing blocks it. How?",
+  "Sort cars by starting position, closest to the target first, and compute each car's time `(target - position) / speed`.",
+  "Go through the sorted cars. If a car's time is greater than the time of the fleet ahead of it, it starts a new fleet; otherwise it catches up and joins that fleet. Count the new fleets."
+]

@@ -1,0 +1,5 @@
+[
+  "Each connected group of nodes counts once. How do you avoid counting a group twice?",
+  "Either traverse the graph and count how many times you start a new traversal, or use union-find.",
+  "With union-find, start with `n` components and subtract one every time an edge joins two different components. Path compression keeps it fast."
+]

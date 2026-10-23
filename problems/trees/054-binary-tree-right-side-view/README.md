@@ -17,6 +17,11 @@ Output: [1, 3, 7]
 - `0 <= number of nodes <= 3000`
 - `-100 <= node.val <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The visible node on each level is the last one in a left-to-right level order traversal.
+1. At each depth, which node would you see from the right?
+2. It is the last node of each level, in left-to-right order.
+3. Do a level order traversal and take the last value of every level. Or do a DFS that visits the right child first and records a node's value the first time it reaches a new depth.
+
+</details>

@@ -24,6 +24,11 @@ search("b..")   -> True
 - `addWord` words contain lowercase letters; `search` words contain lowercase letters and `.`
 - At most `10000` calls are made, and at most 2 dots appear in any searched word.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Use a trie. When you meet a `.`, try every child at that level.
+1. Without wildcards this is the normal trie. What changes when `.` appears?
+2. Use a trie. When the next character is a letter, follow that child; when it is `.`, you must try every child.
+3. Write `search` as a recursive function `go(node, i)`. For `.`, return true if any child's `go(child, i + 1)` is true. At the end of the word, return whether the node is marked as the end of a word.
+
+</details>

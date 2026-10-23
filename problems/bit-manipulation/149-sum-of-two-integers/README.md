@@ -18,7 +18,11 @@ Output: -5
 
 - `-1000 <= a, b <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `a ^ b` adds without carrying, and `(a & b) << 1` is the carry. Repeat until there is no carry.
-- In Python, integers are unbounded, so mask to 32 bits and convert back to a signed value at the end.
+1. Think about how you add in binary. Which operation gives the sum without carries, and which gives the carries?
+2. XOR adds without carrying. AND, shifted left by one, gives the carry.
+3. Repeat `a, b = a ^ b, (a & b) << 1` until `b` is 0. In Python, integers are unbounded, so mask to 32 bits (`& 0xFFFFFFFF`) at each step, and convert back to a negative number at the end if the 32nd bit is set.
+
+</details>

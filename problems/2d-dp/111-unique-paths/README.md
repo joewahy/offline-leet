@@ -19,7 +19,11 @@ Output: 6
 - `1 <= m, n <= 100`
 - The answer fits in a 32-bit integer for the tested sizes.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The number of ways to reach a cell is the number of ways to reach the cell above plus the cell to the left.
-- It is also a combinatorics problem: choose which of the `m + n - 2` moves go down.
+1. To reach a cell you must come from the cell above it or the cell to its left.
+2. So the number of ways to a cell is the sum of the ways to those two cells. The first row and first column each have one way.
+3. Keep one row of the table and update it row by row: `row[j] += row[j - 1]`. It is also the binomial coefficient `C(m + n - 2, m - 1)`.
+
+</details>

@@ -19,7 +19,11 @@ Output: [1, null, 2]
 - `1 <= len(preorder) == len(inorder) <= 3000`
 - `-3000 <= value <= 3000`, all distinct
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The first preorder value is the root. Find it in the inorder list to learn how many nodes belong to the left subtree.
-- Store inorder positions in a dictionary so each lookup is O(1).
+1. In preorder the first value is always the root. Where does that value sit in the inorder list?
+2. Everything left of the root in the inorder list is the left subtree, and everything right of it is the right subtree. Their sizes tell you how to split the preorder list too.
+3. Store each value's inorder index in a dictionary. Recurse on inorder ranges, consuming preorder values one at a time: build the left subtree first, then the right. That is O(n).
+
+</details>

@@ -23,6 +23,11 @@ count([11, 10])  -> 2
 - `0 <= x, y <= 1000`
 - At most `3000` calls are made.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep a count of each distinct point. For a query, try every stored point on the same diagonal and multiply the counts of the other two corners.
+1. A square is fixed by the query point and the point diagonally opposite it. Which other two corners follow?
+2. Keep a count of each distinct point. For each stored point on a diagonal of the query, check the other two corners.
+3. A stored point `(px, py)` is a valid opposite corner when `abs(px - x) == abs(py - y)` and `px != x`. The other corners are `(px, y)` and `(x, py)`. Add `count(px, py) * count(px, y) * count(x, py)` to the answer.
+
+</details>

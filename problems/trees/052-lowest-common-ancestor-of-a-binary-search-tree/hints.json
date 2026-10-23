@@ -1,0 +1,5 @@
+[
+  "Use the BST ordering. If both values are smaller than the current node, where must they be? What if both are larger?",
+  "If both values are smaller than the current node, go left. If both are larger, go right.",
+  "The first node where the two values split (one is smaller or equal, the other larger or equal) is the lowest common ancestor. An iterative loop uses O(1) space."
+]

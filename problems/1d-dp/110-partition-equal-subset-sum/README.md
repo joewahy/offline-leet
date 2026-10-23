@@ -17,7 +17,11 @@ Output: False
 - `1 <= len(nums) <= 100`
 - `1 <= nums[i] <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- If the total is odd, it is impossible. Otherwise ask: can some subset add up to `total / 2`?
-- Track the set of reachable sums as you go through the numbers.
+1. If the total is odd, can the two halves be equal? If it is even, what exactly are you looking for?
+2. You need a subset that sums to `total / 2`. That is a subset-sum problem.
+3. Keep the set of reachable sums (or a boolean array up to `total / 2`). For each number, add it to every reachable sum. If `total / 2` becomes reachable, return true. A bitmask `reach |= reach << x` does it compactly.
+
+</details>

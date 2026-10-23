@@ -1,0 +1,5 @@
+[
+  "A 90 degree rotation can be done as two simpler operations. Which ones?",
+  "A clockwise rotation equals a transpose (swap `matrix[i][j]` with `matrix[j][i]`) followed by reversing each row.",
+  "Transpose by swapping only the pairs with `j > i`, so you do not swap twice, then call `row.reverse()` on every row. Everything happens in place."
+]

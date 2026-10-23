@@ -18,6 +18,11 @@ Output: 5
 - Both strings consist of English letters.
 - The tests are chosen so the answer fits in a 32-bit integer.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `dp[i][j]` is the number of ways the first `j` letters of `t` appear in the first `i` letters of `s`. If `s[i-1] == t[j-1]` you may use that letter or skip it.
+1. Compare the current letter of `s` with the current letter of `t`. When they are equal, you have two choices.
+2. Let `dp[j]` be the number of ways to form the first `j` letters of `t` from the letters of `s` seen so far.
+3. For each letter `c` of `s`, going `j` from `len(t)` down to `1`: if `t[j-1] == c`, add `dp[j-1]` to `dp[j]`. Start with `dp[0] = 1`. Going downwards makes sure each letter of `s` is used at most once per step.
+
+</details>

@@ -20,7 +20,11 @@ Output: 6          # 4 + (13 / 5)
 - Every token is an operator or an integer in the range `[-1000, 1000]`.
 - Intermediate results fit in a 32-bit signed integer.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Push numbers on a stack. When you see an operator, pop two, combine, and push the result.
-- Mind the order of operands for `-` and `/`, and truncate toward zero with `int(a / b)`.
+1. Operands wait until their operator arrives. Which data structure holds things that are waiting?
+2. Push numbers onto a stack. On an operator, pop the top two values, apply it, and push the result.
+3. Pop `b` first, then `a`, and compute `a op b` (the order matters for `-` and `/`). Division truncates toward zero, so use `int(a / b)` rather than `//`.
+
+</details>

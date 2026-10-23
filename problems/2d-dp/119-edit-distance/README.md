@@ -21,6 +21,11 @@ Output: 3
 - `0 <= len(word1), len(word2) <= 500`
 - Both words consist of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `dp[i][j]` is the distance between the first `i` letters of `word1` and the first `j` of `word2`. If the last letters match it equals `dp[i-1][j-1]`; otherwise 1 plus the best of insert, delete, replace.
+1. Look at the last characters of both words. What if they are equal? If they differ, what are your options?
+2. Let `dp[i][j]` be the distance between the first `i` letters of `word1` and the first `j` letters of `word2`.
+3. If the letters match, `dp[i][j] = dp[i-1][j-1]`. Otherwise it is 1 plus the minimum of `dp[i-1][j]` (delete), `dp[i][j-1]` (insert) and `dp[i-1][j-1]` (replace). The first row and column are `0, 1, 2, ...`.
+
+</details>

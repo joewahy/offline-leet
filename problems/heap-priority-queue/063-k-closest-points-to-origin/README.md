@@ -19,7 +19,11 @@ Output: [[-2, 2]]
 - `1 <= k <= len(points) <= 10000`
 - `-10000 <= x, y <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- You can compare squared distances; no square root is needed.
-- A max-heap of size `k` (or `heapq.nsmallest`) avoids sorting everything.
+1. You do not need the actual distances, only their order. Which values compare the same way as distances?
+2. Compare squared distances `x*x + y*y` and avoid the square root. Then pick the `k` smallest.
+3. Sorting by squared distance is O(n log n). A max-heap of size `k` is O(n log k), and `heapq.nsmallest(k, points, key=...)` does it for you.
+
+</details>

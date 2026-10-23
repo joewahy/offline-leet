@@ -19,6 +19,11 @@ Output: 1
 - `0 <= len(intervals) <= 8000`
 - `0 <= start < end <= 10^6`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sort the start times and the end times separately, then sweep through them, counting how many meetings are running at once.
+1. The number of rooms needed is the largest number of meetings running at the same moment.
+2. Look at the start and end events in time order. A start adds a meeting, an end removes one.
+3. Sort the start times and the end times separately. Sweep through the starts: while the earliest end is `<=` the current start, free a room. Then use a room. Track the maximum in use. A min-heap of end times also works.
+
+</details>

@@ -1,0 +1,5 @@
+[
+  "The first and last houses are neighbours. What does that stop you from doing?",
+  "You cannot rob both of them. So the answer is the better of two plain House Robber problems.",
+  "Solve House Robber on `nums[1:]` (skip the first house) and on `nums[:-1]` (skip the last house), and return the larger result. Handle a single house separately."
+]

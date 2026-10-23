@@ -1,0 +1,5 @@
+[
+  "Each number gets a plus or a minus. How many different running totals can exist?",
+  "Track how many ways each running total can be reached, one number at a time.",
+  "Keep a dictionary `ways[total] = count`. For each number `x`, build a new dictionary where each `total` contributes to `total + x` and to `total - x`. The answer is `ways[target]`. (Alternative: count the subsets that sum to `(total + target) / 2`.)"
+]

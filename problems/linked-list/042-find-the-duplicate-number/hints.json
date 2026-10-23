@@ -1,0 +1,5 @@
+[
+  "The values are between 1 and `n` and the array has `n + 1` entries. Treat each value as a pointer to another index.",
+  "Following `i -> nums[i]` must eventually repeat, so it forms a cycle, and the duplicate value is where the cycle begins.",
+  "Use Floyd's algorithm: find where a slow and a fast pointer meet, then restart one pointer from index 0 and move both one step at a time. They meet at the cycle entrance, which is the duplicate."
+]

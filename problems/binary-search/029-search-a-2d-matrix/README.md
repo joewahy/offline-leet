@@ -19,6 +19,11 @@ Output: False
 - `1 <= rows, cols <= 100`
 - `-10000 <= matrix[i][j], target <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Read the grid as one long sorted list. Index `k` maps to row `k // cols`, column `k % cols`.
+1. Because each row starts after the previous row ends, the whole matrix is in sorted order when read row by row.
+2. Treat it as one sorted list of `rows * cols` items and binary search over the indices `0 .. rows * cols - 1`.
+3. Convert a flat index `mid` to a cell with `row = mid // cols` and `col = mid % cols`. That gives O(log(m * n)) time.
+
+</details>

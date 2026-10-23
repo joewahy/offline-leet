@@ -18,7 +18,11 @@ Output: []
 - `0 <= length of each list <= 100`, and the total number of nodes is at most `10000`
 - `-1000 <= node.val <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A min-heap holding the current head of every list gives the next smallest node in O(log k).
-- Alternatively, merge the lists pairwise, like merge sort.
+1. Merging two sorted lists is easy. How could you reuse that idea for `k` lists?
+2. Either merge pairs of lists repeatedly (like merge sort), or keep a min-heap holding the current head of each list.
+3. With a heap, pop the smallest node, append it to the result, and push that node's `next`. Store `(value, list_index, node)` so ties never compare nodes. This is O(N log k) for N total nodes.
+
+</details>

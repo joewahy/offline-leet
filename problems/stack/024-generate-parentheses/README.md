@@ -16,6 +16,11 @@ Output: ["((()))", "(()())", "(())()", "()(())", "()()()"]
 
 - `1 <= n <= 8`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Build the string one character at a time. You may add `(` while fewer than `n` are used, and `)` while there are more opens than closes.
+1. Build the string one character at a time. At each step, which characters are allowed?
+2. You may add `(` if fewer than `n` have been used, and `)` if the number of `)` is less than the number of `(`.
+3. Use backtracking with counts `opens` and `closes`. When the string reaches length `2n`, record it. Every string you reach is valid, so no work is wasted.
+
+</details>

@@ -19,6 +19,11 @@ Output: 15         # 9 + 6
 - `1 <= len(nums) <= 1000`
 - `0 <= nums[i] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Because house 0 and the last house cannot both be robbed, solve the linear problem twice: once without the first house, once without the last.
+1. The first and last houses are neighbours. What does that stop you from doing?
+2. You cannot rob both of them. So the answer is the better of two plain House Robber problems.
+3. Solve House Robber on `nums[1:]` (skip the first house) and on `nums[:-1]` (skip the last house), and return the larger result. Handle a single house separately.
+
+</details>

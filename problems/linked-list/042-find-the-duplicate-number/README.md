@@ -19,7 +19,11 @@ Output: 4
 - `1 <= n <= 10000`
 - `len(nums) == n + 1`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Treat `nums[i]` as a "next" pointer from index `i`. The duplicate is where two paths enter the same cycle.
-- Floyd's tortoise and hare finds the cycle entrance.
+1. The values are between 1 and `n` and the array has `n + 1` entries. Treat each value as a pointer to another index.
+2. Following `i -> nums[i]` must eventually repeat, so it forms a cycle, and the duplicate value is where the cycle begins.
+3. Use Floyd's algorithm: find where a slow and a fast pointer meet, then restart one pointer from index 0 and move both one step at a time. They meet at the cycle entrance, which is the duplicate.
+
+</details>

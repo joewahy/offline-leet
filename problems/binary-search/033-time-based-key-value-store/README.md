@@ -27,6 +27,11 @@ get("alice", 4)   -> "sad"
 - `1 <= timestamp <= 10^7`
 - At most `10000` calls are made.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The timestamps of each key are sorted, so `get` can binary search them.
+1. For each key, the values come with increasing timestamps. What does that let you do when looking one up?
+2. Store a sorted list of timestamps (and the matching values) per key, and use binary search in `get`.
+3. In `get`, find the rightmost timestamp `<= t` with `bisect_right(times, t) - 1`. If the index is negative, return an empty string. `set` just appends.
+
+</details>

@@ -22,7 +22,11 @@ Output: 3
 - `0 <= position[i] < target <= 10^6`, all positions are distinct
 - `1 <= speed[i] <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sort by starting position, closest to the destination first. Compute how long each car needs to arrive on its own.
-- A car joins the fleet ahead if its own time is not longer than that fleet's time.
+1. A car's own arrival time is easy to compute if nothing blocks it. How?
+2. Sort cars by starting position, closest to the target first, and compute each car's time `(target - position) / speed`.
+3. Go through the sorted cars. If a car's time is greater than the time of the fleet ahead of it, it starts a new fleet; otherwise it catches up and joins that fleet. Count the new fleets.
+
+</details>

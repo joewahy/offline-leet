@@ -1,0 +1,5 @@
+[
+  "For a path, the time you need is the highest elevation along it. You want the path whose highest value is smallest.",
+  "Search like Dijkstra, but instead of summing weights, take the maximum along the path.",
+  "Use a min-heap of `(max_elevation_so_far, r, c)`. Pop the smallest, and for each unvisited neighbour push `max(current, neighbour_elevation)`. When you pop the bottom-right cell, that value is the answer. Binary searching the time and checking with a BFS also works."
+]

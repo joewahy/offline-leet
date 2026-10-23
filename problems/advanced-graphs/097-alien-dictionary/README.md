@@ -23,7 +23,11 @@ Output: ""
 - `1 <= len(words[i]) <= 100`
 - `words[i]` consists of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Compare each pair of neighbouring words: the first position where they differ gives one ordering rule `a before b`.
-- Topologically sort the letters using those rules. A cycle means there is no valid order.
+1. Comparing two neighbouring words reveals at most one ordering rule between letters.
+2. Find the first position where two adjacent words differ: the letter in the first word comes before the letter in the second. These rules form a graph.
+3. Topologically sort the letters. Return an empty string if there is a cycle, and also if a longer word comes before its own prefix (like `abc` before `ab`). Include letters that appear in no rule.
+
+</details>

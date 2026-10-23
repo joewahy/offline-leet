@@ -1,0 +1,5 @@
+[
+  "At each depth, which node would you see from the right?",
+  "It is the last node of each level, in left-to-right order.",
+  "Do a level order traversal and take the last value of every level. Or do a DFS that visits the right child first and records a node's value the first time it reaches a new depth."
+]

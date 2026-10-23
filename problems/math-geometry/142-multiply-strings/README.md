@@ -19,6 +19,11 @@ Output: "56088"
 - `1 <= len(num1), len(num2) <= 200`
 - Digits only; no leading zeros except the number `0` itself.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The product has at most `len(num1) + len(num2)` digits. Digit `i` of one number times digit `j` of the other lands at position `i + j`.
+1. Do it the way you would on paper, one digit at a time.
+2. The product of digit `i` of `num1` and digit `j` of `num2` contributes to position `i + j + 1` of the result (with a carry into `i + j`).
+3. Use a result array of length `len(num1) + len(num2)`. Loop from the right, add the digit product to `res[i + j + 1]`, then carry `total // 10` into `res[i + j]`. Strip leading zeros at the end, and handle `'0'` specially.
+
+</details>

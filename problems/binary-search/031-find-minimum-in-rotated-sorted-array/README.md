@@ -20,6 +20,11 @@ Output: 4
 - `-10000 <= nums[i] <= 10000`
 - All values are distinct. A rotation of 0 is possible.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Compare the middle element with the last element to see which half contains the drop.
+1. The minimum is the point where the order drops. Which half of the array contains that drop?
+2. Compare `nums[mid]` with `nums[right]`. If it is larger, the drop (and the minimum) is to the right of `mid`.
+3. If `nums[mid] > nums[right]` set `left = mid + 1`, otherwise set `right = mid` (keep `mid`, as it may be the minimum). Stop when `left == right`.
+
+</details>

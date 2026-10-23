@@ -18,6 +18,11 @@ Output: 24
 - `-10 <= nums[i] <= 10`
 - The answer fits in a 32-bit integer for the checked tests.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A negative number can turn the smallest product into the largest. Track both the maximum and the minimum product ending at each position.
+1. Two negative numbers multiply to a positive. What does that do to the smallest product so far?
+2. Track both the largest and the smallest product of a subarray ending at the current position.
+3. At each number `x`, the new max is `max(x, hi * x, lo * x)` and the new min is `min(x, hi * x, lo * x)`, computed from the old values. The answer is the best max seen. A zero resets the run automatically.
+
+</details>

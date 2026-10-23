@@ -19,7 +19,11 @@ Output: [0, -6, 0, 0, 0]
 - `2 <= len(nums) <= 10000`
 - `-20 <= nums[i] <= 20` for the small cases; products of any prefix or suffix fit in a 32-bit integer.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Think of "everything to the left of i" multiplied by "everything to the right of i".
-- You can build both with two passes over the list.
+1. Division is not allowed, and zeros would break it anyway. Think about what is to the left of each position and what is to the right.
+2. The answer for index `i` is (product of everything left of `i`) times (product of everything right of `i`). Build the left products in one pass.
+3. Fill the output with prefix products going right, then walk from the end with a running suffix product and multiply it into the output. That uses O(n) time and O(1) extra space.
+
+</details>

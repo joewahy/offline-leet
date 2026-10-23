@@ -20,6 +20,11 @@ Output: False
 - `0 <= len(edges) <= 3000`
 - There are no duplicate edges and no self-loops.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A tree on `n` nodes has exactly `n - 1` edges. If that holds, you only need to check one more thing.
+1. What two properties define a tree? How many edges does it have, and what must be true about its connectivity?
+2. A tree on `n` nodes has exactly `n - 1` edges and is connected (equivalently, it has no cycle).
+3. Check `len(edges) == n - 1` first. Then verify connectivity with a DFS from node 0, or add the edges with union-find and fail if an edge joins two nodes that are already connected.
+
+</details>

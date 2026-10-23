@@ -20,7 +20,11 @@ decode(encode(...)) must return ["we", "say", ":", "yes"]
 - `0 <= len(strs[i]) <= 200`
 - Strings may contain any ASCII character, and may be empty.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A separator character is not safe, because a string might contain it.
-- What if each string is stored together with its own length?
+1. A separator like `,` fails as soon as a string contains it. What information could you store instead of relying on a separator?
+2. Write each string's length, then a marker, then the string itself. When decoding, the length tells you exactly how many characters to take.
+3. Read digits up to the marker `#` to get the length `n`, take the next `n` characters (even if they include `#` or digits), then continue after them. An empty string is just `0#`.
+
+</details>

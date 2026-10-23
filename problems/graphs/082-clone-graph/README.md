@@ -20,6 +20,11 @@ Output: a copy of a single node with no neighbours
 - `1 <= Node.val <= 1000`, and every value is unique
 - No repeated edges and no self-loops; the graph is connected.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep a dictionary from each original node to its clone, so you create each clone once and can reuse it when you meet the node again.
+1. A graph can have cycles, so you may reach the same node again. How do you avoid cloning it twice?
+2. Keep a dictionary from each original node to its clone.
+3. Traverse with DFS or BFS. When you first see a node, create its clone and store it. For each neighbour, make sure it has a clone, and append that clone to the current clone's `neighbors`.
+
+</details>

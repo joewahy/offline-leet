@@ -1,0 +1,5 @@
+[
+  "A permutation of `s1` has exactly the same letter counts as `s1`. What window length are you looking for in `s2`?",
+  "Slide a window of length `len(s1)` across `s2` and compare its letter counts with the counts of `s1`.",
+  "Update the counts incrementally: add the letter entering on the right, remove the one leaving on the left. Comparing two 26-entry count tables is O(26), so the whole scan is O(n)."
+]

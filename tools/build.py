@@ -120,7 +120,7 @@ def build(spec, category):
 
 
 def main(argv):
-    names = argv or CATEGORIES
+    names = [] if argv == ["--hints-only"] else (argv or CATEGORIES)
     for name in names:
         try:
             module = importlib.import_module(f"specs.{name}")
@@ -131,6 +131,9 @@ def main(argv):
             raise
         for spec in module.PROBLEMS:
             build(spec, module.CATEGORY)
+    import hintlib
+
+    hintlib.apply_all()
 
 
 if __name__ == "__main__":

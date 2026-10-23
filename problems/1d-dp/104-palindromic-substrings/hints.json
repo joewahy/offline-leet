@@ -1,0 +1,5 @@
+[
+  "Testing every substring is too slow. Think about growing palindromes from the middle.",
+  "Use the same centre expansion as in the longest palindromic substring problem.",
+  "For each of the `2n - 1` centres, expand while the ends match, and add one to the count for each successful expansion."
+]

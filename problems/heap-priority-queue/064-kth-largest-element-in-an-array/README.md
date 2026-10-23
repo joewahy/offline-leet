@@ -17,6 +17,11 @@ Output: 4
 - `1 <= k <= len(nums) <= 10000`
 - `-10000 <= nums[i] <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sorting is O(n log n). A min-heap of size `k` or quickselect can do better.
+1. Sorting the whole array works. Do you need the entire order, or just the top `k`?
+2. Keep a min-heap of size `k`. After processing every number, its smallest element is the `k`-th largest.
+3. Push each number; if the heap grows beyond `k`, pop the smallest. That is O(n log k). Quickselect gives O(n) on average.
+
+</details>

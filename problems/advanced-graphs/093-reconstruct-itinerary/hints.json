@@ -1,0 +1,5 @@
+[
+  "You must use every ticket exactly once. That is a path that uses every edge once, called an Eulerian path.",
+  "Hierholzer's algorithm builds it with a depth-first search. Visit destinations in lexical order.",
+  "Sort the destinations so the smallest is taken first. In the DFS, keep following unused tickets; when a node has none left, append it to the route. The final route is that list reversed."
+]

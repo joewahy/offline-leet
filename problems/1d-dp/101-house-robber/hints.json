@@ -1,0 +1,5 @@
+[
+  "At each house you either rob it or skip it. What does robbing it rule out?",
+  "Let `best(i)` be the most you can get from the first `i` houses. It is the larger of skipping house `i` or robbing it.",
+  "`best(i) = max(best(i-1), best(i-2) + nums[i])`. You only need the last two values, so two variables give O(1) space."
+]

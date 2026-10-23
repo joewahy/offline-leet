@@ -17,6 +17,11 @@ Output: [1, 2, 3, 4, 8, 12, 11, 10, 9, 5, 6, 7]
 - `1 <= m, n <= 100`
 - `-100 <= matrix[i][j] <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep four boundaries (top, bottom, left, right) and shrink them after walking each side. Watch for a single remaining row or column.
+1. Walk along the outside, then do the same for the inside. What do you need to remember?
+2. Keep four boundaries: top, bottom, left and right. Walk each side, then move the boundaries inwards.
+3. After walking the top row and the right column, only walk the bottom row if `top < bottom`, and the left column if `left < right`, so a single leftover row or column is not visited twice. Stop when the boundaries cross.
+
+</details>

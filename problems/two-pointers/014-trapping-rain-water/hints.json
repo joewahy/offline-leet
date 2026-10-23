@@ -1,0 +1,5 @@
+[
+  "Look at one bar. How much water sits on top of it, and which two values decide that?",
+  "The water above bar `i` is `min(tallest bar to its left, tallest bar to its right) - height[i]`, never below zero.",
+  "Precompute left and right maxima for O(n) with extra space, or use two pointers that move inward from the shorter side while tracking the maximum seen on each side, for O(1) space."
+]

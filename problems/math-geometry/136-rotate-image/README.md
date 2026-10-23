@@ -17,7 +17,11 @@ Output: [[7, 4, 1], [8, 5, 2], [9, 6, 3]]
 - `1 <= n <= 100`
 - `-1000 <= matrix[i][j] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Transposing the matrix and then reversing each row gives a clockwise rotation.
-- Or rotate four cells at a time, layer by layer.
+1. A 90 degree rotation can be done as two simpler operations. Which ones?
+2. A clockwise rotation equals a transpose (swap `matrix[i][j]` with `matrix[j][i]`) followed by reversing each row.
+3. Transpose by swapping only the pairs with `j > i`, so you do not swap twice, then call `row.reverse()` on every row. Everything happens in place.
+
+</details>

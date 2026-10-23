@@ -1,0 +1,5 @@
+[
+  "You never need to solve the puzzle, only to detect a repeated digit in a row, a column, or a 3x3 box.",
+  "Keep a set of seen digits for each row, each column, and each box, and check them as you scan each filled cell once.",
+  "The box for cell `(r, c)` is `(r // 3, c // 3)`. One set of tuples like `('r', r, digit)`, `('c', c, digit)`, `('b', r // 3, c // 3, digit)` covers all three rules."
+]

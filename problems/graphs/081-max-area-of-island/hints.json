@@ -1,0 +1,5 @@
+[
+  "It is the same flood fill as counting islands, but now you want the size of each island.",
+  "While filling an island, count how many cells you visit.",
+  "Take the maximum of those counts over all islands. Mark visited cells so you never count one twice."
+]

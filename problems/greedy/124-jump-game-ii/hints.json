@@ -1,0 +1,5 @@
+[
+  "Think of each jump as moving to a new 'level' of indices, like in a BFS.",
+  "From the current level (the indices reachable with `j` jumps), find the farthest index you can reach with one more jump.",
+  "Track `end` (the end of the current level) and `far`. When you reach `i == end`, you must jump: increment the count and set `end = far`. Stop before the last index."
+]

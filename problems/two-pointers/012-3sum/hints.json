@@ -1,0 +1,5 @@
+[
+  "Reduce it to a problem you know: if you fix one number, what remains is a two-sum for the negative of it.",
+  "Sort the array, fix each number `a` in turn, and use two pointers on the part to its right to find pairs summing to `-a`.",
+  "To avoid duplicate triplets, skip a value equal to the previous one for `a`, and after finding a triplet move the left pointer past equal values. Stop early when `a > 0`."
+]

@@ -1,0 +1,5 @@
+[
+  "Operands wait until their operator arrives. Which data structure holds things that are waiting?",
+  "Push numbers onto a stack. On an operator, pop the top two values, apply it, and push the result.",
+  "Pop `b` first, then `a`, and compute `a op b` (the order matters for `-` and `/`). Division truncates toward zero, so use `int(a / b)` rather than `//`."
+]

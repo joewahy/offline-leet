@@ -1,5 +1,6 @@
 import json
 import mimetypes
+import re
 import threading
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
@@ -12,6 +13,7 @@ from leet.problems import all_problems, find
 
 WEB_DIR = Path(__file__).resolve().parent / "web"
 MAX_BODY = 1_000_000
+HINTS_BLOCK = re.compile(r"\n<details>.*?</details>\n", re.DOTALL)
 
 
 def _problem_summary(p):
@@ -71,7 +73,10 @@ def make_handler(port):
             if path == "/api/problems":
                 return self._json([_problem_summary(p) for p in all_problems()])
             if path.startswith("/api/problems/"):
-                return self._get_problem(path.removeprefix("/api/problems/"))
+                parts = path.removeprefix("/api/problems/").split("/")
+                if len(parts) == 3 and parts[1] == "hint":
+                    return self._get_hint(parts[0], parts[2])
+                return self._get_problem(parts[0])
             self._static(path)
 
         def _get_problem(self, key):
@@ -81,9 +86,19 @@ def make_handler(port):
                 return self._error(404, "no such problem")
             self._json({
                 **_problem_summary(p),
-                "readme": p.readme_path.read_text(),
+                "readme": HINTS_BLOCK.sub("\n", p.readme_path.read_text()),
                 "code": p.solution_path.read_text(),
+                "hint_count": len(p.load_hints()),
             })
+
+        def _get_hint(self, key, n):
+            try:
+                hints = find(key).load_hints()
+            except LookupError:
+                return self._error(404, "no such problem")
+            if not n.isdigit() or not 1 <= int(n) <= len(hints):
+                return self._error(404, "no such hint")
+            self._json({"hint": hints[int(n) - 1]})
 
         def _static(self, path):
             rel = "index.html" if path == "/" else path.lstrip("/")

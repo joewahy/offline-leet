@@ -21,6 +21,11 @@ Output: 500
 - `0 <= src, dst, k < n`, and `src != dst`
 - `1 <= price <= 300`; there is at most one flight per ordered pair of cities.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- A plain Dijkstra can pick a cheap path that uses too many stops. Track the number of stops in the state, or run Bellman-Ford for exactly `k + 1` rounds.
+1. A plain shortest-path search ignores the limit on stops. What extra information does each state need?
+2. Allow at most `k + 1` flights: use Bellman-Ford for `k + 1` rounds, or a heap that tracks the number of stops used.
+3. Bellman-Ford: keep a `dist` array. In each of `k + 1` rounds, relax every flight using a copy of the previous round's distances (so one round adds at most one flight). The answer is `dist[dst]`, or `-1` if it is still infinite.
+
+</details>

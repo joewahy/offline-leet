@@ -18,6 +18,11 @@ Output: False
 - `1 <= len(word) <= 15`
 - `board` and `word` consist of English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Start a depth-first search from each cell that matches the first letter. Mark cells as visited on the way in and unmark them on the way out.
+1. You need to try paths through the grid, undoing a step if it leads nowhere. That is backtracking.
+2. Start a depth-first search from every cell that matches the first letter, matching one letter per step in four directions.
+3. Mark the current cell as used (for example overwrite it with `#`) before exploring neighbours, and restore it afterwards. Return true when the position reaches `len(word)`, and false when a cell is out of bounds, used, or a mismatch.
+
+</details>

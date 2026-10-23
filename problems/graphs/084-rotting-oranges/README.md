@@ -21,7 +21,11 @@ Output: -1
 - `1 <= rows, cols <= 60`
 - `grid[i][j]` is `0`, `1` or `2`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Spread rot one minute at a time with a breadth-first search that starts from every rotten orange.
-- At the end, check whether any fresh orange remains.
+1. Rot spreads one step per minute from every rotten orange at the same time.
+2. That is a multi-source BFS, processed in rounds. Each round is one minute.
+3. Start the queue with all rotten oranges and count the fresh ones. Process the queue level by level, rot the adjacent fresh oranges, and count one minute per level. If fresh oranges are left at the end, return `-1`.
+
+</details>

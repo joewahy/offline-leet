@@ -1,0 +1,5 @@
+[
+  "You do not need the actual distances, only their order. Which values compare the same way as distances?",
+  "Compare squared distances `x*x + y*y` and avoid the square root. Then pick the `k` smallest.",
+  "Sorting by squared distance is O(n log n). A max-heap of size `k` is O(n log k), and `heapq.nsmallest(k, points, key=...)` does it for you."
+]

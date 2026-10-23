@@ -1,0 +1,5 @@
+[
+  "Compare the last characters of the two strings. What happens if they match? If they do not?",
+  "Let `dp[i][j]` be the LCS of the first `i` characters of `text1` and the first `j` characters of `text2`.",
+  "If the characters match, `dp[i][j] = dp[i-1][j-1] + 1`. Otherwise `dp[i][j] = max(dp[i-1][j], dp[i][j-1])`. You only need the previous row."
+]

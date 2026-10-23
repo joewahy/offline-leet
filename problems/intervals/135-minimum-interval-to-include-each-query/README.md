@@ -20,6 +20,11 @@ Output: [2, -1, 4, 6]
 - `1 <= left <= right <= 10^6`
 - `1 <= queries[j] <= 10^6`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Answer the queries in increasing order. Sweep over the intervals sorted by `left`, pushing each into a min-heap keyed by size, and discard heap tops that end before the query.
+1. Checking every interval for every query is too slow. What if you handled the queries in sorted order?
+2. Sort the intervals by start and the queries in ascending order, and sweep through them together.
+3. For each query, push into a min-heap `(size, end)` every interval whose start is `<= query`. Pop the top while its end is `< query`. The top's size is the answer, or `-1` if the heap is empty. Remember the original order of the queries.
+
+</details>

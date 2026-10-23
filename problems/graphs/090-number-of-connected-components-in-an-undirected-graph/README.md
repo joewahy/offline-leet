@@ -20,6 +20,11 @@ Output: 3
 - `0 <= len(edges) <= 5000`
 - There are no duplicate edges and no self-loops.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Union-find: start with `n` components and subtract one every time an edge joins two different components.
+1. Each connected group of nodes counts once. How do you avoid counting a group twice?
+2. Either traverse the graph and count how many times you start a new traversal, or use union-find.
+3. With union-find, start with `n` components and subtract one every time an edge joins two different components. Path compression keeps it fast.
+
+</details>

@@ -22,6 +22,11 @@ Output: [1, 2]
 - `-10^6 <= numbers[i] <= 10^6`
 - `numbers` is sorted in non-decreasing order.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Start with one pointer at each end. If the sum is too big, which pointer should move?
+1. The array is sorted. How does that change the brute force, where you compare every pair?
+2. Put one pointer at each end and look at the sum. If it is too small, which pointer can safely move?
+3. Sum too small: move the left pointer right. Sum too big: move the right pointer left. Each step discards one element for good, giving O(n) time and O(1) space.
+
+</details>

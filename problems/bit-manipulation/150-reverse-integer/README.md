@@ -19,6 +19,11 @@ Output: 0          # the reverse overflows
 
 - `-2^31 <= x <= 2^31 - 1`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Peel digits off with `% 10` and `// 10`, handling the sign separately, and check for overflow before returning.
+1. Peel off the last digit with `% 10` and add it to the end of a new number.
+2. Handle the sign separately: work with the absolute value, then put the sign back.
+3. Build `rev = rev * 10 + digit` while dividing the input by 10. In Python nothing overflows by itself, so check at the end whether the result is within `[-2^31, 2^31 - 1]` and return `0` if it is not.
+
+</details>

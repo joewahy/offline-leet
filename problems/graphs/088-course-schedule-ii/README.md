@@ -20,6 +20,11 @@ Output: [0, 1, 2, 3]      # [0, 2, 1, 3] is also accepted
 - `0 <= len(prerequisites) <= 3000`
 - All pairs are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The order is a topological sort. If your sort cannot include every course, there is a cycle.
+1. This is the previous problem, but you must also output an order.
+2. A valid order is a topological ordering of the graph.
+3. Run Kahn's algorithm: start with the courses of in-degree 0, append each one to the order, and decrease the in-degree of the courses that depend on it. If the order has fewer than `numCourses` entries, return `[]`.
+
+</details>

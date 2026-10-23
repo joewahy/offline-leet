@@ -17,6 +17,11 @@ Output: [[1]]
 - `0 <= number of nodes <= 3000`
 - `-1000 <= node.val <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Process the tree one whole level at a time with a queue, using the queue's size at the start of each round.
+1. You want to visit the tree one level at a time, not depth first. Which structure visits nodes in the order they were discovered?
+2. Use a queue (breadth-first search), starting with the root.
+3. In each round, take `len(queue)` nodes (exactly one level), record their values in one list, and enqueue their children. Use `collections.deque` for O(1) pops from the front.
+
+</details>

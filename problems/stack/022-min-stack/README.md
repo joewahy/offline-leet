@@ -27,6 +27,11 @@ getMin()  -> 1
 - `-2^31 <= val <= 2^31 - 1`
 - At most `10000` calls are made.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Store with each element the minimum of everything beneath it (and itself).
+1. `getMin` must be O(1), so you cannot scan the stack. What extra information could each stack entry carry?
+2. Along with each value, store the minimum of the stack at the moment it was pushed.
+3. Push `(val, min(val, previous_min))`. Then `getMin` reads the top entry's second item, and `pop` automatically restores the earlier minimum.
+
+</details>

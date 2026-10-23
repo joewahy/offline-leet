@@ -22,6 +22,11 @@ Output: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
 - `1 <= rows, cols <= 30`
 - `0 <= heights[r][c] <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Run the search backwards: from each ocean's edge, climb to neighbours that are the same height or higher. The answer is the intersection of the two reachable sets.
+1. Checking every cell against both oceans is slow. What if you search backwards from the oceans instead?
+2. Water flows downhill, so going backwards means moving to neighbours that are the same height or higher. Start from each ocean's border cells.
+3. Run a DFS or BFS from all Pacific border cells and another from all Atlantic border cells, collecting the cells each one reaches. The answer is the intersection of the two sets.
+
+</details>

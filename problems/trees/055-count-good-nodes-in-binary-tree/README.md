@@ -19,6 +19,11 @@ Output: 3
 - `1 <= number of nodes <= 3000`
 - `-10000 <= node.val <= 10000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Carry the maximum value seen so far down the recursion.
+1. Whether a node is good depends only on the nodes above it on its own path.
+2. Pass the largest value seen so far down the recursion.
+3. At each node, count it as good if `node.val >= max_so_far`. Then recurse into both children with `max(max_so_far, node.val)`. The root is always good.
+
+</details>

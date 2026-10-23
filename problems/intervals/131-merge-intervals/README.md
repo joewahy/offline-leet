@@ -17,6 +17,11 @@ Output: [[1,3]]
 - `1 <= len(intervals) <= 10000`
 - `0 <= start <= end <= 10^6`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sort by start. Then each interval either extends the last merged one or begins a new one.
+1. Overlaps are hard to see when the intervals are in random order. What if they were sorted?
+2. Sort by start. Then only the previous merged interval can overlap the next one.
+3. Keep a result list. For each interval, if its start is `<=` the last result's end, set that end to the larger of the two ends; otherwise append a new interval.
+
+</details>

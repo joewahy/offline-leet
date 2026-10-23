@@ -1,0 +1,5 @@
+[
+  "The hard part is the `random` pointer: it may point to a node you have not copied yet.",
+  "Make all the copies first, remembering which original maps to which copy. Then wire up `next` and `random` using that mapping.",
+  "Use a dictionary `copies[original] = new node` (with `None` mapping to `None`). The first pass creates the nodes; the second pass sets `copy.next = copies[orig.next]` and `copy.random = copies[orig.random]`."
+]

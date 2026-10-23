@@ -19,6 +19,11 @@ Output: 18
 - `1 <= len(points) <= 1000`
 - `-10^6 <= x, y <= 10^6`, and all points are distinct
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- You need a minimum spanning tree. Prim's algorithm on a complete graph is O(n^2); Kruskal with union-find also works.
+1. You need to connect all the points with the smallest total wire length. This is a minimum spanning tree.
+2. Use Prim's or Kruskal's algorithm on the complete graph where each edge's weight is the Manhattan distance.
+3. Prim's: keep the best known distance from the tree to each outside point. Repeatedly add the closest outside point and update the others. That is O(n^2), which suits a complete graph.
+
+</details>

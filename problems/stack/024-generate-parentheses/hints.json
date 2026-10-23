@@ -1,0 +1,5 @@
+[
+  "Build the string one character at a time. At each step, which characters are allowed?",
+  "You may add `(` if fewer than `n` have been used, and `)` if the number of `)` is less than the number of `(`.",
+  "Use backtracking with counts `opens` and `closes`. When the string reaches length `2n`, record it. Every string you reach is valid, so no work is wasted."
+]

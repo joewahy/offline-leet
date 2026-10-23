@@ -17,6 +17,11 @@ Output: 0
 - `1 <= len(text1), len(text2) <= 1000`
 - Both strings consist of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `dp[i][j]` is the answer for the first `i` letters of `text1` and the first `j` of `text2`. If the last letters match, add 1 to `dp[i-1][j-1]`; otherwise take the better of dropping one letter.
+1. Compare the last characters of the two strings. What happens if they match? If they do not?
+2. Let `dp[i][j]` be the LCS of the first `i` characters of `text1` and the first `j` characters of `text2`.
+3. If the characters match, `dp[i][j] = dp[i-1][j-1] + 1`. Otherwise `dp[i][j] = max(dp[i-1][j], dp[i][j-1])`. You only need the previous row.
+
+</details>

@@ -1,0 +1,5 @@
+[
+  "Division is not allowed, and zeros would break it anyway. Think about what is to the left of each position and what is to the right.",
+  "The answer for index `i` is (product of everything left of `i`) times (product of everything right of `i`). Build the left products in one pass.",
+  "Fill the output with prefix products going right, then walk from the end with a running suffix product and multiply it into the output. That uses O(n) time and O(1) extra space."
+]

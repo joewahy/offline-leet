@@ -1,0 +1,5 @@
+[
+  "Without wildcards this is the normal trie. What changes when `.` appears?",
+  "Use a trie. When the next character is a letter, follow that child; when it is `.`, you must try every child.",
+  "Write `search` as a recursive function `go(node, i)`. For `.`, return true if any child's `go(child, i + 1)` is true. At the end of the word, return whether the node is marked as the end of a word."
+]

@@ -20,6 +20,11 @@ Output: [0, 0, 1]          # 99 + 1 = 100
 - `0 <= node.val <= 9`
 - No list has leading zeros, except the number `0` itself.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Add digit by digit and carry the overflow, like on paper. Don't forget a final carry.
+1. The digits are stored with the least significant digit first, which is the order you add in on paper.
+2. Walk both lists together, adding the two digits plus a carry, and build the result list as you go.
+3. At each step `total = a + b + carry`; append `total % 10` and carry `total // 10`. Keep going while either list has nodes or the carry is nonzero. A dummy head node simplifies building the result.
+
+</details>

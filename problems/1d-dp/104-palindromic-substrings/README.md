@@ -17,6 +17,11 @@ Output: 6          # "a" x3, "aa" x2, "aaa"
 - `1 <= len(s) <= 1000`
 - `s` consists of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Expand around each of the `2n - 1` possible centres and count every palindrome you pass.
+1. Testing every substring is too slow. Think about growing palindromes from the middle.
+2. Use the same centre expansion as in the longest palindromic substring problem.
+3. For each of the `2n - 1` centres, expand while the ends match, and add one to the count for each successful expansion.
+
+</details>

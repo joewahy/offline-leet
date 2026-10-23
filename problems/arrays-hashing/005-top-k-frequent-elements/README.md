@@ -18,7 +18,11 @@ Output: [7]
 - `-1000 <= nums[i] <= 1000`
 - `1 <= k <=` the number of distinct values in `nums`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Count occurrences first.
-- Sorting by count is O(n log n). Can you do better with a heap or bucket sort?
+1. You need two things: how often each number appears, and which `k` counts are the largest.
+2. Count with a dictionary, then either sort by count, keep a min-heap of size `k`, or use buckets indexed by frequency.
+3. Bucket sort gives O(n): a frequency is at most `len(nums)`, so make a list of that size where index `f` holds the numbers that appear `f` times, then read it from the end.
+
+</details>

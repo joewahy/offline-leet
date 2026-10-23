@@ -1,0 +1,5 @@
+[
+  "A path may bend at one node, using a branch from its left and a branch from its right. But a path that continues upward can only use one branch.",
+  "For each node compute the best downward path starting at it, and separately the best path that bends at it.",
+  "Let `gain(node) = node.val + max(0, gain(left), gain(right))` for the upward path (ignore negative branches). The best path bending at a node is `node.val + max(0, gain(left)) + max(0, gain(right))`. Keep a running maximum of that."
+]

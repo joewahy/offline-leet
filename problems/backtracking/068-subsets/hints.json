@@ -1,0 +1,5 @@
+[
+  "For each number there are two choices. How many subsets does that give for `n` numbers?",
+  "Decide for each element whether to include it, and recurse on the rest. Collect the chosen elements when you reach the end.",
+  "Iterative form: start with `[[]]` and, for each number, add a copy of every existing subset with that number appended. The answer has `2^n` subsets."
+]

@@ -17,6 +17,11 @@ Output: [6]
 - `1 <= len(s) <= 10000`
 - `s` consists of lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Record the last position of each letter. Walk through `s`, extending the current part to the farthest last position seen; cut when you reach it.
+1. If a letter appears in a part, that part must reach at least the letter's last occurrence.
+2. Record the last index of every letter.
+3. Scan the string, keeping `end = max(end, last[c])`. When the index `i` reaches `end`, close the part, record its length, and start the next one.
+
+</details>

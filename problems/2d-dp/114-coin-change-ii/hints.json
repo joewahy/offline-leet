@@ -1,0 +1,5 @@
+[
+  "Counting combinations differs from counting sequences: `1 + 2` and `2 + 1` are the same combination.",
+  "Process one coin type at a time, so each combination is counted once, in a fixed order of coins.",
+  "Let `ways[a]` be the number of combinations for amount `a`, with `ways[0] = 1`. For each coin `c`, loop `a` from `c` up to `amount` and do `ways[a] += ways[a - c]`. The loop over coins must be the outer one."
+]

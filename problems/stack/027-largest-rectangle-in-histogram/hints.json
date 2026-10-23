@@ -1,0 +1,5 @@
+[
+  "For any bar, the best rectangle that uses its full height extends left and right until it meets a shorter bar.",
+  "So for each bar you need the nearest shorter bar on each side. A stack of increasing heights finds those in one pass.",
+  "Keep a stack of `(start_index, height)`. When a new bar is shorter, pop the taller bars, compute `height * (i - start)` for each, and give the new bar the earliest `start` among the popped ones. Append a `0` bar at the end to flush the stack."
+]

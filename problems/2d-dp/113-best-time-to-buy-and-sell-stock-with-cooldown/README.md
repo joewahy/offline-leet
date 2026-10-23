@@ -22,6 +22,11 @@ Output: 0
 - `1 <= len(prices) <= 5000`
 - `0 <= prices[i] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Track three states per day: holding a share, just sold (in cooldown), and resting with nothing.
+1. Each day you are in one of a few states: holding a share, just sold, or resting. What can you do from each?
+2. Track the best profit for each state at the end of each day: `hold`, `sold`, and `rest`.
+3. `hold = max(hold, rest - price)`, `sold = old_hold + price`, `rest = max(rest, old_sold)`. Use the old values on the right side of each update. The answer is `max(sold, rest)` after the last day.
+
+</details>

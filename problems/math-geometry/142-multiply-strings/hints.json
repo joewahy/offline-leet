@@ -1,0 +1,5 @@
+[
+  "Do it the way you would on paper, one digit at a time.",
+  "The product of digit `i` of `num1` and digit `j` of `num2` contributes to position `i + j + 1` of the result (with a carry into `i + j`).",
+  "Use a result array of length `len(num1) + len(num2)`. Loop from the right, add the digit product to `res[i + j + 1]`, then carry `total // 10` into `res[i + j]`. Strip leading zeros at the end, and handle `'0'` specially."
+]

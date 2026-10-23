@@ -26,6 +26,11 @@ Output: [[3, -1, 0, 1],
 - `1 <= rows, cols <= 60`
 - Cells are `-1`, `0` or `2147483647`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Start a breadth-first search from all gates at the same time. The first time the search reaches a room is its shortest distance.
+1. A distance to the 'nearest gate' is a shortest path. What search finds shortest paths in an unweighted grid?
+2. Breadth-first search. Instead of starting from each empty room, start from all the gates together.
+3. Put every gate in the queue at distance 0. Pop a cell and, for each neighbour that is still `2147483647`, set it to `dist + 1` and enqueue it. Walls are never entered, and each cell is set only once.
+
+</details>

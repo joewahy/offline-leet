@@ -1,0 +1,5 @@
+[
+  "The task that appears most often is the bottleneck, because its copies need gaps between them.",
+  "Lay out the most frequent task with `n` slots between its copies. Other tasks fill those gaps, and idle time remains only if the gaps cannot be filled.",
+  "With `top` = highest count and `ties` = how many tasks have that count, the answer is `max(len(tasks), (top - 1) * (n + 1) + ties)`. Or simulate with a max-heap and a cooldown queue."
+]

@@ -26,6 +26,11 @@ Output: False
 - `s` contains only lowercase letters. `p` contains lowercase letters, `.` and `*`.
 - Every `*` follows a letter or a `.`, so patterns like `*a` or `a**` do not occur.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Let `dp[i][j]` mean "first `i` letters of `s` match first `j` of `p`". A `*` either matches zero copies (skip two pattern characters) or consumes one more letter.
+1. Compare characters from the front or the back. What special cases does `*` create?
+2. Let `dp[i][j]` be whether the first `i` letters of `s` match the first `j` characters of `p`. Handle a normal character or `.` first.
+3. For a plain character or `.`, `dp[i][j] = dp[i-1][j-1]` if they match. For `x*`, either use it zero times (`dp[i][j-2]`) or, if `x` matches `s[i-1]`, use one more copy (`dp[i-1][j]`). Patterns like `a*b*` can match the empty string, so initialise the first row.
+
+</details>

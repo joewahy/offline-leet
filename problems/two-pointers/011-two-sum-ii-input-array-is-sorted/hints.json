@@ -1,0 +1,5 @@
+[
+  "The array is sorted. How does that change the brute force, where you compare every pair?",
+  "Put one pointer at each end and look at the sum. If it is too small, which pointer can safely move?",
+  "Sum too small: move the left pointer right. Sum too big: move the right pointer left. Each step discards one element for good, giving O(n) time and O(1) space."
+]

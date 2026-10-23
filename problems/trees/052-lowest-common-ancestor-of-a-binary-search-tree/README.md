@@ -19,6 +19,11 @@ Output: 3
 - `2 <= number of nodes <= 3000`
 - All node values are unique, and `p != q`, and both exist in the tree.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- If both values are smaller than the current node, go left; if both are larger, go right. Otherwise the current node splits them.
+1. Use the BST ordering. If both values are smaller than the current node, where must they be? What if both are larger?
+2. If both values are smaller than the current node, go left. If both are larger, go right.
+3. The first node where the two values split (one is smaller or equal, the other larger or equal) is the lowest common ancestor. An iterative loop uses O(1) space.
+
+</details>

@@ -1,0 +1,5 @@
+[
+  "Each digit contributes exactly one letter. How many choices does each digit give?",
+  "Store the letters for each digit in a map, and build the combinations digit by digit.",
+  "Iterative: start with `['']` and, for each digit, replace the list by every existing prefix plus each letter of that digit. Return `[]` for empty input."
+]

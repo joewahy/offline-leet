@@ -1,0 +1,5 @@
+[
+  "A separator like `,` fails as soon as a string contains it. What information could you store instead of relying on a separator?",
+  "Write each string's length, then a marker, then the string itself. When decoding, the length tells you exactly how many characters to take.",
+  "Read digits up to the marker `#` to get the length `n`, take the next `n` characters (even if they include `#` or digits), then continue after them. An empty string is just `0#`."
+]

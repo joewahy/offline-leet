@@ -1,0 +1,5 @@
+[
+  "A graph can have cycles, so you may reach the same node again. How do you avoid cloning it twice?",
+  "Keep a dictionary from each original node to its clone.",
+  "Traverse with DFS or BFS. When you first see a node, create its clone and store it. For each neighbour, make sure it has a clone, and append that clone to the current clone's `neighbors`."
+]

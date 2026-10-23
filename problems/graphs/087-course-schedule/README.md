@@ -20,7 +20,11 @@ Output: False
 - `0 <= len(prerequisites) <= 3000`
 - All pairs are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Model courses as nodes and prerequisites as directed edges. The question is whether the graph has a cycle.
-- Topological sorting (repeatedly take courses with no remaining prerequisites) detects cycles.
+1. Model courses as nodes and prerequisites as directed edges. When is it impossible to finish?
+2. It is impossible exactly when the graph has a cycle.
+3. Detect the cycle with a topological sort: repeatedly take courses with no remaining prerequisites (in-degree 0). If you can take all of them, there is no cycle. A DFS with a 'currently visiting' set also works.
+
+</details>

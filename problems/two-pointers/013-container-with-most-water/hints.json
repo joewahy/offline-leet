@@ -1,0 +1,5 @@
+[
+  "Area is width times the shorter of two heights. Starting with the widest pair, what could you gain by narrowing?",
+  "Use two pointers at the ends and compute the area, keeping the best. Then move one pointer inward.",
+  "Always move the pointer at the shorter line. Moving the taller one can only shrink the width without raising the limiting height."
+]

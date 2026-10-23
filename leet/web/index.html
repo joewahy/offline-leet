@@ -19,7 +19,16 @@
   </header>
 
   <main>
-    <section id="statement" aria-label="Problem statement"></section>
+    <section id="left">
+      <div id="statement" aria-label="Problem statement"></div>
+      <div id="hints" hidden>
+        <div id="hint-head">
+          <span id="hint-label" class="muted"></span>
+          <button id="hint-btn" class="ghost"></button>
+        </div>
+        <div id="hint-list"></div>
+      </div>
+    </section>
     <section id="work">
       <div id="editor" aria-label="Code editor"></div>
       <div id="results" aria-live="polite"><p class="muted">Run your code to see results here.</p></div>

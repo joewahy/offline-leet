@@ -26,6 +26,11 @@ search("Hell")       -> True
 - Strings consist of English letters.
 - At most `10000` calls are made.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Each node holds a dictionary of children and a flag that says whether a word ends there.
+1. Each letter of a word can be a step down a tree. What does a node need to store?
+2. Each node holds a dictionary from letter to child node, plus a flag saying whether a word ends there.
+3. `insert` walks down, creating missing children, and sets the end flag. `search` walks down and checks the flag. `startsWith` walks down and only checks that the path exists.
+
+</details>

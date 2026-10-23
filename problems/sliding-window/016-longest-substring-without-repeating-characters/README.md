@@ -17,6 +17,11 @@ Output: 1
 - `0 <= len(s) <= 10000`
 - `s` contains printable ASCII characters (letters, digits, symbols, spaces).
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep a window `[left, right]`. When a repeat appears, move `left` just past the earlier copy.
+1. A repeated letter breaks the substring. What do you need to remember to know whether the next letter is a repeat?
+2. Keep a window with a left and a right edge, and a record of the last position of each letter. When the new letter is already inside the window, move the left edge.
+3. Store `last[ch] = index`. If `last[ch] >= left`, set `left = last[ch] + 1`. The answer is the largest `right - left + 1` seen, in O(n) time.
+
+</details>

@@ -1,0 +1,5 @@
+[
+  "Sorting the whole array works. Do you need the entire order, or just the top `k`?",
+  "Keep a min-heap of size `k`. After processing every number, its smallest element is the `k`-th largest.",
+  "Push each number; if the heap grows beyond `k`, pop the smallest. That is O(n log k). Quickselect gives O(n) on average."
+]

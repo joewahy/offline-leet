@@ -1,0 +1,5 @@
+[
+  "You need two things: how often each number appears, and which `k` counts are the largest.",
+  "Count with a dictionary, then either sort by count, keep a min-heap of size `k`, or use buckets indexed by frequency.",
+  "Bucket sort gives O(n): a frequency is at most `len(nums)`, so make a list of that size where index `f` holds the numbers that appear `f` times, then read it from the end."
+]

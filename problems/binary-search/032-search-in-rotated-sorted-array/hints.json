@@ -1,0 +1,5 @@
+[
+  "After splitting at the middle, at least one half is still in normal sorted order. How can you tell which?",
+  "Compare `nums[left]` with `nums[mid]`: if `nums[left] <= nums[mid]`, the left half is sorted; otherwise the right half is.",
+  "Check whether `target` lies inside the sorted half's range. If yes, search that half; if not, search the other half. Repeat until found, in O(log n)."
+]

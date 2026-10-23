@@ -19,6 +19,11 @@ Output: 16         # 2 + 8 + 6
 - `1 <= len(nums) <= 10000`
 - `0 <= nums[i] <= 400`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- For each house, either skip it (best so far) or rob it (its money plus the best up to two houses back).
+1. At each house you either rob it or skip it. What does robbing it rule out?
+2. Let `best(i)` be the most you can get from the first `i` houses. It is the larger of skipping house `i` or robbing it.
+3. `best(i) = max(best(i-1), best(i-2) + nums[i])`. You only need the last two values, so two variables give O(1) space.
+
+</details>

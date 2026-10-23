@@ -20,7 +20,11 @@ Output: 25
 - `len(piles) <= h <= 10^9`
 - `1 <= piles[i] <= 10^9`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- If speed `k` works, so does any larger speed. That means you can binary search on `k`, between 1 and the biggest pile.
-- Hours needed at speed `k` is the sum of `ceil(pile / k)`.
+1. If Koko can finish at speed `k`, can she also finish at any faster speed? What does that tell you about the answer?
+2. Yes, so feasibility is monotonic: binary search on the speed between 1 and `max(piles)`.
+3. To test a speed `k`, add up `ceil(pile / k)` hours over all piles and compare the total with `h`. Use `(pile + k - 1) // k` for the ceiling. Find the smallest speed that works.
+
+</details>

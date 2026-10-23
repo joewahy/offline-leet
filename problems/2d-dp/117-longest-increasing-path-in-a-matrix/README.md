@@ -19,6 +19,11 @@ Output: 4          # 3 -> 4 -> 5 -> 6
 - `1 <= rows, cols <= 50`
 - `0 <= matrix[i][j] <= 10^4`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The longest path starting at a cell never depends on how you got there, so cache it (memoised DFS).
+1. From a cell, the longest path never depends on how you arrived there, because you only move to larger values.
+2. Use DFS from every cell, and remember the answer for each cell so you compute it only once (memoization).
+3. `longest(r, c) = 1 + max(longest(neighbour))` over neighbours with a larger value, or `1` if there are none. Strictly increasing paths cannot loop, so caching is safe. The total time is O(rows * cols).
+
+</details>

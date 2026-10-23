@@ -18,6 +18,11 @@ Output: [[], [7]]
 - `-10 <= nums[i] <= 10`
 - All values are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- For each number you have two choices: include it or skip it.
+1. For each number there are two choices. How many subsets does that give for `n` numbers?
+2. Decide for each element whether to include it, and recurse on the rest. Collect the chosen elements when you reach the end.
+3. Iterative form: start with `[[]]` and, for each number, add a copy of every existing subset with that number appended. The answer has `2^n` subsets.
+
+</details>

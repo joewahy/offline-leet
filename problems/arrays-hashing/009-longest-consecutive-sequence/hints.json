@@ -1,0 +1,5 @@
+[
+  "Sorting works but costs O(n log n). Which numbers can possibly be the start of a run?",
+  "Put all numbers in a set. A number `x` starts a run only if `x - 1` is not in the set.",
+  "From each start, count upward while `x + 1` is in the set. Each number belongs to exactly one run, so the total work is O(n)."
+]

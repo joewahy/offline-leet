@@ -1,0 +1,5 @@
+[
+  "Running Word Search once per word repeats a lot of work. How could you search for all the words at once?",
+  "Insert all the words into a trie, then explore the board with DFS, following trie children as you move.",
+  "Stop exploring a path as soon as the current prefix is not in the trie. Store the full word at its end node so you can collect it, and remove found words (or prune empty branches) to avoid duplicates and speed up later searches."
+]

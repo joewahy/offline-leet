@@ -1,0 +1,5 @@
+[
+  "Two negative numbers multiply to a positive. What does that do to the smallest product so far?",
+  "Track both the largest and the smallest product of a subarray ending at the current position.",
+  "At each number `x`, the new max is `max(x, hi * x, lo * x)` and the new min is `min(x, hi * x, lo * x)`, computed from the old values. The answer is the best max seen. A zero resets the run automatically."
+]

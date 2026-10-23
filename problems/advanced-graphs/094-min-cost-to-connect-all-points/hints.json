@@ -1,0 +1,5 @@
+[
+  "You need to connect all the points with the smallest total wire length. This is a minimum spanning tree.",
+  "Use Prim's or Kruskal's algorithm on the complete graph where each edge's weight is the Manhattan distance.",
+  "Prim's: keep the best known distance from the tree to each outside point. Repeatedly add the closest outside point and update the others. That is O(n^2), which suits a complete graph."
+]

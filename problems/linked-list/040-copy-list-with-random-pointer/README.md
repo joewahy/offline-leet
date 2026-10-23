@@ -21,7 +21,11 @@ Output: a deep copy with the same structure
 - `0 <= number of nodes <= 1000`
 - `-100 <= node.val <= 100`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Map each original node to its copy, then wire up `next` and `random` using the map.
-- There is also an O(1) extra space version that interleaves the copies into the original list.
+1. The hard part is the `random` pointer: it may point to a node you have not copied yet.
+2. Make all the copies first, remembering which original maps to which copy. Then wire up `next` and `random` using that mapping.
+3. Use a dictionary `copies[original] = new node` (with `None` mapping to `None`). The first pass creates the nodes; the second pass sets `copy.next = copies[orig.next]` and `copy.random = copies[orig.random]`.
+
+</details>

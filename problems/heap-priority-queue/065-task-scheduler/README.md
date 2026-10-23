@@ -22,7 +22,11 @@ Output: 10         # A B _ _ A B _ _ A B
 - `0 <= n <= 100`
 - Tasks are uppercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The most frequent task decides the skeleton of the schedule. Other tasks fill its gaps.
-- You can count the answer with a formula, or simulate with a max-heap.
+1. The task that appears most often is the bottleneck, because its copies need gaps between them.
+2. Lay out the most frequent task with `n` slots between its copies. Other tasks fill those gaps, and idle time remains only if the gaps cannot be filled.
+3. With `top` = highest count and `ties` = how many tasks have that count, the answer is `max(len(tasks), (top - 1) * (n + 1) + ties)`. Or simulate with a max-heap and a cooldown queue.
+
+</details>

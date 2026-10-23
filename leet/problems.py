@@ -37,6 +37,13 @@ class Problem:
         return self.dir / "README.md"
 
     @property
+    def hints_path(self):
+        return self.dir / "hints.json"
+
+    def load_hints(self):
+        return json.loads(self.hints_path.read_text()) if self.hints_path.exists() else []
+
+    @property
     def checker_path(self):
         return self.dir / "check.py"
 

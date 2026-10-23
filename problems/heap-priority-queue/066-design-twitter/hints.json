@@ -1,0 +1,5 @@
+[
+  "The feed needs the 10 most recent tweets across several users. What gives you 'most recent'?",
+  "Give every tweet a global timestamp (an incrementing counter), store each user's tweets in order, and keep a set of followees per user.",
+  "For `getNewsFeed`, gather the latest 10 tweets of the user and of each followee, and take the 10 with the largest timestamps (a heap or `heapq.nlargest`). Include the user's own tweets even though they do not follow themselves."
+]

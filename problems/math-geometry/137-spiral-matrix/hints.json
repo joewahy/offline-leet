@@ -1,0 +1,5 @@
+[
+  "Walk along the outside, then do the same for the inside. What do you need to remember?",
+  "Keep four boundaries: top, bottom, left and right. Walk each side, then move the boundaries inwards.",
+  "After walking the top row and the right column, only walk the bottom row if `top < bottom`, and the left column if `left < right`, so a single leftover row or column is not visited twice. Stop when the boundaries cross."
+]

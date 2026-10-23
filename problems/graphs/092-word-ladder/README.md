@@ -20,7 +20,11 @@ Output: 0          # "cog" is not in the list
 - `1 <= len(wordList) <= 3000`, and every word has the same length
 - Words consist of lowercase letters; the words in `wordList` are unique.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Breadth-first search gives the shortest sequence.
-- To find neighbours quickly, group words by patterns such as `h*t`, `*ot`, `ho*`.
+1. The shortest sequence of one-letter changes is a shortest path in a graph where words are the nodes.
+2. Use breadth-first search starting from `beginWord`. Two words are neighbours if they differ in exactly one letter.
+3. Finding neighbours by comparing all pairs is slow. Instead group the words by patterns like `h*t` and `*ot`: words sharing a pattern are neighbours. Return the BFS depth when you reach `endWord`, or `0` if you never do.
+
+</details>

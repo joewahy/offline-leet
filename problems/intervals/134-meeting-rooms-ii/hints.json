@@ -1,0 +1,5 @@
+[
+  "The number of rooms needed is the largest number of meetings running at the same moment.",
+  "Look at the start and end events in time order. A start adds a meeting, an end removes one.",
+  "Sort the start times and the end times separately. Sweep through the starts: while the earliest end is `<=` the current start, free a room. Then use a room. Track the maximum in use. A min-heap of end times also works."
+]

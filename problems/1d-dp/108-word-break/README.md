@@ -18,6 +18,11 @@ Output: False
 - `1 <= len(wordDict) <= 1000`, `1 <= len(word) <= 20`
 - All strings use lowercase letters; the words in `wordDict` are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `can[i]` means the first `i` letters can be split. It is true when some `j < i` has `can[j]` and `s[j:i]` is a word.
+1. Try splitting off the first word. What is left to solve?
+2. Let `can[i]` mean the first `i` letters can be split into words. It is true if some earlier `can[j]` is true and `s[j:i]` is a word.
+3. Put the words in a set for O(1) lookup. `can[0] = True`. For each `i`, try every `j < i` (you can limit `j` to the longest word length). Return `can[len(s)]`.
+
+</details>

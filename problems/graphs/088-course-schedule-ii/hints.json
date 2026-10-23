@@ -1,0 +1,5 @@
+[
+  "This is the previous problem, but you must also output an order.",
+  "A valid order is a topological ordering of the graph.",
+  "Run Kahn's algorithm: start with the courses of in-degree 0, append each one to the order, and decrease the in-degree of the courses that depend on it. If the order has fewer than `numCourses` entries, return `[]`."
+]

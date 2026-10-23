@@ -1,0 +1,5 @@
+[
+  "A traversal alone does not identify a tree unless you also record where children are missing.",
+  "Do a preorder traversal and write a marker such as `N` for every missing child. The result describes the shape uniquely.",
+  "Join the values with a separator, like `1,2,N,N,3,N,N`. To deserialize, read the tokens in order: a marker returns `None`, otherwise create a node and recursively build its left child, then its right child, from the next tokens."
+]

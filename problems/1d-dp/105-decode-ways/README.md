@@ -22,6 +22,11 @@ Output: 0
 - `s` contains only digits and may start with `0`.
 - The answer fits in a 32-bit integer.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- At each position you can use one digit (if it is not `0`) or two digits (if they form 10 to 26). Add up the ways for the rest of the string.
+1. At each position you may read one digit or two. Which choices are valid?
+2. One digit is valid if it is not `0`. Two digits are valid if they form a number from 10 to 26.
+3. Let `ways(i)` be the count for the suffix starting at `i`, with `ways(n) = 1`. If `s[i] != '0'`, then `ways(i) = ways(i+1)`, plus `ways(i+2)` when `s[i:i+2] <= '26'`. Otherwise `ways(i) = 0`.
+
+</details>

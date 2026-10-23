@@ -1,0 +1,5 @@
+[
+  "Peel off the last digit with `% 10` and add it to the end of a new number.",
+  "Handle the sign separately: work with the absolute value, then put the sign back.",
+  "Build `rev = rev * 10 + digit` while dividing the input by 10. In Python nothing overflows by itself, so check at the end whether the result is within `[-2^31, 2^31 - 1]` and return `0` if it is not."
+]

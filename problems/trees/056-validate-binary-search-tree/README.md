@@ -19,6 +19,11 @@ Output: False
 - `1 <= number of nodes <= 3000`
 - `-2^31 <= node.val <= 2^31 - 1`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Checking only a node's direct children is not enough. Pass down the allowed range `(low, high)` for each node.
+1. Comparing a node only with its direct children is not enough: a deeper node must also respect ancestors further up.
+2. Each node must lie strictly inside a range `(low, high)` that gets narrower as you go down.
+3. Start with `(-inf, +inf)`. Going left, the new upper bound is the node's value. Going right, the new lower bound is the node's value. Fail if a value falls outside its range. An in-order traversal that is strictly increasing also works.
+
+</details>

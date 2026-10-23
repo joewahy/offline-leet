@@ -18,6 +18,11 @@ Output: [["Q"]]
 
 - `1 <= n <= 8`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Place one queen per row. Track which columns and diagonals (`row - col` and `row + col`) are taken.
+1. Place queens one row at a time. A row can hold only one queen, so the real choice is the column.
+2. A queen at `(r, c)` blocks column `c`, the diagonal `r - c`, and the anti-diagonal `r + c`. Keep a set for each.
+3. Recurse row by row, try each column that is not blocked, mark it, recurse, then unmark it. When all `n` rows are filled, build the board strings from the chosen columns.
+
+</details>

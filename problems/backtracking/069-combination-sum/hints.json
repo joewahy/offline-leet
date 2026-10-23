@@ -1,0 +1,5 @@
+[
+  "You may reuse a number, but the same combination in a different order must not appear twice.",
+  "Recurse with a start index: at each step choose a number at an index `>= start` and subtract it from the remaining target.",
+  "When choosing `nums[i]`, recurse with the same `i` (reuse is allowed) so you never go back to earlier numbers. Stop when the remaining target is `0` (record it) or negative (prune). Sorting lets you stop even earlier."
+]

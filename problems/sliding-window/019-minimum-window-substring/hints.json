@@ -1,0 +1,5 @@
+[
+  "A window is valid when it contains every needed letter with enough copies. Once a window is valid, can you make it shorter from the left?",
+  "Expand the right edge until the window is valid, then shrink from the left as long as it stays valid, recording the shortest window.",
+  "Track how many letters are still missing using a count table. Adding a letter on the right decrements its need. Removing one on the left increments it, and if the need becomes positive the window is invalid again. O(n) overall."
+]

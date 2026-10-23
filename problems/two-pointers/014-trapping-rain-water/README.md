@@ -19,7 +19,11 @@ Output: 9
 - `1 <= len(height) <= 10000`
 - `0 <= height[i] <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- The water above bar `i` depends on the tallest bar to its left and the tallest to its right.
-- Can you do it in one pass with two pointers and O(1) space?
+1. Look at one bar. How much water sits on top of it, and which two values decide that?
+2. The water above bar `i` is `min(tallest bar to its left, tallest bar to its right) - height[i]`, never below zero.
+3. Precompute left and right maxima for O(n) with extra space, or use two pointers that move inward from the shorter side while tracking the maximum seen on each side, for O(1) space.
+
+</details>

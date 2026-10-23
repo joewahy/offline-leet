@@ -1,0 +1,5 @@
+[
+  "For a window, how many replacements are needed to make all its letters the same?",
+  "Replacements needed = window length minus the count of its most frequent letter. The window is valid while that is at most `k`.",
+  "Grow the right edge while counting letters. When `length - max_count > k`, move the left edge by one. The answer is the longest valid window, in O(n) time (there are only 26 letters, so finding the max count is cheap)."
+]

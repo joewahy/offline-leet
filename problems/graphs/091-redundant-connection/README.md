@@ -20,6 +20,11 @@ Output: [1, 4]
 - `1 <= a < b <= n` is not guaranteed; an edge may be written in either direction.
 - There are no repeated edges.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Add the edges one by one with union-find. The first edge whose endpoints are already connected closes the cycle.
+1. The extra edge is the one that connects two nodes that were already connected.
+2. Add the edges one at a time with union-find.
+3. For each edge, find the roots of its endpoints. If they are the same, this edge closes a cycle, so return it. Otherwise union the two groups.
+
+</details>

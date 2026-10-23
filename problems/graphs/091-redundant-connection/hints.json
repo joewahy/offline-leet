@@ -1,0 +1,5 @@
+[
+  "The extra edge is the one that connects two nodes that were already connected.",
+  "Add the edges one at a time with union-find.",
+  "For each edge, find the roots of its endpoints. If they are the same, this edge closes a cycle, so return it. Otherwise union the two groups."
+]

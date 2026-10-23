@@ -1,0 +1,5 @@
+[
+  "Every palindrome has a centre. How many possible centres does a string of length `n` have?",
+  "Expand outwards from each centre while the two ends match, and remember the longest result.",
+  "There are `2n - 1` centres: each character, and each gap between two characters (for even lengths). Expansion costs O(n) per centre, so O(n^2) overall."
+]

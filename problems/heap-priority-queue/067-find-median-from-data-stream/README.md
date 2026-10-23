@@ -26,6 +26,11 @@ findMedian()   -> 2.0
 - `-100000 <= num <= 100000`
 - At most `10000` calls are made.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Keep the smaller half in a max-heap and the larger half in a min-heap, and keep their sizes within 1 of each other.
+1. The median sits between the smaller half and the larger half of the numbers. You only need the boundary of each half.
+2. Keep the smaller half in a max-heap and the larger half in a min-heap, so each heap's top is next to the median.
+3. Insert into one heap, then move the top across so every element of the small half is `<=` every element of the large half. Keep the sizes equal or differing by 1. The median is the top of the bigger heap, or the average of both tops. Python's `heapq` is a min-heap, so store negatives for the max-heap.
+
+</details>

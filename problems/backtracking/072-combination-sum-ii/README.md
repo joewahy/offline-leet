@@ -20,6 +20,11 @@ Output: [[1, 2, 2], [5]]
 - `1 <= candidates[i] <= 50`
 - `1 <= target <= 30`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Sort the list. At each depth, skip a value that equals the previous one you already tried at that depth.
+1. Each number can be used once, but the input has duplicates, and duplicate combinations are not allowed.
+2. Sort the candidates. Recurse with a start index, moving to `i + 1` after choosing index `i`.
+3. At the same recursion level, skip a candidate equal to the previous one (`i > start and nums[i] == nums[i - 1]`). Stop the loop when a candidate exceeds the remaining target, since the list is sorted.
+
+</details>

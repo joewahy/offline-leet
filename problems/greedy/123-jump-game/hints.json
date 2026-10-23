@@ -1,0 +1,5 @@
+[
+  "You do not have to find the exact jumps, only whether the end is reachable.",
+  "Track the farthest index you can reach so far.",
+  "Scan left to right. If your index is beyond the farthest reach, return false. Otherwise update `reach = max(reach, i + nums[i])`. If you finish the scan, return true."
+]

@@ -1,0 +1,5 @@
+[
+  "The list is sorted. Relative to the new interval, each interval falls into one of three groups: before it, overlapping it, or after it.",
+  "Copy the intervals that end before the new one starts, merge all the ones that overlap it, then copy the rest.",
+  "While `intervals[i][1] < new[0]`, copy. While `intervals[i][0] <= new[1]`, set `new = [min of starts, max of ends]`. Append the merged interval, then copy the remaining intervals."
+]

@@ -1,0 +1,5 @@
+[
+  "Checking every interval for every query is too slow. What if you handled the queries in sorted order?",
+  "Sort the intervals by start and the queries in ascending order, and sweep through them together.",
+  "For each query, push into a min-heap `(size, end)` every interval whose start is `<= query`. Pop the top while its end is `< query`. The top's size is the answer, or `-1` if the heap is empty. Remember the original order of the queries."
+]

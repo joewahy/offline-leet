@@ -20,6 +20,11 @@ Output: ["JFK","ATL","JFK","SFO","ATL","SFO"]
 - Airport codes are three uppercase letters.
 - `from != to` for every ticket, and tickets may repeat.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- This is an Eulerian path. Hierholzer's algorithm builds it with a DFS that always takes the smallest destination first and appends airports on the way back.
+1. You must use every ticket exactly once. That is a path that uses every edge once, called an Eulerian path.
+2. Hierholzer's algorithm builds it with a depth-first search. Visit destinations in lexical order.
+3. Sort the destinations so the smallest is taken first. In the DFS, keep following unused tickets; when a node has none left, append it to the route. The final route is that list reversed.
+
+</details>

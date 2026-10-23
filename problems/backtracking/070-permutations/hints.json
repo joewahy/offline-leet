@@ -1,0 +1,5 @@
+[
+  "A permutation fills positions one by one. What choices does each position have?",
+  "At each position, pick any number not yet used, then recurse for the next position.",
+  "Track the used numbers (a set, a boolean list, or by removing them from a remaining list). When the path has `len(nums)` items, record a copy of it. There are `n!` results."
+]

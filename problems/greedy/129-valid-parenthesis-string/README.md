@@ -19,6 +19,11 @@ Output: False
 - `1 <= len(s) <= 100`
 - Each character is `(`, `)` or `*`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Track the smallest and largest possible number of unmatched `(` as you scan. If the largest goes negative, you have too many `)`; at the end the smallest must be able to reach 0.
+1. A `*` can be three things, so the number of unmatched `(` is not one value but a range.
+2. Track the smallest and the largest possible count of open parentheses as you scan.
+3. `(` adds 1 to both, `)` subtracts 1 from both, and `*` subtracts 1 from the lower and adds 1 to the upper. If the upper bound goes below 0, return false. Clamp the lower bound at 0. At the end, the lower bound must be 0.
+
+</details>

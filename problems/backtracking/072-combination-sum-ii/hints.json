@@ -1,0 +1,5 @@
+[
+  "Each number can be used once, but the input has duplicates, and duplicate combinations are not allowed.",
+  "Sort the candidates. Recurse with a start index, moving to `i + 1` after choosing index `i`.",
+  "At the same recursion level, skip a candidate equal to the previous one (`i > start and nums[i] == nums[i - 1]`). Stop the loop when a candidate exceeds the remaining target, since the list is sorted."
+]

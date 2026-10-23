@@ -22,6 +22,11 @@ Output: [["X","X","X","X"],
 - `1 <= rows, cols <= 60`
 - `board[i][j]` is `"X"` or `"O"`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Instead of finding surrounded regions, find the safe ones: mark every `"O"` reachable from a border `"O"`. Everything else becomes `"X"`.
+1. A region is safe if it touches the border. Which `O` cells can you identify right away?
+2. Start from the border cells that are `O` and mark every `O` connected to them as safe.
+3. After marking, every `O` that is not safe is surrounded, so turn it into `X`. Leave the safe ones as `O`.
+
+</details>

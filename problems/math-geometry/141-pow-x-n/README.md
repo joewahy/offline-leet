@@ -20,6 +20,11 @@ Output: 0.25
 - `-2^31 <= n <= 2^31 - 1`
 - `x` is not `0` when `n` is negative; the result is between `-10^4` and `10^4`.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Square the base and halve the exponent: `x^n = (x^2)^(n/2)`. Handle odd `n` with one extra multiplication, and negate `n` for the reciprocal.
+1. Multiplying `x` by itself `n` times is too slow for large `n`. Can you halve the work at each step?
+2. Use `x^n = (x^(n/2))^2`, with one extra factor of `x` when `n` is odd.
+3. Iterate over the bits of `n`: square `x` at each step, and multiply the result by `x` when the current bit is 1. For negative `n`, use `1 / x` and `-n`.
+
+</details>

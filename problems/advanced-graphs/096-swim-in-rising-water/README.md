@@ -19,6 +19,11 @@ Output: 16
 - `1 <= n <= 40`
 - All values in `grid` are distinct.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- You are looking for the path whose highest square is as low as possible. A Dijkstra-style search with a min-heap on elevation does it.
+1. For a path, the time you need is the highest elevation along it. You want the path whose highest value is smallest.
+2. Search like Dijkstra, but instead of summing weights, take the maximum along the path.
+3. Use a min-heap of `(max_elevation_so_far, r, c)`. Pop the smallest, and for each unvisited neighbour push `max(current, neighbour_elevation)`. When you pop the bottom-right cell, that value is the answer. Binary searching the time and checking with a BFS also works.
+
+</details>

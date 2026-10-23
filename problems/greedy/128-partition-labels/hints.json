@@ -1,0 +1,5 @@
+[
+  "If a letter appears in a part, that part must reach at least the letter's last occurrence.",
+  "Record the last index of every letter.",
+  "Scan the string, keeping `end = max(end, last[c])`. When the index `i` reaches `end`, close the part, record its length, and start the next one."
+]

@@ -1,0 +1,5 @@
+[
+  "Model courses as nodes and prerequisites as directed edges. When is it impossible to finish?",
+  "It is impossible exactly when the graph has a cycle.",
+  "Detect the cycle with a topological sort: repeatedly take courses with no remaining prerequisites (in-degree 0). If you can take all of them, there is no cycle. A DFS with a 'currently visiting' set also works."
+]

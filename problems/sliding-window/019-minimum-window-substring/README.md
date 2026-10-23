@@ -19,6 +19,11 @@ Output: ""
 - `1 <= len(s), len(t) <= 10000`
 - `s` and `t` consist of uppercase and lowercase English letters.
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Expand the right edge until the window is valid, then shrink from the left while it stays valid.
+1. A window is valid when it contains every needed letter with enough copies. Once a window is valid, can you make it shorter from the left?
+2. Expand the right edge until the window is valid, then shrink from the left as long as it stays valid, recording the shortest window.
+3. Track how many letters are still missing using a count table. Adding a letter on the right decrements its need. Removing one on the left increments it, and if the need becomes positive the window is invalid again. O(n) overall.
+
+</details>

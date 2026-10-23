@@ -1,0 +1,5 @@
+[
+  "A `*` can be three things, so the number of unmatched `(` is not one value but a range.",
+  "Track the smallest and the largest possible count of open parentheses as you scan.",
+  "`(` adds 1 to both, `)` subtracts 1 from both, and `*` subtracts 1 from the lower and adds 1 to the upper. If the upper bound goes below 0, return false. Clamp the lower bound at 0. At the end, the lower bound must be 0."
+]

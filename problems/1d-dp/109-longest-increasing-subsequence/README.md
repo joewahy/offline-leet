@@ -17,7 +17,11 @@ Output: 4
 - `1 <= len(nums) <= 2500`
 - `-10^4 <= nums[i] <= 10^4`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- `O(n^2)`: for each element, look at every earlier smaller element.
-- `O(n log n)`: keep the smallest possible tail of an increasing subsequence of each length, and binary search into it.
+1. For each element, what is the longest increasing subsequence that ends there?
+2. It is 1 plus the best among the earlier, smaller elements. This gives an O(n^2) solution.
+3. For O(n log n), keep a list `tails` where `tails[k]` is the smallest possible last value of an increasing subsequence of length `k + 1`. For each number, binary search (`bisect_left`) its place: replace that entry, or append if it is larger than all of them. The answer is `len(tails)`.
+
+</details>

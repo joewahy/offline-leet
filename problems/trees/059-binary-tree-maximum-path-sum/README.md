@@ -19,6 +19,11 @@ Output: 42
 - `1 <= number of nodes <= 3000`
 - `-1000 <= node.val <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- For each node, the best path that turns there is `node.val + best downward gain from left + best downward gain from right`. Ignore negative gains.
+1. A path may bend at one node, using a branch from its left and a branch from its right. But a path that continues upward can only use one branch.
+2. For each node compute the best downward path starting at it, and separately the best path that bends at it.
+3. Let `gain(node) = node.val + max(0, gain(left), gain(right))` for the upward path (ignore negative branches). The best path bending at a node is `node.val + max(0, gain(left)) + max(0, gain(right))`. Keep a running maximum of that.
+
+</details>

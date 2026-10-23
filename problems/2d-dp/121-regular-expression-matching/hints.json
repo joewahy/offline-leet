@@ -1,0 +1,5 @@
+[
+  "Compare characters from the front or the back. What special cases does `*` create?",
+  "Let `dp[i][j]` be whether the first `i` letters of `s` match the first `j` characters of `p`. Handle a normal character or `.` first.",
+  "For a plain character or `.`, `dp[i][j] = dp[i-1][j-1]` if they match. For `x*`, either use it zero times (`dp[i][j-2]`) or, if `x` matches `s[i-1]`, use one more copy (`dp[i-1][j]`). Patterns like `a*b*` can match the empty string, so initialise the first row."
+]

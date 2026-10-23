@@ -21,6 +21,11 @@ Output: [2, 10, 4, 8, 6]
 - `1 <= number of nodes <= 5000`
 - `1 <= node.val <= 1000`
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Find the middle, reverse the second half, then weave the two halves together.
+1. The new order alternates between the front of the list and the back. You cannot walk backwards in a singly linked list, so what can you prepare?
+2. Split the list at its middle, reverse the second half, then weave the two halves together one node at a time.
+3. Find the middle with slow and fast pointers, cut the list there (`slow.next = None`), reverse the second part, then repeatedly link `first -> second -> first's old next -> ...`. This needs O(1) extra space.
+
+</details>

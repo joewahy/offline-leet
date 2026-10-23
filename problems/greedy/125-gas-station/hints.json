@@ -1,0 +1,5 @@
+[
+  "If the total gas is less than the total cost, can any start work?",
+  "No, so return `-1`. Otherwise a start exists. If the tank goes negative going from station `a` to `b`, no station between them can be the start.",
+  "Scan once keeping `tank += gas[i] - cost[i]`. When `tank < 0`, set the candidate start to `i + 1` and reset `tank = 0`. After the scan (and the total check), the candidate is the answer."
+]

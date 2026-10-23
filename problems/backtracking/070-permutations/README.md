@@ -17,6 +17,11 @@ Output: [[1]]
 - `1 <= len(nums) <= 6`
 - `-10 <= nums[i] <= 10`, all distinct
 
-## Hints
+<details>
+<summary>Hints (spoilers: open one at a time)</summary>
 
-- Choose any unused number for the first position, then recurse on the rest.
+1. A permutation fills positions one by one. What choices does each position have?
+2. At each position, pick any number not yet used, then recurse for the next position.
+3. Track the used numbers (a set, a boolean list, or by removing them from a remaining list). When the path has `len(nums)` items, record a copy of it. There are `n!` results.
+
+</details>

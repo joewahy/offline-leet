@@ -1,0 +1,5 @@
+[
+  "The shortest sequence of one-letter changes is a shortest path in a graph where words are the nodes.",
+  "Use breadth-first search starting from `beginWord`. Two words are neighbours if they differ in exactly one letter.",
+  "Finding neighbours by comparing all pairs is slow. Instead group the words by patterns like `h*t` and `*ot`: words sharing a pattern are neighbours. Return the BFS depth when you reach `endWord`, or `0` if you never do."
+]
