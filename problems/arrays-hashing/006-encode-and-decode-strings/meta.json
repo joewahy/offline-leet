@@ -1,1 +1,1 @@
-{"id": 6, "title": "Encode and Decode Strings", "category": "arrays-hashing", "difficulty": "Medium", "method": "encode", "roundtrip": {"type": "plain", "class": "Solution", "encode": "encode", "decode": "decode"}}
+{"id": 6, "title": "Encode and Decode Strings", "category": "arrays-hashing", "difficulty": "Medium", "method": "encode", "roundtrip": {"type": "plain", "class": "Solution", "encode": "encode", "decode": "decode"}, "complexity": {"time": "O(total characters)", "space": "O(total characters)"}}

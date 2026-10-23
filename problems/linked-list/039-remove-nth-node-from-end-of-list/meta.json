@@ -1,1 +1,1 @@
-{"id": 39, "title": "Remove Nth Node From End of List", "category": "linked-list", "difficulty": "Medium", "method": "removeNthFromEnd", "arg_types": ["list_node", "plain"], "return_type": "list_node"}
+{"id": 39, "title": "Remove Nth Node From End of List", "category": "linked-list", "difficulty": "Medium", "method": "removeNthFromEnd", "arg_types": ["list_node", "plain"], "return_type": "list_node", "complexity": {"time": "O(n)", "space": "O(1)"}}

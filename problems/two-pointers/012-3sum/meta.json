@@ -1,1 +1,1 @@
-{"id": 12, "title": "3Sum", "category": "two-pointers", "difficulty": "Medium", "method": "threeSum", "compare": "unordered_nested"}
+{"id": 12, "title": "3Sum", "category": "two-pointers", "difficulty": "Medium", "method": "threeSum", "compare": "unordered_nested", "complexity": {"time": "O(n^2)", "space": "O(1) extra, not counting the sort"}}

@@ -1,1 +1,1 @@
-{"id": 2, "title": "Valid Anagram", "category": "arrays-hashing", "difficulty": "Easy", "method": "isAnagram", "compare": "exact"}
+{"id": 2, "title": "Valid Anagram", "category": "arrays-hashing", "difficulty": "Easy", "method": "isAnagram", "compare": "exact", "complexity": {"time": "O(n)", "space": "O(1)"}}

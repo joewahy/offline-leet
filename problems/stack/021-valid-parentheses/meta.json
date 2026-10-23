@@ -1,1 +1,1 @@
-{"id": 21, "title": "Valid Parentheses", "category": "stack", "difficulty": "Easy", "method": "isValid"}
+{"id": 21, "title": "Valid Parentheses", "category": "stack", "difficulty": "Easy", "method": "isValid", "complexity": {"time": "O(n)", "space": "O(n)"}}

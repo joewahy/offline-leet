@@ -1,1 +1,1 @@
-{"id": 35, "title": "Reverse Linked List", "category": "linked-list", "difficulty": "Easy", "method": "reverseList", "arg_types": ["list_node"], "return_type": "list_node"}
+{"id": 35, "title": "Reverse Linked List", "category": "linked-list", "difficulty": "Easy", "method": "reverseList", "arg_types": ["list_node"], "return_type": "list_node", "complexity": {"time": "O(n)", "space": "O(1)"}}

@@ -1,1 +1,1 @@
-{"id": 24, "title": "Generate Parentheses", "category": "stack", "difficulty": "Medium", "method": "generateParenthesis", "compare": "unordered"}
+{"id": 24, "title": "Generate Parentheses", "category": "stack", "difficulty": "Medium", "method": "generateParenthesis", "compare": "unordered", "complexity": {"time": "O(4^n / sqrt(n)), the number of results", "space": "O(n) extra, not counting the output"}}

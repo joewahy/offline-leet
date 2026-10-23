@@ -1,1 +1,1 @@
-{"id": 25, "title": "Daily Temperatures", "category": "stack", "difficulty": "Medium", "method": "dailyTemperatures"}
+{"id": 25, "title": "Daily Temperatures", "category": "stack", "difficulty": "Medium", "method": "dailyTemperatures", "complexity": {"time": "O(n)", "space": "O(n)"}}

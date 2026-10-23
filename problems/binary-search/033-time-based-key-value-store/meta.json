@@ -1,1 +1,1 @@
-{"id": 33, "title": "Time Based Key-Value Store", "category": "binary-search", "difficulty": "Medium", "method": "TimeMap", "design": "TimeMap"}
+{"id": 33, "title": "Time Based Key-Value Store", "category": "binary-search", "difficulty": "Medium", "method": "TimeMap", "design": "TimeMap", "complexity": {"time": "O(1) per set, O(log n) per get", "space": "O(n)"}}

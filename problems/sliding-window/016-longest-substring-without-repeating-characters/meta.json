@@ -1,1 +1,1 @@
-{"id": 16, "title": "Longest Substring Without Repeating Characters", "category": "sliding-window", "difficulty": "Medium", "method": "lengthOfLongestSubstring"}
+{"id": 16, "title": "Longest Substring Without Repeating Characters", "category": "sliding-window", "difficulty": "Medium", "method": "lengthOfLongestSubstring", "complexity": {"time": "O(n)", "space": "O(alphabet size)"}}

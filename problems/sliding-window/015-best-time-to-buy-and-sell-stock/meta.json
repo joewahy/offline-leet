@@ -1,1 +1,1 @@
-{"id": 15, "title": "Best Time to Buy and Sell Stock", "category": "sliding-window", "difficulty": "Easy", "method": "maxProfit"}
+{"id": 15, "title": "Best Time to Buy and Sell Stock", "category": "sliding-window", "difficulty": "Easy", "method": "maxProfit", "complexity": {"time": "O(n)", "space": "O(1)"}}

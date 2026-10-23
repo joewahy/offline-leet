@@ -1,1 +1,1 @@
-{"id": 37, "title": "Linked List Cycle", "category": "linked-list", "difficulty": "Easy", "method": "hasCycle", "arg_types": ["list_cycle"]}
+{"id": 37, "title": "Linked List Cycle", "category": "linked-list", "difficulty": "Easy", "method": "hasCycle", "arg_types": ["list_cycle"], "complexity": {"time": "O(n)", "space": "O(1)"}}

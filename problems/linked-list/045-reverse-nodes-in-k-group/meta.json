@@ -1,1 +1,1 @@
-{"id": 45, "title": "Reverse Nodes in k-Group", "category": "linked-list", "difficulty": "Hard", "method": "reverseKGroup", "arg_types": ["list_node", "plain"], "return_type": "list_node"}
+{"id": 45, "title": "Reverse Nodes in k-Group", "category": "linked-list", "difficulty": "Hard", "method": "reverseKGroup", "arg_types": ["list_node", "plain"], "return_type": "list_node", "complexity": {"time": "O(n)", "space": "O(1)"}}

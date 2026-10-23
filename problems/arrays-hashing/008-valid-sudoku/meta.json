@@ -1,1 +1,1 @@
-{"id": 8, "title": "Valid Sudoku", "category": "arrays-hashing", "difficulty": "Medium", "method": "isValidSudoku"}
+{"id": 8, "title": "Valid Sudoku", "category": "arrays-hashing", "difficulty": "Medium", "method": "isValidSudoku", "complexity": {"time": "O(1), the board is a fixed 9 x 9", "space": "O(1)"}}

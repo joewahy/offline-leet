@@ -1,1 +1,1 @@
-{"id": 10, "title": "Valid Palindrome", "category": "two-pointers", "difficulty": "Easy", "method": "isPalindrome"}
+{"id": 10, "title": "Valid Palindrome", "category": "two-pointers", "difficulty": "Easy", "method": "isPalindrome", "complexity": {"time": "O(n)", "space": "O(1)"}}

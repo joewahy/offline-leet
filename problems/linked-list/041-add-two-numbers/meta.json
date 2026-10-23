@@ -1,1 +1,1 @@
-{"id": 41, "title": "Add Two Numbers", "category": "linked-list", "difficulty": "Medium", "method": "addTwoNumbers", "arg_types": ["list_node", "list_node"], "return_type": "list_node"}
+{"id": 41, "title": "Add Two Numbers", "category": "linked-list", "difficulty": "Medium", "method": "addTwoNumbers", "arg_types": ["list_node", "list_node"], "return_type": "list_node", "complexity": {"time": "O(max(n, m))", "space": "O(1) extra, not counting the result list"}}

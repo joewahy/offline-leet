@@ -1,1 +1,1 @@
-{"id": 31, "title": "Find Minimum in Rotated Sorted Array", "category": "binary-search", "difficulty": "Medium", "method": "findMin"}
+{"id": 31, "title": "Find Minimum in Rotated Sorted Array", "category": "binary-search", "difficulty": "Medium", "method": "findMin", "complexity": {"time": "O(log n)", "space": "O(1)"}}

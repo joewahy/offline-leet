@@ -1,1 +1,1 @@
-{"id": 34, "title": "Median of Two Sorted Arrays", "category": "binary-search", "difficulty": "Hard", "method": "findMedianSortedArrays", "compare": "float"}
+{"id": 34, "title": "Median of Two Sorted Arrays", "category": "binary-search", "difficulty": "Hard", "method": "findMedianSortedArrays", "compare": "float", "complexity": {"time": "O(log(min(m, n)))", "space": "O(1)"}}

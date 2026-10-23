@@ -1,1 +1,1 @@
-{"id": 18, "title": "Permutation in String", "category": "sliding-window", "difficulty": "Medium", "method": "checkInclusion"}
+{"id": 18, "title": "Permutation in String", "category": "sliding-window", "difficulty": "Medium", "method": "checkInclusion", "complexity": {"time": "O(n)", "space": "O(1), 26 letters"}}
