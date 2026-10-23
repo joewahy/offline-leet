@@ -1,1 +1,1 @@
-{"id": 95, "title": "Network Delay Time", "category": "advanced-graphs", "difficulty": "Medium", "method": "networkDelayTime"}
+{"id": 95, "title": "Network Delay Time", "category": "advanced-graphs", "difficulty": "Medium", "method": "networkDelayTime", "complexity": {"time": "O(E log V)", "space": "O(V + E)"}}

@@ -1,1 +1,1 @@
-{"id": 97, "title": "Alien Dictionary", "category": "advanced-graphs", "difficulty": "Hard", "method": "foreignDictionary", "checker": true}
+{"id": 97, "title": "Alien Dictionary", "category": "advanced-graphs", "difficulty": "Hard", "method": "foreignDictionary", "checker": true, "complexity": {"time": "O(total characters)", "space": "O(1), at most 26 letters"}}

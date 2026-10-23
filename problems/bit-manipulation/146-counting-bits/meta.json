@@ -1,1 +1,1 @@
-{"id": 146, "title": "Counting Bits", "category": "bit-manipulation", "difficulty": "Easy", "method": "countBits"}
+{"id": 146, "title": "Counting Bits", "category": "bit-manipulation", "difficulty": "Easy", "method": "countBits", "complexity": {"time": "O(n)", "space": "O(1) extra, not counting the output"}}

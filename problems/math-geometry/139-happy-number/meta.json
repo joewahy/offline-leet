@@ -1,1 +1,1 @@
-{"id": 139, "title": "Happy Number", "category": "math-geometry", "difficulty": "Easy", "method": "isHappy"}
+{"id": 139, "title": "Happy Number", "category": "math-geometry", "difficulty": "Easy", "method": "isHappy", "complexity": {"time": "O(log n)", "space": "O(1)"}}

@@ -1,1 +1,1 @@
-{"id": 140, "title": "Plus One", "category": "math-geometry", "difficulty": "Easy", "method": "plusOne"}
+{"id": 140, "title": "Plus One", "category": "math-geometry", "difficulty": "Easy", "method": "plusOne", "complexity": {"time": "O(n)", "space": "O(1) extra, not counting the output"}}

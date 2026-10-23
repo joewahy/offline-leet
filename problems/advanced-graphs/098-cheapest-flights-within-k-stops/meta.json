@@ -1,1 +1,1 @@
-{"id": 98, "title": "Cheapest Flights Within K Stops", "category": "advanced-graphs", "difficulty": "Medium", "method": "findCheapestPrice"}
+{"id": 98, "title": "Cheapest Flights Within K Stops", "category": "advanced-graphs", "difficulty": "Medium", "method": "findCheapestPrice", "complexity": {"time": "O(k * E), k = stops", "space": "O(V)"}}

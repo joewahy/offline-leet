@@ -1,1 +1,1 @@
-{"id": 102, "title": "House Robber II", "category": "1d-dp", "difficulty": "Medium", "method": "rob"}
+{"id": 102, "title": "House Robber II", "category": "1d-dp", "difficulty": "Medium", "method": "rob", "complexity": {"time": "O(n)", "space": "O(1)"}}

@@ -1,1 +1,1 @@
-{"id": 105, "title": "Decode Ways", "category": "1d-dp", "difficulty": "Medium", "method": "numDecodings"}
+{"id": 105, "title": "Decode Ways", "category": "1d-dp", "difficulty": "Medium", "method": "numDecodings", "complexity": {"time": "O(n)", "space": "O(n), or O(1) with two variables"}}

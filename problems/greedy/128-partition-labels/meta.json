@@ -1,1 +1,1 @@
-{"id": 128, "title": "Partition Labels", "category": "greedy", "difficulty": "Medium", "method": "partitionLabels"}
+{"id": 128, "title": "Partition Labels", "category": "greedy", "difficulty": "Medium", "method": "partitionLabels", "complexity": {"time": "O(n)", "space": "O(1), 26 letters"}}

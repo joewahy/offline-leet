@@ -1,1 +1,1 @@
-{"id": 117, "title": "Longest Increasing Path in a Matrix", "category": "2d-dp", "difficulty": "Hard", "method": "longestIncreasingPath"}
+{"id": 117, "title": "Longest Increasing Path in a Matrix", "category": "2d-dp", "difficulty": "Hard", "method": "longestIncreasingPath", "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}}

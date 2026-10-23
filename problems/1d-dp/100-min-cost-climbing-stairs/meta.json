@@ -1,1 +1,1 @@
-{"id": 100, "title": "Min Cost Climbing Stairs", "category": "1d-dp", "difficulty": "Easy", "method": "minCostClimbingStairs"}
+{"id": 100, "title": "Min Cost Climbing Stairs", "category": "1d-dp", "difficulty": "Easy", "method": "minCostClimbingStairs", "complexity": {"time": "O(n)", "space": "O(1)"}}

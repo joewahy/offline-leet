@@ -1,1 +1,1 @@
-{"id": 126, "title": "Hand of Straights", "category": "greedy", "difficulty": "Medium", "method": "isNStraightHand"}
+{"id": 126, "title": "Hand of Straights", "category": "greedy", "difficulty": "Medium", "method": "isNStraightHand", "complexity": {"time": "O(n log n)", "space": "O(n)"}}

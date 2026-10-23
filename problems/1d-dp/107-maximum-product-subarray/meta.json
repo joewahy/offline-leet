@@ -1,1 +1,1 @@
-{"id": 107, "title": "Maximum Product Subarray", "category": "1d-dp", "difficulty": "Medium", "method": "maxProduct"}
+{"id": 107, "title": "Maximum Product Subarray", "category": "1d-dp", "difficulty": "Medium", "method": "maxProduct", "complexity": {"time": "O(n)", "space": "O(1)"}}

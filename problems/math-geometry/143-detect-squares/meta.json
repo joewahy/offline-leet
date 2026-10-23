@@ -1,1 +1,1 @@
-{"id": 143, "title": "Detect Squares", "category": "math-geometry", "difficulty": "Medium", "method": "DetectSquares", "design": "DetectSquares"}
+{"id": 143, "title": "Detect Squares", "category": "math-geometry", "difficulty": "Medium", "method": "DetectSquares", "design": "DetectSquares", "complexity": {"time": "O(1) per add, O(P) per count, P = distinct points", "space": "O(P)"}}

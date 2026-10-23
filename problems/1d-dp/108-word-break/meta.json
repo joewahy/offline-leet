@@ -1,1 +1,1 @@
-{"id": 108, "title": "Word Break", "category": "1d-dp", "difficulty": "Medium", "method": "wordBreak"}
+{"id": 108, "title": "Word Break", "category": "1d-dp", "difficulty": "Medium", "method": "wordBreak", "complexity": {"time": "O(n^2) worst case, O(n * L) with word length limit L", "space": "O(n)"}}

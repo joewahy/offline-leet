@@ -1,1 +1,1 @@
-{"id": 147, "title": "Reverse Bits", "category": "bit-manipulation", "difficulty": "Easy", "method": "reverseBits"}
+{"id": 147, "title": "Reverse Bits", "category": "bit-manipulation", "difficulty": "Easy", "method": "reverseBits", "complexity": {"time": "O(1), 32 bits", "space": "O(1)"}}

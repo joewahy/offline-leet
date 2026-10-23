@@ -1,1 +1,1 @@
-{"id": 132, "title": "Non-overlapping Intervals", "category": "intervals", "difficulty": "Medium", "method": "eraseOverlapIntervals"}
+{"id": 132, "title": "Non-overlapping Intervals", "category": "intervals", "difficulty": "Medium", "method": "eraseOverlapIntervals", "complexity": {"time": "O(n log n)", "space": "O(1) extra, not counting the sort"}}

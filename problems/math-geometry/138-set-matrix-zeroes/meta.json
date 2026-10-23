@@ -1,1 +1,1 @@
-{"id": 138, "title": "Set Matrix Zeroes", "category": "math-geometry", "difficulty": "Medium", "method": "setZeroes", "inplace": 0}
+{"id": 138, "title": "Set Matrix Zeroes", "category": "math-geometry", "difficulty": "Medium", "method": "setZeroes", "inplace": 0, "complexity": {"time": "O(rows * cols)", "space": "O(1), using the first row and column as markers"}}

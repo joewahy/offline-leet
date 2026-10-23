@@ -1,1 +1,1 @@
-{"id": 145, "title": "Number of 1 Bits", "category": "bit-manipulation", "difficulty": "Easy", "method": "hammingWeight"}
+{"id": 145, "title": "Number of 1 Bits", "category": "bit-manipulation", "difficulty": "Easy", "method": "hammingWeight", "complexity": {"time": "O(number of set bits)", "space": "O(1)"}}

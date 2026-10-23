@@ -1,1 +1,1 @@
-{"id": 118, "title": "Distinct Subsequences", "category": "2d-dp", "difficulty": "Hard", "method": "numDistinct"}
+{"id": 118, "title": "Distinct Subsequences", "category": "2d-dp", "difficulty": "Hard", "method": "numDistinct", "complexity": {"time": "O(m * n)", "space": "O(n)"}}

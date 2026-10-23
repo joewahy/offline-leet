@@ -1,1 +1,1 @@
-{"id": 112, "title": "Longest Common Subsequence", "category": "2d-dp", "difficulty": "Medium", "method": "longestCommonSubsequence"}
+{"id": 112, "title": "Longest Common Subsequence", "category": "2d-dp", "difficulty": "Medium", "method": "longestCommonSubsequence", "complexity": {"time": "O(m * n)", "space": "O(n)"}}

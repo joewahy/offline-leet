@@ -1,1 +1,1 @@
-{"id": 150, "title": "Reverse Integer", "category": "bit-manipulation", "difficulty": "Medium", "method": "reverse"}
+{"id": 150, "title": "Reverse Integer", "category": "bit-manipulation", "difficulty": "Medium", "method": "reverse", "complexity": {"time": "O(log x), the number of digits", "space": "O(1)"}}

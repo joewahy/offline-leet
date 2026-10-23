@@ -1,1 +1,1 @@
-{"id": 111, "title": "Unique Paths", "category": "2d-dp", "difficulty": "Medium", "method": "uniquePaths"}
+{"id": 111, "title": "Unique Paths", "category": "2d-dp", "difficulty": "Medium", "method": "uniquePaths", "complexity": {"time": "O(m * n)", "space": "O(n)"}}

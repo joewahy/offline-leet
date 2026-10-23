@@ -1,1 +1,1 @@
-{"id": 137, "title": "Spiral Matrix", "category": "math-geometry", "difficulty": "Medium", "method": "spiralOrder"}
+{"id": 137, "title": "Spiral Matrix", "category": "math-geometry", "difficulty": "Medium", "method": "spiralOrder", "complexity": {"time": "O(rows * cols)", "space": "O(1) extra, not counting the output"}}

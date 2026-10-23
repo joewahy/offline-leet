@@ -1,1 +1,1 @@
-{"id": 148, "title": "Missing Number", "category": "bit-manipulation", "difficulty": "Easy", "method": "missingNumber"}
+{"id": 148, "title": "Missing Number", "category": "bit-manipulation", "difficulty": "Easy", "method": "missingNumber", "complexity": {"time": "O(n)", "space": "O(1)"}}

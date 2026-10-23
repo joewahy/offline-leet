@@ -1,1 +1,1 @@
-{"id": 94, "title": "Min Cost to Connect All Points", "category": "advanced-graphs", "difficulty": "Medium", "method": "minCostConnectPoints"}
+{"id": 94, "title": "Min Cost to Connect All Points", "category": "advanced-graphs", "difficulty": "Medium", "method": "minCostConnectPoints", "complexity": {"time": "O(n^2)", "space": "O(n)"}}

@@ -1,1 +1,1 @@
-{"id": 106, "title": "Coin Change", "category": "1d-dp", "difficulty": "Medium", "method": "coinChange"}
+{"id": 106, "title": "Coin Change", "category": "1d-dp", "difficulty": "Medium", "method": "coinChange", "complexity": {"time": "O(amount * coins)", "space": "O(amount)"}}

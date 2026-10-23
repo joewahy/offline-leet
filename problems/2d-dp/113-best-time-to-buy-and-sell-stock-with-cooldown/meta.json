@@ -1,1 +1,1 @@
-{"id": 113, "title": "Best Time to Buy and Sell Stock With Cooldown", "category": "2d-dp", "difficulty": "Medium", "method": "maxProfit"}
+{"id": 113, "title": "Best Time to Buy and Sell Stock With Cooldown", "category": "2d-dp", "difficulty": "Medium", "method": "maxProfit", "complexity": {"time": "O(n)", "space": "O(1)"}}

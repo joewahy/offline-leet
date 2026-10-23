@@ -1,1 +1,1 @@
-{"id": 109, "title": "Longest Increasing Subsequence", "category": "1d-dp", "difficulty": "Medium", "method": "lengthOfLIS"}
+{"id": 109, "title": "Longest Increasing Subsequence", "category": "1d-dp", "difficulty": "Medium", "method": "lengthOfLIS", "complexity": {"time": "O(n log n)", "space": "O(n)"}}

@@ -1,1 +1,1 @@
-{"id": 142, "title": "Multiply Strings", "category": "math-geometry", "difficulty": "Medium", "method": "multiply"}
+{"id": 142, "title": "Multiply Strings", "category": "math-geometry", "difficulty": "Medium", "method": "multiply", "complexity": {"time": "O(m * n)", "space": "O(m + n)"}}

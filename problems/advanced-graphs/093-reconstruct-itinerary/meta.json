@@ -1,1 +1,1 @@
-{"id": 93, "title": "Reconstruct Itinerary", "category": "advanced-graphs", "difficulty": "Hard", "method": "findItinerary"}
+{"id": 93, "title": "Reconstruct Itinerary", "category": "advanced-graphs", "difficulty": "Hard", "method": "findItinerary", "complexity": {"time": "O(E log E)", "space": "O(E)"}}

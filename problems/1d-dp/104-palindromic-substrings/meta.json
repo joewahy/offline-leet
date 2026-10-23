@@ -1,1 +1,1 @@
-{"id": 104, "title": "Palindromic Substrings", "category": "1d-dp", "difficulty": "Medium", "method": "countSubstrings"}
+{"id": 104, "title": "Palindromic Substrings", "category": "1d-dp", "difficulty": "Medium", "method": "countSubstrings", "complexity": {"time": "O(n^2)", "space": "O(1)"}}

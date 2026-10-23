@@ -1,1 +1,1 @@
-{"id": 127, "title": "Merge Triplets to Form Target Triplet", "category": "greedy", "difficulty": "Medium", "method": "mergeTriplets"}
+{"id": 127, "title": "Merge Triplets to Form Target Triplet", "category": "greedy", "difficulty": "Medium", "method": "mergeTriplets", "complexity": {"time": "O(n)", "space": "O(1)"}}

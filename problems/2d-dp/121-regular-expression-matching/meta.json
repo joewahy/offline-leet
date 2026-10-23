@@ -1,1 +1,1 @@
-{"id": 121, "title": "Regular Expression Matching", "category": "2d-dp", "difficulty": "Hard", "method": "isMatch"}
+{"id": 121, "title": "Regular Expression Matching", "category": "2d-dp", "difficulty": "Hard", "method": "isMatch", "complexity": {"time": "O(m * n)", "space": "O(m * n)"}}

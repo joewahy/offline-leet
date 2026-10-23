@@ -1,1 +1,1 @@
-{"id": 149, "title": "Sum of Two Integers", "category": "bit-manipulation", "difficulty": "Medium", "method": "getSum"}
+{"id": 149, "title": "Sum of Two Integers", "category": "bit-manipulation", "difficulty": "Medium", "method": "getSum", "complexity": {"time": "O(1), 32 bits", "space": "O(1)"}}
