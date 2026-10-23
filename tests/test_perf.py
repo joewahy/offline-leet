@@ -56,7 +56,7 @@ def test_reference_against_itself_is_on_par(problem):
     assert report["time"]["verdict"] in ("faster", "similar")
     assert report["time"]["ratio"] < 4
     assert report["memory"]["verdict"] == "similar"
-    assert len(report["cases"]) == perf.TOP_CASES
+    assert 1 <= len(report["cases"]) <= perf.TOP_CASES
     assert report["target"] == problem.complexity
 
 

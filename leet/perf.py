@@ -23,6 +23,7 @@ TOP_CASES = 3
 TIME_FLOOR = 0.0005  # seconds: below this, timer noise dominates
 MEMORY_FLOOR = 64 * 1024  # bytes: below this, allocator noise dominates
 STEADY_TIME = 0.05  # a first run at least this long is trusted as is
+RELEVANT = 0.1  # skip cases the reference finishes in under this fraction of the heaviest
 
 TIME_MESSAGES = {
     "faster": "Faster than the reference.",
@@ -135,7 +136,8 @@ def _heaviest(problem, reference, cases):
     for i, case in enumerate(cases):
         costs.append((_run_once(problem, reference, case["args"], problem.timeout * 4), i))
     costs.sort(key=lambda c: (-c[0], c[1]))
-    return sorted(i for _, i in costs[:TOP_CASES])
+    chosen = [c for c in costs[:TOP_CASES] if c[0] >= costs[0][0] * RELEVANT]
+    return sorted(i for _, i in chosen)
 
 
 def measure(problem, solution_path=None):
@@ -218,7 +220,8 @@ def format_report(report):
     lines.append(f"Time:    {report['time']['message']} {time_note}".rstrip())
     lines.append(f"Memory:  {report['memory']['message']}")
     lines.append("")
-    lines.append(f"Heaviest {len(report['cases'])} inputs (yours vs the reference):")
+    count = len(report["cases"])
+    lines.append(f"Heaviest {count} input{'s' if count != 1 else ''} (yours vs the reference):")
     for r in report["cases"]:
         mine = "timed out" if r["timed_out"] else format_seconds(r["time"])
         memory = "" if r["memory"] is None else f"   memory {format_bytes(r['memory'])} vs {format_bytes(r['ref_memory'])}"
