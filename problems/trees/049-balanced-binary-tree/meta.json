@@ -1,1 +1,1 @@
-{"id": 49, "title": "Balanced Binary Tree", "category": "trees", "difficulty": "Easy", "method": "isBalanced", "arg_types": ["tree"]}
+{"id": 49, "title": "Balanced Binary Tree", "category": "trees", "difficulty": "Easy", "method": "isBalanced", "arg_types": ["tree"], "complexity": {"time": "O(n)", "space": "O(h), recursion depth"}}

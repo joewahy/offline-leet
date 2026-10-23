@@ -1,1 +1,1 @@
-{"id": 81, "title": "Max Area of Island", "category": "graphs", "difficulty": "Medium", "method": "maxAreaOfIsland"}
+{"id": 81, "title": "Max Area of Island", "category": "graphs", "difficulty": "Medium", "method": "maxAreaOfIsland", "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}}

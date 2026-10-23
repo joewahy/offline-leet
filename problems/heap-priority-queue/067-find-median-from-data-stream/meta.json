@@ -1,1 +1,1 @@
-{"id": 67, "title": "Find Median from Data Stream", "category": "heap-priority-queue", "difficulty": "Hard", "method": "MedianFinder", "design": "MedianFinder"}
+{"id": 67, "title": "Find Median from Data Stream", "category": "heap-priority-queue", "difficulty": "Hard", "method": "MedianFinder", "design": "MedianFinder", "complexity": {"time": "O(log n) per add, O(1) per median", "space": "O(n)"}}

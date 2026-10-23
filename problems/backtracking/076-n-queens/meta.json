@@ -1,1 +1,1 @@
-{"id": 76, "title": "N-Queens", "category": "backtracking", "difficulty": "Hard", "method": "solveNQueens", "compare": "unordered_outer"}
+{"id": 76, "title": "N-Queens", "category": "backtracking", "difficulty": "Hard", "method": "solveNQueens", "compare": "unordered_outer", "complexity": {"time": "O(n!)", "space": "O(n) extra, not counting the output"}}

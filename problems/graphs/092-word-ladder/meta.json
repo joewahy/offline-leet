@@ -1,1 +1,1 @@
-{"id": 92, "title": "Word Ladder", "category": "graphs", "difficulty": "Hard", "method": "ladderLength"}
+{"id": 92, "title": "Word Ladder", "category": "graphs", "difficulty": "Hard", "method": "ladderLength", "complexity": {"time": "O(N * L^2), N = words, L = word length", "space": "O(N * L^2)"}}

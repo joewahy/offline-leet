@@ -1,1 +1,1 @@
-{"id": 78, "title": "Design Add and Search Words Data Structure", "category": "tries", "difficulty": "Medium", "method": "WordDictionary", "design": "WordDictionary"}
+{"id": 78, "title": "Design Add and Search Words Data Structure", "category": "tries", "difficulty": "Medium", "method": "WordDictionary", "design": "WordDictionary", "complexity": {"time": "O(L) per add, O(26^d * L) per search with d dots (worst case)", "space": "O(total characters inserted)"}}

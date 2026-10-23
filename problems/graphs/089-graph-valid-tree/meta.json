@@ -1,1 +1,1 @@
-{"id": 89, "title": "Graph Valid Tree", "category": "graphs", "difficulty": "Medium", "method": "validTree"}
+{"id": 89, "title": "Graph Valid Tree", "category": "graphs", "difficulty": "Medium", "method": "validTree", "complexity": {"time": "O(V + E), nearly linear with union-find", "space": "O(V)"}}

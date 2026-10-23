@@ -1,1 +1,1 @@
-{"id": 79, "title": "Word Search II", "category": "tries", "difficulty": "Hard", "method": "findWords", "compare": "unordered"}
+{"id": 79, "title": "Word Search II", "category": "tries", "difficulty": "Hard", "method": "findWords", "compare": "unordered", "complexity": {"time": "O(rows * cols * 3^L), L = longest word", "space": "O(total characters in the words)"}}

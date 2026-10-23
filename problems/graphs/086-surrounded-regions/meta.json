@@ -1,1 +1,1 @@
-{"id": 86, "title": "Surrounded Regions", "category": "graphs", "difficulty": "Medium", "method": "solve", "inplace": 0}
+{"id": 86, "title": "Surrounded Regions", "category": "graphs", "difficulty": "Medium", "method": "solve", "inplace": 0, "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}}

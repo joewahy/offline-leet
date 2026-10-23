@@ -1,1 +1,1 @@
-{"id": 66, "title": "Design Twitter", "category": "heap-priority-queue", "difficulty": "Medium", "method": "Twitter", "design": "Twitter"}
+{"id": 66, "title": "Design Twitter", "category": "heap-priority-queue", "difficulty": "Medium", "method": "Twitter", "design": "Twitter", "complexity": {"time": "O(1) per post or follow, O(f) per feed, f = followees", "space": "O(tweets + follows)"}}

@@ -1,1 +1,1 @@
-{"id": 51, "title": "Subtree of Another Tree", "category": "trees", "difficulty": "Easy", "method": "isSubtree", "arg_types": ["tree", "tree"]}
+{"id": 51, "title": "Subtree of Another Tree", "category": "trees", "difficulty": "Easy", "method": "isSubtree", "arg_types": ["tree", "tree"], "complexity": {"time": "O(n * m), m = size of subRoot", "space": "O(h), recursion depth"}}

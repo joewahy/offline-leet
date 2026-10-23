@@ -1,1 +1,1 @@
-{"id": 59, "title": "Binary Tree Maximum Path Sum", "category": "trees", "difficulty": "Hard", "method": "maxPathSum", "arg_types": ["tree"]}
+{"id": 59, "title": "Binary Tree Maximum Path Sum", "category": "trees", "difficulty": "Hard", "method": "maxPathSum", "arg_types": ["tree"], "complexity": {"time": "O(n)", "space": "O(h), recursion depth"}}

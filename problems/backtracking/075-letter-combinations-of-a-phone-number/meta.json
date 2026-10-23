@@ -1,1 +1,1 @@
-{"id": 75, "title": "Letter Combinations of a Phone Number", "category": "backtracking", "difficulty": "Medium", "method": "letterCombinations", "compare": "unordered"}
+{"id": 75, "title": "Letter Combinations of a Phone Number", "category": "backtracking", "difficulty": "Medium", "method": "letterCombinations", "compare": "unordered", "complexity": {"time": "O(4^n * n), n = digits", "space": "O(n) extra, not counting the output"}}

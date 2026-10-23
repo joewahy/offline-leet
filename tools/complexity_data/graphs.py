@@ -1,0 +1,15 @@
+COMPLEXITY = {
+    80: ("O(rows * cols)", "O(rows * cols)"),
+    81: ("O(rows * cols)", "O(rows * cols)"),
+    82: ("O(V + E)", "O(V)"),
+    83: ("O(rows * cols)", "O(rows * cols)"),
+    84: ("O(rows * cols)", "O(rows * cols)"),
+    85: ("O(rows * cols)", "O(rows * cols)"),
+    86: ("O(rows * cols)", "O(rows * cols)"),
+    87: ("O(V + E)", "O(V + E)"),
+    88: ("O(V + E)", "O(V + E)"),
+    89: ("O(V + E), nearly linear with union-find", "O(V)"),
+    90: ("O(V + E), nearly linear with union-find", "O(V)"),
+    91: ("O(E), nearly linear with union-find", "O(V)"),
+    92: ("O(N * L^2), N = words, L = word length", "O(N * L^2)"),
+}

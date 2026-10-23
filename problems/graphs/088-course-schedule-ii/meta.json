@@ -1,1 +1,1 @@
-{"id": 88, "title": "Course Schedule II", "category": "graphs", "difficulty": "Medium", "method": "findOrder", "checker": true}
+{"id": 88, "title": "Course Schedule II", "category": "graphs", "difficulty": "Medium", "method": "findOrder", "checker": true, "complexity": {"time": "O(V + E)", "space": "O(V + E)"}}

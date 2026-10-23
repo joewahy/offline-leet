@@ -1,1 +1,1 @@
-{"id": 82, "title": "Clone Graph", "category": "graphs", "difficulty": "Medium", "method": "cloneGraph", "arg_types": ["graph"], "return_type": "graph", "checker": true}
+{"id": 82, "title": "Clone Graph", "category": "graphs", "difficulty": "Medium", "method": "cloneGraph", "arg_types": ["graph"], "return_type": "graph", "checker": true, "complexity": {"time": "O(V + E)", "space": "O(V)"}}

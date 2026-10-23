@@ -1,1 +1,1 @@
-{"id": 47, "title": "Maximum Depth of Binary Tree", "category": "trees", "difficulty": "Easy", "method": "maxDepth", "arg_types": ["tree"]}
+{"id": 47, "title": "Maximum Depth of Binary Tree", "category": "trees", "difficulty": "Easy", "method": "maxDepth", "arg_types": ["tree"], "complexity": {"time": "O(n)", "space": "O(h), recursion depth"}}

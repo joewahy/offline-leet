@@ -1,1 +1,1 @@
-{"id": 56, "title": "Validate Binary Search Tree", "category": "trees", "difficulty": "Medium", "method": "isValidBST", "arg_types": ["tree"]}
+{"id": 56, "title": "Validate Binary Search Tree", "category": "trees", "difficulty": "Medium", "method": "isValidBST", "arg_types": ["tree"], "complexity": {"time": "O(n)", "space": "O(h), recursion depth"}}

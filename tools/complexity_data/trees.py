@@ -1,0 +1,17 @@
+COMPLEXITY = {
+    46: ("O(n)", "O(h), recursion depth"),
+    47: ("O(n)", "O(h), recursion depth"),
+    48: ("O(n)", "O(h), recursion depth"),
+    49: ("O(n)", "O(h), recursion depth"),
+    50: ("O(n)", "O(h), recursion depth"),
+    51: ("O(n * m), m = size of subRoot", "O(h), recursion depth"),
+    52: ("O(h)", "O(1)"),
+    53: ("O(n)", "O(n)"),
+    54: ("O(n)", "O(n)"),
+    55: ("O(n)", "O(h), recursion depth"),
+    56: ("O(n)", "O(h), recursion depth"),
+    57: ("O(h + k)", "O(h)"),
+    58: ("O(n)", "O(n)"),
+    59: ("O(n)", "O(h), recursion depth"),
+    60: ("O(n)", "O(n)"),
+}

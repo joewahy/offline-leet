@@ -1,1 +1,1 @@
-{"id": 55, "title": "Count Good Nodes in Binary Tree", "category": "trees", "difficulty": "Medium", "method": "goodNodes", "arg_types": ["tree"]}
+{"id": 55, "title": "Count Good Nodes in Binary Tree", "category": "trees", "difficulty": "Medium", "method": "goodNodes", "arg_types": ["tree"], "complexity": {"time": "O(n)", "space": "O(h), recursion depth"}}

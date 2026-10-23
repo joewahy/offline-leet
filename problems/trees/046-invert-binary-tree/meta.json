@@ -1,1 +1,1 @@
-{"id": 46, "title": "Invert Binary Tree", "category": "trees", "difficulty": "Easy", "method": "invertTree", "arg_types": ["tree"], "return_type": "tree"}
+{"id": 46, "title": "Invert Binary Tree", "category": "trees", "difficulty": "Easy", "method": "invertTree", "arg_types": ["tree"], "return_type": "tree", "complexity": {"time": "O(n)", "space": "O(h), recursion depth"}}

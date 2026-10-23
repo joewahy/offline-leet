@@ -1,1 +1,1 @@
-{"id": 73, "title": "Word Search", "category": "backtracking", "difficulty": "Medium", "method": "exist"}
+{"id": 73, "title": "Word Search", "category": "backtracking", "difficulty": "Medium", "method": "exist", "complexity": {"time": "O(rows * cols * 3^L), L = word length", "space": "O(L), recursion depth"}}

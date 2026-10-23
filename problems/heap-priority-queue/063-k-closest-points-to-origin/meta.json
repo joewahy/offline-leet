@@ -1,1 +1,1 @@
-{"id": 63, "title": "K Closest Points to Origin", "category": "heap-priority-queue", "difficulty": "Medium", "method": "kClosest", "compare": "unordered"}
+{"id": 63, "title": "K Closest Points to Origin", "category": "heap-priority-queue", "difficulty": "Medium", "method": "kClosest", "compare": "unordered", "complexity": {"time": "O(n log k)", "space": "O(k)"}}

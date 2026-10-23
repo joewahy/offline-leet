@@ -1,1 +1,1 @@
-{"id": 65, "title": "Task Scheduler", "category": "heap-priority-queue", "difficulty": "Medium", "method": "leastInterval"}
+{"id": 65, "title": "Task Scheduler", "category": "heap-priority-queue", "difficulty": "Medium", "method": "leastInterval", "complexity": {"time": "O(n)", "space": "O(1), 26 task types"}}
