@@ -12,5 +12,9 @@ class Solution:
             if char not in dic:
                 return False
             dic[char] -= 1
-
-        return True
+            if dic[char] == 0:
+                del dic[char]
+        
+        if len(dic) == 0:
+            return True
+        return False
