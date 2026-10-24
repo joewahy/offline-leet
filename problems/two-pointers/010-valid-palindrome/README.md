@@ -16,7 +16,7 @@ Output: False
 
 ## Constraints
 
-- `1 <= len(s) <= 20000`
+- `1 <= len(s) <= 10^5`
 - `s` contains printable ASCII characters.
 
 ## Hints
