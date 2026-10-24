@@ -38,6 +38,13 @@ class Problem:
         return self.dir / "README.md"
 
     @property
+    def starter_path(self):
+        return self.dir / "starter.py"
+
+    def load_starter(self):
+        return self.starter_path.read_text()
+
+    @property
     def hints_path(self):
         return self.dir / "hints.json"
 

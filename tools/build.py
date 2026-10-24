@@ -61,8 +61,10 @@ def build(spec, category):
     (folder / "README.md").write_text(
         f"# {spec['id']}. {spec['title']} ({spec['difficulty']})\n\n{spec['statement'].strip()}\n"
     )
+    starter = spec["stub"].strip("\n") + "\n"
+    (folder / "starter.py").write_text(starter)
     if not (folder / "solution.py").exists():
-        (folder / "solution.py").write_text(spec["stub"].strip("\n") + "\n")
+        (folder / "solution.py").write_text(starter)
     ref_path = ROOT / "reference" / f"{key}.py"
     ref_path.write_text(spec["reference"].strip("\n") + "\n")
 
