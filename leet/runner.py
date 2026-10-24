@@ -11,11 +11,13 @@ import signal
 import sys
 import traceback
 
-from leet import structures
+from leet import memguard, structures
 from leet.compare import matches, norm
 from leet.problems import find
 
 sys.setrecursionlimit(10000)
+
+STOP_ERRORS = ("time limit exceeded", "memory limit exceeded")
 
 
 def _on_alarm(signum, frame):
@@ -115,7 +117,7 @@ def run_case(problem, module, checker, case):
     signal.signal(signal.SIGALRM, _on_alarm)
     signal.setitimer(signal.ITIMER_REAL, problem.timeout)
     try:
-        with contextlib.redirect_stdout(buf):
+        with contextlib.redirect_stdout(buf), memguard.guard():
             got, raw, inputs = execute(problem, module, case["args"])
             got = norm(got)
             result["got"] = got
@@ -123,7 +125,9 @@ def run_case(problem, module, checker, case):
     except BaseException as exc:
         result["ok"] = False
         result["error"] = (
-            str(exc) if isinstance(exc, TimeoutError) else traceback.format_exc(limit=-3)
+            str(exc)
+            if isinstance(exc, (TimeoutError, memguard.MemoryLimitExceeded))
+            else traceback.format_exc(limit=-3)
         )
     finally:
         signal.setitimer(signal.ITIMER_REAL, 0)
@@ -132,6 +136,7 @@ def run_case(problem, module, checker, case):
 
 
 def main(argv):
+    memguard.start()
     problem = find(argv[0])
     path = problem.reference_path if "--reference" in argv else problem.solution_path
     try:
@@ -142,14 +147,14 @@ def main(argv):
         print(json.dumps({"load_error": traceback.format_exc(limit=-3)}))
         return
     results = []
-    timed_out = False
+    stopped = False
     for case in problem.load_cases():
-        if timed_out:
+        if stopped:
             results.append({**case, "ok": False, "got": None, "stdout": "",
-                            "error": "skipped after an earlier timeout"})
+                            "error": "skipped after an earlier timeout or memory error"})
             continue
         result = run_case(problem, module, checker, case)
-        timed_out = result.get("error") == "time limit exceeded"
+        stopped = result.get("error", "").startswith(STOP_ERRORS)
         results.append(result)
     print(json.dumps({"results": results}, default=repr))
 

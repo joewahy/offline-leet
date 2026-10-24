@@ -16,6 +16,7 @@ import time
 import tracemalloc
 import traceback
 
+from leet import memguard
 from leet.problems import find
 from leet.runner import load_checker, load_module, prepare, run_case
 
@@ -230,6 +231,7 @@ def format_report(report):
 
 
 def main(argv):
+    memguard.start()
     problem = find(argv[0])
     print(json.dumps(measure(problem, argv[1] if len(argv) > 1 else None)))
 

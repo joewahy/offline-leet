@@ -88,7 +88,7 @@ This is an estimate, not a proof, and it cannot tell you your exact Big-O:
 ## Limitations
 
 - The large test cases have at most about 10,000 elements, to keep the repo small. A slow solution (for example O(n^2)) can still pass on a fast machine, so these tests are weaker than LeetCode's at catching inefficiency.
-- Your code runs as a normal process on your machine, with no sandbox and no memory limit. Use the Dev Container if that matters to you.
+- Your code runs as a normal process on your machine, with no sandbox. A watchdog stops it if it uses more than 1 GB of memory (the case fails with "memory limit exceeded"), but that is a safety net against runaway code, not isolation. Use the Dev Container if that matters to you.
 - Timeouts rely on Unix signals, so macOS and Linux work but Windows does not.
 - Hints and the performance check are fixed rules and measurements, so they cannot explain why your code is slow or react to what you wrote. There is also no hidden-test submit step or timer yet.
 
