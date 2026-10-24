@@ -6,5 +6,6 @@ __pycache__/
 .pytest_cache/
 progress.db
 progress.json
+progress.json.corrupt
 .DS_Store
 .leet-backups/
