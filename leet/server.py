@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
 from leet import progress
+from leet.fsutil import atomic_write_text
 from leet.execute import run_perf, run_problem
 from leet.problems import all_problems, find
 from leet.reset import reset
@@ -149,10 +150,10 @@ def make_handler():
             if not isinstance(code, str):
                 return self._error(400, "missing code")
             if parts[3] == "save":
-                p.solution_path.write_text(code)
+                atomic_write_text(p.solution_path, code)
                 return self._json({"ok": True})
             if parts[3] == "run":
-                p.solution_path.write_text(code)
+                atomic_write_text(p.solution_path, code)
                 outcome = run_problem(p)
                 results = outcome.get("results")
                 progress.set_current(p.key)
@@ -160,7 +161,7 @@ def make_handler():
                 outcome["status"] = progress.status(p.key)
                 return self._json(outcome)
             if parts[3] == "perf":
-                p.solution_path.write_text(code)
+                atomic_write_text(p.solution_path, code)
                 return self._json(run_perf(p))
             self._error(404, "not found")
 

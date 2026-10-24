@@ -1,6 +1,7 @@
 """Restore a problem's solution.py to its starter code, keeping a backup of what was there."""
 import time
 
+from leet.fsutil import atomic_write_text
 from leet.problems import ROOT
 
 BACKUP_DIR = ROOT / ".leet-backups"
@@ -26,6 +27,6 @@ def reset(problem, backup_dir=None):
         while backup.exists():
             backup = folder / f"{stamp}-{n}.py"
             n += 1
-        backup.write_text(current)
-    path.write_text(starter)
+        atomic_write_text(backup, current)
+    atomic_write_text(path, starter)
     return backup
