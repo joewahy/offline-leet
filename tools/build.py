@@ -134,11 +134,13 @@ def main(argv):
         for spec in module.PROBLEMS:
             build(spec, module.CATEGORY)
     import hintlib
+    import hiddenlib
 
     hintlib.apply_all()
     import complexity
 
     complexity.apply_all()
+    hiddenlib.apply_all()
 
 
 if __name__ == "__main__":
