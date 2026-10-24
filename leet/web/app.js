@@ -298,6 +298,23 @@ function renderResults(outcome) {
   return `<div class="summary ${allPass ? "pass" : "fail"}">${label}</div><div class="cases">${cases}</div>${allPass ? perfBlock() : ""}`;
 }
 
+async function resetCode() {
+  if (!current) return;
+  if (!confirm("Replace your code with the starter code?\n\nYour current code is saved to a backup first.")) return;
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  try {
+    const data = await api(`/api/problems/${current.key}/reset`, {});
+    loadingCode = true;
+    editor.setValue(data.code);
+    loadingCode = false;
+    $("#results").innerHTML = '<p class="muted">Run your code to see results here.</p>';
+    $("#save-state").textContent = data.backed_up ? "Reset (backup kept)" : "Reset";
+  } catch (err) {
+    $("#save-state").textContent = "Reset failed: " + err.message;
+  }
+}
+
 async function run() {
   const btn = $("#run-btn");
   btn.disabled = true;
@@ -352,6 +369,7 @@ async function start() {
   $("#prev-btn").onclick = () => step(-1);
   $("#next-btn").onclick = () => step(1);
   $("#run-btn").onclick = run;
+  $("#reset-btn").onclick = resetCode;
   $("#hint-btn").onclick = () => showNextHint().catch((err) => { $("#hint-label").textContent = err.message; });
   $("#problem-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
