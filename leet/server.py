@@ -9,7 +9,7 @@ from urllib.parse import parse_qs, urlparse
 
 from leet import progress
 from leet.fsutil import atomic_write_text
-from leet.execute import run_perf, run_problem
+from leet.execute import all_passed, run_perf, run_problem
 from leet.problems import all_problems, find
 from leet.reset import reset
 
@@ -155,9 +155,8 @@ def make_handler():
             if parts[3] == "run":
                 atomic_write_text(p.solution_path, code)
                 outcome = run_problem(p)
-                results = outcome.get("results")
                 progress.set_current(p.key)
-                progress.record(p.key, bool(results) and all(r["ok"] for r in results))
+                progress.record(p.key, all_passed(outcome))
                 outcome["status"] = progress.status(p.key)
                 return self._json(outcome)
             if parts[3] == "perf":
