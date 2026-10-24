@@ -16,7 +16,7 @@ Output: [2, -1, 4, 6]
 
 ## Constraints
 
-- `1 <= len(intervals), len(queries) <= 7000`
+- `1 <= len(intervals), len(queries) <= 10^5`
 - `1 <= left <= right <= 10^6`
 - `1 <= queries[j] <= 10^6`
 

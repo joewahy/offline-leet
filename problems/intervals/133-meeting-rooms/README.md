@@ -16,7 +16,7 @@ Output: True
 
 ## Constraints
 
-- `0 <= len(intervals) <= 8000`
+- `0 <= len(intervals) <= 10^5`
 - `0 <= start < end <= 10^6`
 
 ## Hints

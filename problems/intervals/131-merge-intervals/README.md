@@ -14,7 +14,7 @@ Output: [[1,3]]
 
 ## Constraints
 
-- `1 <= len(intervals) <= 10000`
+- `1 <= len(intervals) <= 10^5`
 - `0 <= start <= end <= 10^6`
 
 <details>

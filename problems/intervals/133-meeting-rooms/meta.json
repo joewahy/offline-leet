@@ -1,1 +1,1 @@
-{"id": 133, "title": "Meeting Rooms", "category": "intervals", "difficulty": "Easy", "method": "canAttendMeetings", "arg_types": ["intervals"], "complexity": {"time": "O(n log n)", "space": "O(n)"}}
+{"id": 133, "title": "Meeting Rooms", "category": "intervals", "difficulty": "Easy", "method": "canAttendMeetings", "arg_types": ["intervals"], "complexity": {"time": "O(n log n)", "space": "O(n)"}, "hidden": true}

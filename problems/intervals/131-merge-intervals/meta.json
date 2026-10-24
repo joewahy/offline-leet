@@ -1,1 +1,1 @@
-{"id": 131, "title": "Merge Intervals", "category": "intervals", "difficulty": "Medium", "method": "merge", "complexity": {"time": "O(n log n)", "space": "O(n)"}}
+{"id": 131, "title": "Merge Intervals", "category": "intervals", "difficulty": "Medium", "method": "merge", "complexity": {"time": "O(n log n)", "space": "O(n)"}, "hidden": true}

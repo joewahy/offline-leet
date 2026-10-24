@@ -1,1 +1,1 @@
-{"id": 135, "title": "Minimum Interval to Include Each Query", "category": "intervals", "difficulty": "Hard", "method": "minInterval", "complexity": {"time": "O((n + q) log(n + q)), q = queries", "space": "O(n + q)"}}
+{"id": 135, "title": "Minimum Interval to Include Each Query", "category": "intervals", "difficulty": "Hard", "method": "minInterval", "complexity": {"time": "O((n + q) log(n + q)), q = queries", "space": "O(n + q)"}, "hidden": true}
