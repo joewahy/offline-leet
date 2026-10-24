@@ -61,3 +61,20 @@ def test_corrupt_progress_is_set_aside_not_overwritten(progress_file):
     assert progress.status("p") == "solved"
     assert progress_file.with_name("progress.json.corrupt").read_text() == "{ not json"
     json.loads(progress_file.read_text())
+
+
+def test_concurrent_processes_do_not_lose_records(progress_file):
+    import subprocess
+    import sys
+    import textwrap
+
+    code = textwrap.dedent(f"""
+        from pathlib import Path
+        from leet import progress
+        progress.PATH = Path({str(progress_file)!r})
+        for _ in range(30):
+            progress.record("p", False)
+    """)
+    procs = [subprocess.Popen([sys.executable, "-c", code]) for _ in range(5)]
+    assert all(p.wait(timeout=60) == 0 for p in procs)
+    assert progress.load()["problems"]["p"]["attempts"] == 150

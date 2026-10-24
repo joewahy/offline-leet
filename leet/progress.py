@@ -1,11 +1,38 @@
+import contextlib
 import json
 import threading
+
+try:
+    import fcntl
+except ImportError:  # Windows: threads in one process are still safe, separate processes are not
+    fcntl = None
 
 from leet.fsutil import atomic_write_text
 from leet.problems import ROOT
 
 PATH = ROOT / "progress.json"
 _lock = threading.RLock()
+_depth = 0
+_handle = None
+
+
+@contextlib.contextmanager
+def _locked():
+    """Exclusive access across threads and, where flock exists, across processes."""
+    global _depth, _handle
+    with _lock:
+        if _depth == 0 and fcntl:
+            _handle = open(PATH.with_name(PATH.name + ".lock"), "a")
+            fcntl.flock(_handle, fcntl.LOCK_EX)
+        _depth += 1
+        try:
+            yield
+        finally:
+            _depth -= 1
+            if _depth == 0 and _handle:
+                fcntl.flock(_handle, fcntl.LOCK_UN)
+                _handle.close()
+                _handle = None
 
 
 def _empty():
@@ -13,7 +40,7 @@ def _empty():
 
 
 def load():
-    with _lock:
+    with _locked():
         if not PATH.exists():
             return _empty()
         try:
@@ -25,19 +52,19 @@ def load():
 
 
 def save(data):
-    with _lock:
+    with _locked():
         atomic_write_text(PATH, json.dumps(data, indent=2))
 
 
 def set_current(key):
-    with _lock:
+    with _locked():
         data = load()
         data["current"] = key
         save(data)
 
 
 def record(key, solved):
-    with _lock:
+    with _locked():
         data = load()
         entry = data["problems"].setdefault(key, {"attempts": 0, "solved": False})
         entry["attempts"] += 1
