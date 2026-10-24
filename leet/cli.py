@@ -7,6 +7,7 @@ from leet import progress
 from leet import perf
 from leet.execute import run_perf, run_problem
 from leet.problems import all_problems, find
+from leet.reset import reset
 
 
 def _resolve(query):
@@ -77,6 +78,20 @@ def cmd_test(args):
     sys.exit(0 if ok else 1)
 
 
+def cmd_reset(args):
+    problem = _resolve(args.problem)
+    if not args.yes:
+        if not sys.stdin.isatty():
+            sys.exit("pass --yes to reset without a prompt")
+        answer = input(f"Replace your solution to {problem.title} with the starter code? A backup is kept. [y/N] ")
+        if answer.strip().lower() not in ("y", "yes"):
+            sys.exit("not reset")
+    backup = reset(problem)
+    print(f"{problem.title}: solution.py is back to the starter code")
+    if backup:
+        print(f"your previous code is saved in {backup.relative_to(problem.dir.parents[2])}")
+
+
 def cmd_perf(args):
     problem = _resolve(args.problem)
     print(f"{problem.title} ({problem.difficulty})")
@@ -126,6 +141,11 @@ def main():
         p = sub.add_parser(name, help=help_)
         p.add_argument("problem", nargs="?", help="id, slug, or a path inside the problem")
         p.set_defaults(func=func)
+
+    p = sub.add_parser("reset", help="restore a problem's starter code (your code is backed up first)")
+    p.add_argument("problem", nargs="?", help="id, slug, or a path inside the problem")
+    p.add_argument("-y", "--yes", action="store_true", help="do not ask for confirmation")
+    p.set_defaults(func=cmd_reset)
 
     p = sub.add_parser("perf", help="compare your passing solution's speed and memory with the reference")
     p.add_argument("problem", nargs="?", help="id, slug, or a path inside the problem")
