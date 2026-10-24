@@ -74,7 +74,7 @@ Other notes:
 
 ## Hidden tests
 
-Some problems (28 so far, listed by `leet list --hidden`) also have hidden tests: a few inputs with up to 100,000 elements, built when you run, not stored in the repo. They run only after every visible case passes. A solution that is too slow (for example O(n^2)) times out on them, and a failure shows the case number and the size of the input, not the input itself. Those problems' statements allow up to 10^5 elements to match.
+Some problems (39 so far, listed by `leet list --hidden`) also have hidden tests: a few inputs with up to 100,000 elements (or, for Pow(x, n), huge exponents), built when you run, not stored in the repo. They run only after every visible case passes. A solution that is too slow (for example O(n^2)) times out on them, and a failure shows the case number and the size of the input, not the input itself. Those problems' statements allow up to 10^5 elements to match.
 
 - The first run of a problem builds its hidden inputs (a second or two) and caches them in `.leet-cache/` (not tracked by git, up to about 100 MB for all of them).
 - `leet test` and the web UI treat a hidden failure like any other failure: the problem stays "attempted".
