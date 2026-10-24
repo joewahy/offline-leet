@@ -5,11 +5,12 @@ import threading
 import webbrowser
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from urllib.parse import urlparse
+from urllib.parse import parse_qs, urlparse
 
 from leet import progress
 from leet.execute import run_perf, run_problem
 from leet.problems import all_problems, find
+from leet.reset import reset
 
 WEB_DIR = Path(__file__).resolve().parent / "web"
 MAX_BODY = 1_000_000
@@ -76,6 +77,9 @@ def make_handler():
                 parts = path.removeprefix("/api/problems/").split("/")
                 if len(parts) == 3 and parts[1] == "hint":
                     return self._get_hint(parts[0], parts[2])
+                if len(parts) == 2 and parts[1] == "solution":
+                    force = parse_qs(urlparse(self.path).query).get("force") == ["1"]
+                    return self._get_solution(parts[0], force)
                 return self._get_problem(parts[0])
             self._static(path)
 
@@ -90,6 +94,20 @@ def make_handler():
                 "code": p.solution_path.read_text(),
                 "hint_count": len(p.load_hints()),
                 "complexity": p.complexity,
+            })
+
+        def _get_solution(self, key, force):
+            try:
+                p = find(key)
+            except LookupError:
+                return self._error(404, "no such problem")
+            solved = progress.status(p.key) == "solved"
+            if not solved and not force:
+                return self._json({"error": "Solve this problem first, or ask for it explicitly.", "solved": False}, 403)
+            self._json({
+                "reference": p.reference_path.read_text(),
+                "complexity": p.complexity,
+                "solved": solved,
             })
 
         def _get_hint(self, key, n):
@@ -124,6 +142,9 @@ def make_handler():
                 return self._error(404, "no such problem")
             except (ValueError, json.JSONDecodeError) as exc:
                 return self._error(400, str(exc))
+            if parts[3] == "reset":
+                backup = reset(p)
+                return self._json({"code": p.load_starter(), "backed_up": backup is not None})
             code = body.get("code")
             if not isinstance(code, str):
                 return self._error(400, "missing code")

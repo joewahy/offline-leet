@@ -6,6 +6,7 @@ import urllib.request
 
 import pytest
 
+from leet import progress, reset as reset_module
 from leet.problems import find
 from leet.server import make_server
 
@@ -75,3 +76,44 @@ def test_perf_endpoint_measures_a_passing_solution(server, untouched_solution):
     assert status == 200
     assert report["time"]["verdict"] in ("faster", "similar")
     assert report["target"]["space"] == "O(n)"
+
+
+@pytest.fixture
+def sandboxed_state(tmp_path, monkeypatch):
+    """Keep progress and backups out of the real project files."""
+    monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
+    monkeypatch.setattr(reset_module, "BACKUP_DIR", tmp_path / "backups")
+    return tmp_path
+
+
+def test_reset_endpoint_restores_the_starter_and_backs_up(server, untouched_solution, sandboxed_state):
+    problem = find(PROBLEM)
+    call(server, f"/api/problems/{PROBLEM}/save", {"code": "my edit\n"})
+    status, data = call(server, f"/api/problems/{PROBLEM}/reset", {})
+    assert status == 200
+    assert data["code"] == problem.load_starter()
+    assert data["backed_up"] is True
+    assert untouched_solution.read_text() == problem.load_starter()
+    backups = list((sandboxed_state / "backups" / PROBLEM).glob("*.py"))
+    assert [b.read_text() for b in backups] == ["my edit\n"]
+
+
+def test_reference_solution_is_locked_until_solved(server, sandboxed_state):
+    status, data = call(server, f"/api/problems/{PROBLEM}/solution")
+    assert status == 403
+    assert "reference" not in data
+
+
+def test_reference_solution_can_be_requested_explicitly(server, sandboxed_state):
+    status, data = call(server, f"/api/problems/{PROBLEM}/solution?force=1")
+    assert status == 200
+    assert data["reference"] == find(PROBLEM).reference_path.read_text()
+    assert data["solved"] is False
+    assert data["complexity"]["time"] == "O(n)"
+
+
+def test_reference_solution_opens_once_solved(server, sandboxed_state):
+    progress.record(PROBLEM, True)
+    status, data = call(server, f"/api/problems/{PROBLEM}/solution")
+    assert status == 200
+    assert data["solved"] is True

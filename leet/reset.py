@@ -6,12 +6,13 @@ from leet.problems import ROOT
 BACKUP_DIR = ROOT / ".leet-backups"
 
 
-def reset(problem, backup_dir=BACKUP_DIR):
+def reset(problem, backup_dir=None):
     """Replace solution.py with the starter code.
 
     Returns the path of the backup holding your previous code, or None if there
     was nothing to back up (the file was missing or already the starter).
     """
+    backup_dir = BACKUP_DIR if backup_dir is None else backup_dir
     starter = problem.load_starter()
     path = problem.solution_path
     current = path.read_text() if path.exists() else None
