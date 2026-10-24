@@ -130,3 +130,11 @@ def test_problem_list_marks_solved_problems_that_are_due_for_review(server, tmp_
     assert (by_key["001-contains-duplicate"]["status"], by_key["001-contains-duplicate"]["due"]) == ("solved", True)
     assert (by_key[PROBLEM]["status"], by_key[PROBLEM]["due"]) == ("solved", False)
     assert by_key["002-valid-anagram"]["due"] is False
+
+
+def test_solution_response_includes_the_explanation_when_there_is_one(server):
+    status, data = call(server, "/api/problems/001-contains-duplicate/solution?force=1")
+    assert status == 200
+    assert data["explanation"].startswith("### Approach")
+    status, data = call(server, "/api/problems/002-valid-anagram/solution?force=1")
+    assert "explanation" in data

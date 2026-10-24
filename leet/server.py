@@ -110,6 +110,7 @@ def make_handler():
                 return self._json({"error": "Solve this problem first, or ask for it explicitly.", "solved": False}, 403)
             self._json({
                 "reference": p.reference_path.read_text(),
+                "explanation": p.load_explanation(),
                 "complexity": p.complexity,
                 "solved": solved,
             })

@@ -252,4 +252,7 @@ pre {
 #solution[hidden], #solution-scrim[hidden] { display: none; }
 #solution-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 #solution-body { overflow: auto; padding: 4px 16px 14px; }
+.explanation h3 { font-size: 13px; margin: 14px 0 4px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
+.explanation p { margin: 0 0 8px; }
+.explanation ul { padding-left: 20px; margin: 0 0 8px; }
 .solution-code { white-space: pre; margin: 8px 0; }

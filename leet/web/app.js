@@ -356,7 +356,8 @@ async function showSolution() {
   const target = data.complexity
     ? `<p class="muted">Target: ${esc(data.complexity.time)} time, ${esc(data.complexity.space)} space.</p>`
     : "";
-  $("#solution-body").innerHTML = `${target}<pre class="solution-code">${code}</pre>
+  const explanation = data.explanation ? `<div class="explanation">${renderMarkdown(data.explanation)}</div>` : "";
+  $("#solution-body").innerHTML = `${target}${explanation}<pre class="solution-code">${code}</pre>
     <p class="muted small">This is one valid solution. Yours can differ and still be right, so compare the approach and the complexity rather than the exact code.</p>`;
   $("#solution").hidden = false;
   $("#solution-scrim").hidden = false;

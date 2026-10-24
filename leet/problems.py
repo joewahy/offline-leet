@@ -57,6 +57,13 @@ class Problem:
         return self.dir / "check.py"
 
     @property
+    def explanation_path(self):
+        return self.dir / "explanation.md"
+
+    def load_explanation(self):
+        return self.explanation_path.read_text() if self.explanation_path.exists() else None
+
+    @property
     def hidden_path(self):
         return self.dir / "hidden.py"
 
