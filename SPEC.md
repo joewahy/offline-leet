@@ -85,4 +85,5 @@ Runs happen in a subprocess with a per-case timeout (default 5s) and, inside the
 ## Status
 
 - Done: all 150 NeetCode problems, the web UI, the harness for lists, trees, graphs, intervals, design classes, in-place edits, and custom checkers (see `leet/structures.py`, `leet/runner.py`).
-- Not done: hidden tests / a separate submit step, timer, spaced repetition, written explanations for the reference solutions.
+- Hidden tests (big inputs built on demand) exist for the problems listed by `leet list --hidden`; there is no separate submit step, they run with every test run.
+- Not done: hidden tests for the other problems, timer, spaced repetition, written explanations for the reference solutions.

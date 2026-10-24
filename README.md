@@ -13,6 +13,7 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Press **Run** or Cmd+Enter (Ctrl+Enter elsewhere). Failures show the input, the expected value, your output, any error, and anything you printed.
 - Your code autosaves to the problem's `solution.py`.
 - Stuck on a Medium or Hard problem? Click **Show hint** under the statement. There are three hints per problem, each more revealing than the last, and they stay hidden until you ask. Hints you have opened are remembered in your browser.
+- On problems with hidden tests (see below), a run that passes the visible cases also runs a few big inputs. The problem only counts as solved when those pass too.
 - Once every test passes, the results show the problem's target time and space complexity and a **Compare with reference** button. It re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
 - **Reset** puts the starter code back (after asking). Your previous code is saved first in `.leet-backups/` (not tracked by git), so a reset can be undone by copying it back.
 - **Solution** shows the reference solution and its target complexity. If you have already solved the problem it opens straight away; otherwise it asks first, because it spoils the problem.
@@ -69,6 +70,15 @@ Other notes:
 - Each case has a time limit of 5 seconds, and a run stops at the first timeout.
 - `solution.py` files are tracked by git, so your solutions are committed along with everything else.
 
+## Hidden tests
+
+Some problems (28 so far, listed by `leet list --hidden`) also have hidden tests: a few inputs with up to 100,000 elements, built when you run, not stored in the repo. They run only after every visible case passes. A solution that is too slow (for example O(n^2)) times out on them, and a failure shows the case number and the size of the input, not the input itself. Those problems' statements allow up to 10^5 elements to match.
+
+- The first run of a problem builds its hidden inputs (a second or two) and caches them in `.leet-cache/` (not tracked by git, up to about 100 MB for all of them).
+- `leet test` and the web UI treat a hidden failure like any other failure: the problem stays "attempted".
+- `leet validate` runs the reference solutions against the hidden tests too, so a reference that is too slow is caught.
+- Recursion is capped at depth 10,000, so a recursive solution that goes one call per element can hit a recursion error on a 100,000-element input. Use a loop or an explicit stack for those.
+
 ## Performance check
 
 `leet perf` (or the button in the web UI) answers "is my solution in the right ballpark?" without internet or any model. It first checks that your solution passes every test, then takes the three test inputs the reference solution finds heaviest and measures both solutions on them:
@@ -81,16 +91,16 @@ You get a verdict ("About as fast as the reference", "Much slower ... usually me
 This is an estimate, not a proof, and it cannot tell you your exact Big-O:
 
 - It only says how you compare with the reference on this machine, on these inputs. A ratio above roughly 8x usually means a worse complexity class, and a ratio near 1x means a similar one.
-- If the inputs are small or the worst case for your approach is not in the tests, a slow solution can look fine. Inputs top out around 10,000 elements.
+- If the inputs are small or the worst case for your approach is not in the tests, a slow solution can look fine. Inputs top out around 10,000 elements (the hidden tests are not used for this).
 - Tiny inputs run too fast to time reliably, so some Easy problems report "too fast to compare".
 - Timings vary a little from run to run.
 
 ## Limitations
 
-- The large test cases have at most about 10,000 elements, to keep the repo small. A slow solution (for example O(n^2)) can still pass on a fast machine, so these tests are weaker than LeetCode's at catching inefficiency.
+- The stored test cases have at most about 10,000 elements, to keep the repo small. Only the problems with hidden tests (above) are checked on bigger inputs, so on the others a slow solution (for example O(n^2)) can still pass on a fast machine.
 - Your code runs as a normal process on your machine, with no sandbox. A watchdog stops it if it uses more than 1 GB of memory (the case fails with "memory limit exceeded"), but that is a safety net against runaway code, not isolation. Use the Dev Container if that matters to you.
 - Timeouts rely on Unix signals, so macOS and Linux work but Windows does not.
-- Hints and the performance check are fixed rules and measurements, so they cannot explain why your code is slow or react to what you wrote. There is also no hidden-test submit step or timer yet.
+- Hints and the performance check are fixed rules and measurements, so they cannot explain why your code is slow or react to what you wrote. There is also no timer yet.
 
 ## Regenerating problems (for contributors)
 
@@ -103,7 +113,7 @@ Problems are defined in `tools/specs/*.py`. Each defines the statement, starter 
 .venv/bin/python tools/hintlib.py               # re-apply hints and list Medium/Hard problems without any
 ```
 
-Hints live in `tools/hints/<category>.py` as `{problem_id: [hint1, hint2, hint3]}`, and target complexities live in `tools/complexity_data/<category>.py` as `{problem_id: (time, space)}`. `build.py` re-applies both after every build (`tools/complexity.py` lists any problem without a target). Problems 1 to 5 predate the build pipeline; `tools/extend_basic_cases.py` adds their large test cases.
+Hints live in `tools/hints/<category>.py` as `{problem_id: [hint1, hint2, hint3]}`, and target complexities live in `tools/complexity_data/<category>.py` as `{problem_id: (time, space)}`. Hidden tests live in `tools/hidden_data/<category>.py` as `{problem_id: (constraint_edits, source)}`, where `source` is the problem's `hidden.py` (a `generate(rng)` function returning argument lists) and `constraint_edits` raises the README's size limits to match. `build.py` re-applies both after every build (`tools/complexity.py` lists any problem without a target). Problems 1 to 5 predate the build pipeline; `tools/extend_basic_cases.py` adds their large test cases.
 
 The unit tests for the performance check and the web API are in `tests/test_perf.py` and `tests/test_server.py`: `.venv/bin/pytest tests/test_perf.py tests/test_server.py`.
 
