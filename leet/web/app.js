@@ -301,9 +301,12 @@ function renderResults(outcome) {
   const hidden = outcome.hidden && !outcome.hidden.skipped ? outcome.hidden : null;
   const hiddenOk = !hidden || !(hidden.error || hidden.failure);
   const accepted = allPass && hiddenOk;
-  const label = accepted ? `Accepted: ${passed}/${results.length} passed` : `${passed}/${results.length} passed`;
+  const visible = `${passed}/${results.length}`;
+  const label = accepted ? `Accepted: ${visible} passed`
+    : allPass ? `${visible} visible tests passed, but a hidden test failed`
+    : `${visible} passed`;
   const summaryClass = accepted ? "pass" : "fail";
-  return `<div class="summary ${summaryClass}">${label}</div><div class="cases">${cases}</div>${hidden ? hiddenBlock(hidden) : ""}${accepted ? perfBlock() : ""}`;
+  return `<div class="summary ${summaryClass}">${label}</div>${hidden ? hiddenBlock(hidden) : ""}<div class="cases">${cases}</div>${accepted ? perfBlock() : ""}`;
 }
 
 function hiddenBlock(hidden) {
