@@ -1,1 +1,1 @@
-{"id": 141, "title": "Pow(x, n)", "category": "math-geometry", "difficulty": "Medium", "method": "myPow", "compare": "float", "complexity": {"time": "O(log n)", "space": "O(1)"}}
+{"id": 141, "title": "Pow(x, n)", "category": "math-geometry", "difficulty": "Medium", "method": "myPow", "compare": "float", "complexity": {"time": "O(log n)", "space": "O(1)"}, "hidden": true}
