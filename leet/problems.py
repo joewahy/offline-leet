@@ -24,6 +24,7 @@ class Problem:
     roundtrip: dict = None
     checker: bool = False
     complexity: dict = None
+    hidden: bool = False
 
     @property
     def key(self):
@@ -54,6 +55,10 @@ class Problem:
     @property
     def checker_path(self):
         return self.dir / "check.py"
+
+    @property
+    def hidden_path(self):
+        return self.dir / "hidden.py"
 
     @property
     def reference_path(self):

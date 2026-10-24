@@ -11,7 +11,7 @@ import signal
 import sys
 import traceback
 
-from leet import memguard, structures
+from leet import hidden, memguard, structures
 from leet.compare import matches, norm
 from leet.problems import find
 
@@ -135,6 +135,45 @@ def run_case(problem, module, checker, case):
     return result
 
 
+def hidden_cases(problem):
+    """The hidden cases, from the cache or generated with the reference solution."""
+    cases = hidden.load_cached(problem)
+    if cases is not None:
+        return cases
+    with contextlib.redirect_stdout(io.StringIO()):
+        reference = load_module(problem.reference_path, problem)
+        cases = []
+        for args in hidden.generate_args(problem):
+            got, _, _ = execute(problem, reference, args)
+            cases.append({"args": args, "expected": norm(got)})
+    hidden.store(problem, cases)
+    return cases
+
+
+def run_hidden(problem, module, checker):
+    """Run the hidden cases until one fails. Never returns the inputs, which are huge."""
+    try:
+        cases = hidden_cases(problem)
+    except BaseException:
+        return {"error": traceback.format_exc(limit=-3)}
+    summary = {"total": len(cases), "passed": 0}
+    for number, case in enumerate(cases, 1):
+        result = run_case(problem, module, checker, case)
+        if result["ok"]:
+            summary["passed"] += 1
+            continue
+        summary["failure"] = {
+            "case": number,
+            "input_size": len(json.dumps(case["args"])),
+            "error": result.get("error"),
+            "expected": hidden.shorten(case["expected"]),
+            "got": hidden.shorten(result.get("got")),
+            "stdout": result["stdout"][:500],
+        }
+        break
+    return summary
+
+
 def main(argv):
     memguard.start()
     problem = find(argv[0])
@@ -156,7 +195,13 @@ def main(argv):
         result = run_case(problem, module, checker, case)
         stopped = result.get("error", "").startswith(STOP_ERRORS)
         results.append(result)
-    print(json.dumps({"results": results}, default=repr))
+    outcome = {"results": results}
+    if problem.hidden:
+        if all(r["ok"] for r in results):
+            outcome["hidden"] = run_hidden(problem, module, checker)
+        else:
+            outcome["hidden"] = {"skipped": True}
+    print(json.dumps(outcome, default=repr))
 
 
 if __name__ == "__main__":

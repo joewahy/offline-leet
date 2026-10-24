@@ -9,3 +9,4 @@ progress.json
 progress.json.corrupt
 .DS_Store
 .leet-backups/
+.leet-cache/
