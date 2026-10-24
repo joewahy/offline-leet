@@ -16,7 +16,7 @@ Output: 4
 
 ## Constraints
 
-- `2 <= len(heights) <= 12000`
+- `2 <= len(heights) <= 10^5`
 - `0 <= heights[i] <= 10000`
 
 <details>

@@ -18,7 +18,7 @@ Output: [1, 2]
 
 ## Constraints
 
-- `2 <= len(numbers) <= 10000`
+- `2 <= len(numbers) <= 10^5`
 - `-10^6 <= numbers[i] <= 10^6`
 - `numbers` is sorted in non-decreasing order.
 

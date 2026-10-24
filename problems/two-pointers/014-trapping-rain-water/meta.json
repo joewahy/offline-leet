@@ -1,1 +1,1 @@
-{"id": 14, "title": "Trapping Rain Water", "category": "two-pointers", "difficulty": "Hard", "method": "trap", "complexity": {"time": "O(n)", "space": "O(1)"}}
+{"id": 14, "title": "Trapping Rain Water", "category": "two-pointers", "difficulty": "Hard", "method": "trap", "complexity": {"time": "O(n)", "space": "O(1)"}, "hidden": true}
