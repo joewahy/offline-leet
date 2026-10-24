@@ -1,4 +1,5 @@
 import contextlib
+import datetime
 import json
 import threading
 
@@ -11,6 +12,7 @@ from leet.fsutil import atomic_write_text
 from leet.problems import ROOT
 
 PATH = ROOT / "progress.json"
+REVIEW_DAYS = (1, 3, 7, 14, 30)  # days until a solved problem is due, by box 1 to 5
 _lock = threading.RLock()
 _depth = 0
 _handle = None
@@ -63,13 +65,47 @@ def set_current(key):
         save(data)
 
 
-def record(key, solved):
+def record(key, solved, today=None):
+    """Count a run. Passing a due review moves the problem up a box; failing one resets it."""
+    today = today or datetime.date.today()
     with _locked():
         data = load()
         entry = data["problems"].setdefault(key, {"attempts": 0, "solved": False})
+        was_due = _is_due(entry, today)
         entry["attempts"] += 1
-        entry["solved"] = entry["solved"] or solved
+        entry["last_attempt"] = today.isoformat()
+        if solved:
+            first_time = not entry["solved"]
+            entry["solved"] = True
+            entry.setdefault("solved_at", today.isoformat())
+            if first_time:
+                _schedule(entry, 1, today)
+            elif was_due:
+                _schedule(entry, entry.get("box", 1) + 1, today)
+        elif was_due:
+            _schedule(entry, 1, today)
         save(data)
+
+
+def _schedule(entry, box, today):
+    entry["box"] = min(box, len(REVIEW_DAYS))
+    due = today + datetime.timedelta(days=REVIEW_DAYS[entry["box"] - 1])
+    entry["due"] = due.isoformat()
+
+
+def _is_due(entry, today):
+    """Solved problems come back for review. Ones solved before this tracking are due now."""
+    if not entry.get("solved"):
+        return False
+    return datetime.date.fromisoformat(entry.get("due", today.isoformat())) <= today
+
+
+def due_reviews(today=None):
+    """Keys of solved problems due for review, the longest overdue first."""
+    today = today or datetime.date.today()
+    problems = load()["problems"]
+    due = [(e.get("due", "0000-00-00"), k) for k, e in problems.items() if _is_due(e, today)]
+    return [key for _, key in sorted(due)]
 
 
 def status(key):
@@ -77,3 +113,13 @@ def status(key):
     if not entry:
         return "todo"
     return "solved" if entry["solved"] else "attempted"
+
+
+def summary(today=None):
+    """{key: (status, due)} for every problem that has been tried, from one read of the file."""
+    today = today or datetime.date.today()
+    out = {}
+    for key, entry in load()["problems"].items():
+        status = "solved" if entry["solved"] else "attempted"
+        out[key] = (status, _is_due(entry, today))
+    return out
