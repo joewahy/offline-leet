@@ -16,7 +16,7 @@ Output: [0, -6, 0, 0, 0]
 
 ## Constraints
 
-- `2 <= len(nums) <= 10000`
+- `2 <= len(nums) <= 10^5`
 - `-20 <= nums[i] <= 20` for the small cases; products of any prefix or suffix fit in a 32-bit integer.
 
 <details>

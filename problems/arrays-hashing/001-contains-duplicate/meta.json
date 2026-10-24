@@ -1,1 +1,1 @@
-{"id": 1, "title": "Contains Duplicate", "category": "arrays-hashing", "difficulty": "Easy", "method": "hasDuplicate", "compare": "exact", "complexity": {"time": "O(n)", "space": "O(n)"}}
+{"id": 1, "title": "Contains Duplicate", "category": "arrays-hashing", "difficulty": "Easy", "method": "hasDuplicate", "compare": "exact", "complexity": {"time": "O(n)", "space": "O(n)"}, "hidden": true}

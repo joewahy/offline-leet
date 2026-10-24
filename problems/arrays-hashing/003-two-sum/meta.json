@@ -1,1 +1,1 @@
-{"id": 3, "title": "Two Sum", "category": "arrays-hashing", "difficulty": "Easy", "method": "twoSum", "compare": "unordered", "complexity": {"time": "O(n)", "space": "O(n)"}}
+{"id": 3, "title": "Two Sum", "category": "arrays-hashing", "difficulty": "Easy", "method": "twoSum", "compare": "unordered", "complexity": {"time": "O(n)", "space": "O(n)"}, "hidden": true}

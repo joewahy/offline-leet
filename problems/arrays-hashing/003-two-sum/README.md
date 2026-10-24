@@ -16,9 +16,9 @@ Output: [0, 2]      # 4 + 6 = 10
 
 ## Constraints
 
-- `2 <= len(nums) <= 1000`
-- `-10^4 <= nums[i] <= 10^4`
-- `-10^4 <= target <= 10^4`
+- `2 <= len(nums) <= 10^5`
+- `-10^9 <= nums[i] <= 10^9`
+- `-10^9 <= target <= 10^9`
 - Exactly one solution exists.
 
 ## Hints
