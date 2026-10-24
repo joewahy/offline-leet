@@ -16,7 +16,7 @@ Output: False
 
 ## Constraints
 
-- `1 <= len(hand) <= 10000`
+- `1 <= len(hand) <= 10^5`
 - `0 <= hand[i] <= 10^9`
 - `1 <= groupSize <= len(hand)`
 

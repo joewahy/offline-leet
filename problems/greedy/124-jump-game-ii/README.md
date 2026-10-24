@@ -16,7 +16,7 @@ Output: 2
 
 ## Constraints
 
-- `1 <= len(nums) <= 10000`
+- `1 <= len(nums) <= 10^5`
 - `0 <= nums[i] <= 100`, and the last index can be reached from index 0
 
 <details>

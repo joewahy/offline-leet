@@ -1,1 +1,1 @@
-{"id": 123, "title": "Jump Game", "category": "greedy", "difficulty": "Medium", "method": "canJump", "complexity": {"time": "O(n)", "space": "O(1)"}}
+{"id": 123, "title": "Jump Game", "category": "greedy", "difficulty": "Medium", "method": "canJump", "complexity": {"time": "O(n)", "space": "O(1)"}, "hidden": true}

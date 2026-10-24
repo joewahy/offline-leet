@@ -16,7 +16,7 @@ Output: False
 
 ## Constraints
 
-- `1 <= len(nums) <= 10000`
+- `1 <= len(nums) <= 10^5`
 - `0 <= nums[i] <= 1000`
 
 <details>

@@ -1,1 +1,1 @@
-{"id": 125, "title": "Gas Station", "category": "greedy", "difficulty": "Medium", "method": "canCompleteCircuit", "checker": true, "complexity": {"time": "O(n)", "space": "O(1)"}}
+{"id": 125, "title": "Gas Station", "category": "greedy", "difficulty": "Medium", "method": "canCompleteCircuit", "checker": true, "complexity": {"time": "O(n)", "space": "O(1)"}, "hidden": true}
