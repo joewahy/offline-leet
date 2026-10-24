@@ -77,6 +77,8 @@ def cmd_list(args):
         status = progress.status(p.key)
         if args.todo and status == "solved":
             continue
+        if args.hidden and not p.hidden:
+            continue
         print(f"{p.id:>3}  {status:<9}  {p.difficulty:<6}  {p.category:<16}  {p.title}")
 
 
@@ -154,6 +156,7 @@ def main():
     p = sub.add_parser("list", help="list problems with status")
     p.add_argument("--category")
     p.add_argument("--todo", action="store_true", help="hide solved problems")
+    p.add_argument("--hidden", action="store_true", help="only problems that have hidden tests")
     p.set_defaults(func=cmd_list)
 
     for name, func, help_ in [
