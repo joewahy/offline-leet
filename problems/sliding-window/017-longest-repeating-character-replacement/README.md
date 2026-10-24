@@ -16,7 +16,7 @@ Output: 5
 
 ## Constraints
 
-- `1 <= len(s) <= 10000`
+- `1 <= len(s) <= 10^5`
 - `0 <= k <= len(s)`
 - `s` consists of uppercase English letters.
 

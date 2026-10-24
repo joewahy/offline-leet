@@ -16,7 +16,7 @@ Output: ""
 
 ## Constraints
 
-- `1 <= len(s), len(t) <= 10000`
+- `1 <= len(s), len(t) <= 10^5`
 - `s` and `t` consist of uppercase and lowercase English letters.
 
 <details>

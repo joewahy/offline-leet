@@ -16,7 +16,7 @@ Output: 0
 
 ## Constraints
 
-- `1 <= len(prices) <= 10000`
+- `1 <= len(prices) <= 10^5`
 - `0 <= prices[i] <= 1000`
 
 ## Hints

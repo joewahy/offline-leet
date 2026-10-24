@@ -1,1 +1,1 @@
-{"id": 19, "title": "Minimum Window Substring", "category": "sliding-window", "difficulty": "Hard", "method": "minWindow", "checker": true, "complexity": {"time": "O(n + m), m = len(t)", "space": "O(alphabet size)"}}
+{"id": 19, "title": "Minimum Window Substring", "category": "sliding-window", "difficulty": "Hard", "method": "minWindow", "checker": true, "complexity": {"time": "O(n + m), m = len(t)", "space": "O(alphabet size)"}, "hidden": true}

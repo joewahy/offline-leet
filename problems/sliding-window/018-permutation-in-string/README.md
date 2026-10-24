@@ -14,7 +14,7 @@ Output: False
 
 ## Constraints
 
-- `1 <= len(s1), len(s2) <= 10000`
+- `1 <= len(s1), len(s2) <= 10^5`
 - Both strings consist of lowercase English letters.
 
 <details>

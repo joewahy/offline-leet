@@ -14,7 +14,7 @@ Output: 1
 
 ## Constraints
 
-- `0 <= len(s) <= 10000`
+- `0 <= len(s) <= 10^5`
 - `s` contains printable ASCII characters (letters, digits, symbols, spaces).
 
 <details>
