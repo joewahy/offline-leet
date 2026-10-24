@@ -14,6 +14,8 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Your code autosaves to the problem's `solution.py`.
 - Stuck on a Medium or Hard problem? Click **Show hint** under the statement. There are three hints per problem, each more revealing than the last, and they stay hidden until you ask. Hints you have opened are remembered in your browser.
 - Once every test passes, the results show the problem's target time and space complexity and a **Compare with reference** button. It re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
+- **Reset** puts the starter code back (after asking). Your previous code is saved first in `.leet-backups/` (not tracked by git), so a reset can be undone by copying it back.
+- **Solution** shows the reference solution and its target complexity. If you have already solved the problem it opens straight away; otherwise it asks first, because it spoils the problem.
 
 If macOS refuses to open `Start.command`, right-click it, choose Open, then Open again. Or run `python3 -m leet serve` in a terminal.
 
@@ -30,6 +32,7 @@ python3.12 -m venv .venv
 .venv/bin/leet list                # problems and status (--todo, --category <name>)
 .venv/bin/leet start 3             # open the statement and solution.py in VS Code
 .venv/bin/leet test                # test the current problem (or pass an id, slug or file path)
+.venv/bin/leet reset               # restore the starter code (asks first; --yes to skip; your code is backed up)
 .venv/bin/leet perf                # compare a passing solution's speed and memory with the reference
 .venv/bin/leet serve               # start the web UI (--port, --no-open)
 .venv/bin/leet validate            # check every reference solution against its tests
@@ -49,6 +52,7 @@ All 150 NeetCode problems, in roadmap order, in 18 categories from Arrays & Hash
 problems/<category>/<id>-<slug>/
   README.md      the statement
   solution.py    your code (starter code to begin with)
+  starter.py     the original starter code, used by Reset
   tests.json     test cases
   meta.json      title, difficulty, method name, how to compare results
 reference/       reference solutions (spoilers!)
@@ -86,7 +90,7 @@ This is an estimate, not a proof, and it cannot tell you your exact Big-O:
 - The large test cases have at most about 10,000 elements, to keep the repo small. A slow solution (for example O(n^2)) can still pass on a fast machine, so these tests are weaker than LeetCode's at catching inefficiency.
 - Your code runs as a normal process on your machine, with no sandbox and no memory limit. Use the Dev Container if that matters to you.
 - Timeouts rely on Unix signals, so macOS and Linux work but Windows does not.
-- Hints and the performance check are fixed rules and measurements, so they cannot explain why your code is slow or react to what you wrote. There is also no hidden-test submit step, reset-to-starter button, or timer yet.
+- Hints and the performance check are fixed rules and measurements, so they cannot explain why your code is slow or react to what you wrote. There is also no hidden-test submit step or timer yet.
 
 ## Regenerating problems (for contributors)
 
