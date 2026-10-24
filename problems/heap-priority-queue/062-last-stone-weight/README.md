@@ -19,8 +19,8 @@ Output: 1
 
 ## Constraints
 
-- `1 <= len(stones) <= 1000`
-- `1 <= stones[i] <= 1000`
+- `1 <= len(stones) <= 10^5`
+- `1 <= stones[i] <= 10^9`
 
 ## Hints
 

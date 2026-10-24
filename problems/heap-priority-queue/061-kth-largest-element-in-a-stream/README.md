@@ -21,9 +21,9 @@ add(8)   -> 6
 ## Constraints
 
 - `1 <= k <= 1000`
-- `0 <= len(nums) <= 1000`, and the stream always has at least `k` values when `add` is called
+- `0 <= len(nums) <= 10^5`, and the stream always has at least `k` values when `add` is called
 - `-1000 <= val <= 1000`
-- At most `1000` calls to `add`.
+- At most `10^5` calls to `add`.
 
 ## Hints
 

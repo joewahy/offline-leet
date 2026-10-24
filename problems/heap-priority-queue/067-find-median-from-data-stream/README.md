@@ -24,7 +24,7 @@ findMedian()   -> 2.0
 ## Constraints
 
 - `-100000 <= num <= 100000`
-- At most `10000` calls are made.
+- At most `10^5` calls are made.
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>

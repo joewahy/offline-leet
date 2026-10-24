@@ -1,1 +1,1 @@
-{"id": 62, "title": "Last Stone Weight", "category": "heap-priority-queue", "difficulty": "Easy", "method": "lastStoneWeight", "complexity": {"time": "O(n log n)", "space": "O(n)"}}
+{"id": 62, "title": "Last Stone Weight", "category": "heap-priority-queue", "difficulty": "Easy", "method": "lastStoneWeight", "complexity": {"time": "O(n log n)", "space": "O(n)"}, "hidden": true}
