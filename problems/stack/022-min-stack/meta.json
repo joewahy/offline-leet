@@ -1,1 +1,1 @@
-{"id": 22, "title": "Min Stack", "category": "stack", "difficulty": "Medium", "method": "MinStack", "design": "MinStack", "complexity": {"time": "O(1) per operation", "space": "O(n)"}}
+{"id": 22, "title": "Min Stack", "category": "stack", "difficulty": "Medium", "method": "MinStack", "design": "MinStack", "complexity": {"time": "O(1) per operation", "space": "O(n)"}, "hidden": true}

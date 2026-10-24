@@ -25,7 +25,7 @@ getMin()  -> 1
 ## Constraints
 
 - `-2^31 <= val <= 2^31 - 1`
-- At most `10000` calls are made.
+- At most `10^5` calls are made.
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>
