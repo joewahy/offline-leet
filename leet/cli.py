@@ -71,15 +71,38 @@ def _print_hidden(hidden):
 
 
 def cmd_list(args):
+    tried = progress.summary()
     for p in all_problems():
         if args.category and args.category != p.category:
             continue
-        status = progress.status(p.key)
+        status, due = tried.get(p.key, ("todo", False))
         if args.todo and status == "solved":
             continue
+        if due:
+            status = "review"
         if args.hidden and not p.hidden:
             continue
         print(f"{p.id:>3}  {status:<9}  {p.difficulty:<6}  {p.category:<16}  {p.title}")
+
+
+def cmd_next(args):
+    problems = all_problems()
+    by_key = {p.key: p for p in problems}
+    due = [] if args.new else [by_key[k] for k in progress.due_reviews() if k in by_key]
+    if due:
+        print(f"{len(due)} solved problem(s) due for review, longest overdue first:")
+        for p in due[:5]:
+            print(f"  {p.id:>3}  {p.difficulty:<6}  {p.title}")
+        pick = due[0]
+    else:
+        tried = progress.summary()
+        todo = [p for p in problems if tried.get(p.key, ("todo", False))[0] != "solved"]
+        if not todo:
+            sys.exit("every problem is solved and nothing is due for review")
+        pick = todo[0]
+        print("Next problem in roadmap order:")
+        print(f"  {pick.id:>3}  {pick.difficulty:<6}  {pick.title}")
+    print(f"\nStart it with: leet start {pick.id}")
 
 
 def cmd_start(args):
@@ -149,9 +172,13 @@ def cmd_serve(args):
     serve(port=args.port, open_browser=not args.no_open)
 
 
-def main():
+def build_parser():
     parser = argparse.ArgumentParser(prog="leet")
     sub = parser.add_subparsers(dest="command", required=True)
+
+    p = sub.add_parser("next", help="suggest what to work on: a review that is due, else the next new problem")
+    p.add_argument("--new", action="store_true", help="skip reviews and suggest a new problem")
+    p.set_defaults(func=cmd_next)
 
     p = sub.add_parser("list", help="list problems with status")
     p.add_argument("--category")
@@ -185,5 +212,9 @@ def main():
     p.add_argument("--no-open", action="store_true", help="don't open the browser")
     p.set_defaults(func=cmd_serve)
 
-    args = parser.parse_args()
+    return parser
+
+
+def main():
+    args = build_parser().parse_args()
     args.func(args)
