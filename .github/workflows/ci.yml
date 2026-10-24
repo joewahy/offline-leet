@@ -18,7 +18,5 @@ jobs:
           python-version: ${{ matrix.python-version }}
           cache: pip
       - run: pip install -e '.[dev]'
-      # test_solutions.py runs the learner's own solution.py files, which are
-      # unfinished by design, so it is not a check on the repo itself.
-      - run: pytest --ignore=tests/test_solutions.py
+      - run: pytest
       - run: leet validate

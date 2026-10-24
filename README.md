@@ -117,7 +117,7 @@ Problems are defined in `tools/specs/*.py`. Each defines the statement, starter 
 
 Hints live in `tools/hints/<category>.py` as `{problem_id: [hint1, hint2, hint3]}`, and target complexities live in `tools/complexity_data/<category>.py` as `{problem_id: (time, space)}`. Hidden tests live in `tools/hidden_data/<category>.py` as `{problem_id: (constraint_edits, source)}`, where `source` is the problem's `hidden.py` (a `generate(rng)` function returning argument lists) and `constraint_edits` raises the README's size limits to match. `build.py` re-applies both after every build (`tools/complexity.py` lists any problem without a target). Problems 1 to 5 predate the build pipeline; `tools/extend_basic_cases.py` adds their large test cases.
 
-The unit tests for the performance check and the web API are in `tests/test_perf.py` and `tests/test_server.py`: `.venv/bin/pytest tests/test_perf.py tests/test_server.py`.
+Run the repo's own tests with `.venv/bin/pytest`. `tests/test_solutions.py`, which runs your `solution.py` files and fails until you have solved everything, is left out unless you pass `--solutions` (VS Code and the Dev Container already do, so each case shows in the Testing panel): `.venv/bin/pytest --solutions -k two-sum`.
 
 `build.py` checks each reference solution against the hand-written cases, generates the larger cases, and cross-checks the reference against the brute-force solution on random small inputs. The build stops at the first problem that fails a check.
 
