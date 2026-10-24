@@ -298,8 +298,30 @@ function renderResults(outcome) {
       <dl class="detail" ${i === firstBad ? "" : "hidden"}>${detail}</dl>
     </div>`;
   }).join("");
-  const label = allPass ? `Accepted: ${passed}/${results.length} passed` : `${passed}/${results.length} passed`;
-  return `<div class="summary ${allPass ? "pass" : "fail"}">${label}</div><div class="cases">${cases}</div>${allPass ? perfBlock() : ""}`;
+  const hidden = outcome.hidden && !outcome.hidden.skipped ? outcome.hidden : null;
+  const hiddenOk = !hidden || !(hidden.error || hidden.failure);
+  const accepted = allPass && hiddenOk;
+  const label = accepted ? `Accepted: ${passed}/${results.length} passed` : `${passed}/${results.length} passed`;
+  const summaryClass = accepted ? "pass" : "fail";
+  return `<div class="summary ${summaryClass}">${label}</div><div class="cases">${cases}</div>${hidden ? hiddenBlock(hidden) : ""}${accepted ? perfBlock() : ""}`;
+}
+
+function hiddenBlock(hidden) {
+  if (hidden.error) {
+    return `<div class="hidden-tests bad"><strong>Hidden tests could not run</strong><pre class="error-box">${esc(hidden.error)}</pre></div>`;
+  }
+  const f = hidden.failure;
+  if (!f) {
+    return `<div class="hidden-tests ok"><strong>Hidden tests: ${hidden.passed}/${hidden.total} passed</strong></div>`;
+  }
+  const slow = f.error === "time limit exceeded";
+  const detail = slow
+    ? `<p>Your solution passes the visible tests but ran out of time on a large input (about ${f.input_size.toLocaleString()} characters). It is probably too slow, so look for a better time complexity.</p>`
+    : f.error
+      ? `<pre class="error-box">${esc(f.error)}</pre>`
+      : `<dl class="detail"><dt>Expected</dt><dd><pre>${esc(f.expected)}</pre></dd><dt>Your output</dt><dd><pre>${esc(f.got)}</pre></dd></dl>`;
+  return `<div class="hidden-tests bad"><strong>Failed hidden test ${f.case} of ${hidden.total}</strong>
+    <p class="muted">Large inputs are not shown.</p>${detail}${f.stdout ? `<pre>${esc(f.stdout)}</pre>` : ""}</div>`;
 }
 
 function closeSolution() {

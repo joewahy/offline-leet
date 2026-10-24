@@ -145,6 +145,9 @@ pre {
 .summary { font-weight: 600; margin-bottom: 8px; }
 .summary.pass { color: var(--pass); }
 .summary.fail { color: var(--fail); }
+.hidden-tests { margin: 10px 0; padding: 8px 10px; border-left: 3px solid var(--pass); }
+.hidden-tests.bad { border-left-color: var(--fail); }
+.hidden-tests p { margin: 4px 0; }
 .cases { display: flex; flex-direction: column; gap: 4px; }
 .case { border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
 .case > button {
