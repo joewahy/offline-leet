@@ -14,7 +14,7 @@ Output: 8
 
 ## Constraints
 
-- `1 <= n <= 10000`
+- `1 <= n <= 10^5`
 - All numbers are distinct and between `0` and `n`.
 
 ## Hints

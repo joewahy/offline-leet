@@ -16,7 +16,7 @@ Output: 8
 
 ## Constraints
 
-- `1 <= len(nums) <= 9999` (always odd)
+- `1 <= len(nums) <= 10^5` (always odd)
 - `-30000 <= nums[i] <= 30000`
 
 ## Hints
