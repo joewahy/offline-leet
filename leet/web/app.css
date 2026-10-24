@@ -228,3 +228,24 @@ pre {
 .perf-table th, .perf-table td { text-align: left; padding: 3px 14px 3px 0; }
 .perf-table th { color: var(--muted); font-weight: 600; }
 .small { font-size: 12px; margin: 6px 0 0; }
+
+#solution-scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.35); z-index: 30; }
+#solution {
+  position: fixed;
+  z-index: 31;
+  top: 8vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: min(760px, 92vw);
+  max-height: 84vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+}
+#solution[hidden], #solution-scrim[hidden] { display: none; }
+#solution-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); }
+#solution-body { overflow: auto; padding: 4px 16px 14px; }
+.solution-code { white-space: pre; margin: 8px 0; }

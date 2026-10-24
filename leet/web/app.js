@@ -60,7 +60,11 @@ async function api(path, body) {
     body: JSON.stringify(body),
   });
   const data = await res.json();
-  if (!res.ok) throw new Error(data.error || res.statusText);
+  if (!res.ok) {
+    const err = new Error(data.error || res.statusText);
+    err.status = res.status;
+    throw err;
+  }
   return data;
 }
 
@@ -298,6 +302,41 @@ function renderResults(outcome) {
   return `<div class="summary ${allPass ? "pass" : "fail"}">${label}</div><div class="cases">${cases}</div>${allPass ? perfBlock() : ""}`;
 }
 
+function closeSolution() {
+  $("#solution").hidden = true;
+  $("#solution-scrim").hidden = true;
+}
+
+async function showSolution() {
+  if (!current) return;
+  let data;
+  try {
+    try {
+      data = await api(`/api/problems/${current.key}/solution`);
+    } catch (err) {
+      if (err.status !== 403) throw err;
+      if (!confirm("You have not solved this problem yet.\n\nShow the reference solution anyway? It will spoil the problem.")) return;
+      data = await api(`/api/problems/${current.key}/solution?force=1`);
+    }
+  } catch (err) {
+    $("#save-state").textContent = "Could not load the solution: " + err.message;
+    return;
+  }
+  let code;
+  try {
+    code = await monaco.editor.colorize(data.reference, "python", { tabSize: 4 });
+  } catch (err) {
+    code = esc(data.reference);
+  }
+  const target = data.complexity
+    ? `<p class="muted">Target: ${esc(data.complexity.time)} time, ${esc(data.complexity.space)} space.</p>`
+    : "";
+  $("#solution-body").innerHTML = `${target}<pre class="solution-code">${code}</pre>
+    <p class="muted small">This is one valid solution. Yours can differ and still be right, so compare the approach and the complexity rather than the exact code.</p>`;
+  $("#solution").hidden = false;
+  $("#solution-scrim").hidden = false;
+}
+
 async function resetCode() {
   if (!current) return;
   if (!confirm("Replace your code with the starter code?\n\nYour current code is saved to a backup first.")) return;
@@ -370,6 +409,9 @@ async function start() {
   $("#next-btn").onclick = () => step(1);
   $("#run-btn").onclick = run;
   $("#reset-btn").onclick = resetCode;
+  $("#solution-btn").onclick = showSolution;
+  $("#solution-close").onclick = closeSolution;
+  $("#solution-scrim").onclick = closeSolution;
   $("#hint-btn").onclick = () => showNextHint().catch((err) => { $("#hint-label").textContent = err.message; });
   $("#problem-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
@@ -387,7 +429,10 @@ async function start() {
     btn.setAttribute("aria-expanded", String(!detail.hidden));
   };
   document.addEventListener("keydown", (e) => {
-    if (e.key === "Escape") setDrawer(false);
+    if (e.key === "Escape") {
+      setDrawer(false);
+      closeSolution();
+    }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
   });
   window.addEventListener("beforeunload", () => {

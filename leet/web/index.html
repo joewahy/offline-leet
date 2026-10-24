@@ -13,6 +13,7 @@
     <div id="title"><span id="title-text">Loading…</span><span id="difficulty" class="pill"></span></div>
     <div class="spacer"></div>
     <span id="save-state"></span>
+    <button id="solution-btn" class="ghost" title="Show the reference solution">Solution</button>
     <button id="reset-btn" class="ghost" title="Restore the starter code (your current code is backed up)">Reset</button>
     <button id="prev-btn" class="ghost" aria-label="Previous problem">&larr;</button>
     <button id="next-btn" class="ghost" aria-label="Next problem">&rarr;</button>
@@ -45,6 +46,15 @@
     <div id="problem-list"></div>
   </aside>
   <div id="scrim" hidden></div>
+
+  <div id="solution" role="dialog" aria-label="Reference solution" hidden>
+    <div id="solution-head">
+      <strong>Reference solution</strong>
+      <button id="solution-close" class="ghost" aria-label="Close">&times;</button>
+    </div>
+    <div id="solution-body"></div>
+  </div>
+  <div id="solution-scrim" hidden></div>
 
   <script src="/vendor/monaco/vs/loader.js"></script>
   <script src="/app.js"></script>
