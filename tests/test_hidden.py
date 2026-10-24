@@ -79,3 +79,23 @@ def test_broken_hidden_py_is_an_error_not_a_crash(problem):
     problem.hidden_path.write_text("def generate(rng):\n    raise RuntimeError('boom')\n")
     summary = runner.run_hidden(problem, solution("        return 0"), None)
     assert "boom" in summary["error"]
+
+
+def test_every_hidden_problem_has_a_generator_and_no_other_does():
+    from leet.problems import all_problems
+
+    for p in all_problems():
+        assert p.hidden == p.hidden_path.exists(), f"{p.key}: meta.json and hidden.py disagree"
+        if p.hidden:
+            source = p.hidden_path.read_text()
+            assert "def generate(rng)" in source, p.key
+
+
+def test_hidden_problems_state_the_size_the_tests_use():
+    from leet.problems import all_problems
+
+    for p in all_problems():
+        if p.hidden:
+            assert "10^5" in p.readme_path.read_text() or "100000" in p.readme_path.read_text(), (
+                f"{p.key}: README constraints do not allow the hidden tests' size"
+            )
