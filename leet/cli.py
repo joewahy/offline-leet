@@ -5,7 +5,7 @@ import sys
 
 from leet import progress
 from leet import perf
-from leet.execute import run_perf, run_problem
+from leet.execute import all_passed, run_perf, run_problem
 from leet.problems import all_problems, find
 from leet.reset import reset
 
@@ -46,7 +46,28 @@ def _print_results(problem, outcome):
             print(f"  got:      {_fmt(first_fail['got'])}")
         if first_fail["stdout"]:
             print(f"  stdout:\n{first_fail['stdout']}")
-    return passed == len(results)
+    return passed == len(results) and _print_hidden(outcome.get("hidden"))
+
+
+def _print_hidden(hidden):
+    """Print the hidden-test result. Returns True when there is nothing to fail."""
+    if hidden is None or hidden.get("skipped"):
+        return True
+    if "error" in hidden:
+        print(f"\nHidden tests could not run:\n{hidden['error']}")
+        return False
+    failure = hidden.get("failure")
+    if not failure:
+        print(f"Hidden tests: {hidden['passed']}/{hidden['total']} passed")
+        return True
+    print(f"\nHidden tests: failed {failure['case']} of {hidden['total']} (input about {failure['input_size']:,} characters)")
+    if failure["error"]:
+        print(f"  error: {failure['error'].strip().splitlines()[-1]}")
+    else:
+        print(f"  expected: {failure['expected']}\n  got:      {failure['got']}")
+    if failure["error"] == "time limit exceeded":
+        print("  Your solution passes the visible tests but is too slow for large inputs.")
+    return False
 
 
 def cmd_list(args):
@@ -110,12 +131,13 @@ def cmd_validate(args):
             continue
         outcome = run_problem(p, reference=True)
         results = outcome.get("results")
-        if results is None or not all(r["ok"] for r in results):
+        if not all_passed(outcome):
             failed += 1
             print(f"FAIL     {p.key}")
             _print_results(p, outcome)
         else:
-            print(f"ok       {p.key}  ({len(results)} cases)")
+            extra = f" + {outcome['hidden']['total']} hidden" if "hidden" in outcome else ""
+            print(f"ok       {p.key}  ({len(results)} cases{extra})")
     sys.exit(1 if failed else 0)
 
 
