@@ -15,6 +15,7 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Stuck on a Medium or Hard problem? Click **Show hint** under the statement. There are three hints per problem, each more revealing than the last, and they stay hidden until you ask. Hints you have opened are remembered in your browser.
 - On problems with hidden tests (see below), a run that passes the visible cases also runs a few big inputs. The problem only counts as solved when those pass too.
 - Once every test passes, the results show the problem's target time and space complexity and a **Compare with reference** button. It re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
+- Solved problems come back for review on a schedule (1, 3, 7, 14, then 30 days). Due ones show a ↻ in the list and `leet list` marks them `review`. Passing a review that is due moves it to the next interval, and failing one starts its schedule over. Running a problem again before it is due changes nothing. Problems you solved before this was added are due right away.
 - **Reset** puts the starter code back (after asking). Your previous code is saved first in `.leet-backups/` (not tracked by git), so a reset can be undone by copying it back.
 - **Solution** shows the reference solution and its target complexity. If you have already solved the problem it opens straight away; otherwise it asks first, because it spoils the problem.
 
@@ -30,7 +31,8 @@ python3.12 -m venv .venv
 ```
 
 ```bash
-.venv/bin/leet list                # problems and status (--todo, --category <name>)
+.venv/bin/leet list                # problems and status (--todo, --category <name>, --hidden)
+.venv/bin/leet next                # what to do now: a review that is due, else the next new problem (--new)
 .venv/bin/leet start 3             # open the statement and solution.py in VS Code
 .venv/bin/leet test                # test the current problem (or pass an id, slug or file path)
 .venv/bin/leet reset               # restore the starter code (asks first; --yes to skip; your code is backed up)
