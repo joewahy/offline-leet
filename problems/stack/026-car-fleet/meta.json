@@ -1,1 +1,1 @@
-{"id": 26, "title": "Car Fleet", "category": "stack", "difficulty": "Medium", "method": "carFleet", "complexity": {"time": "O(n log n)", "space": "O(n)"}}
+{"id": 26, "title": "Car Fleet", "category": "stack", "difficulty": "Medium", "method": "carFleet", "complexity": {"time": "O(n log n)", "space": "O(n)"}, "hidden": true}

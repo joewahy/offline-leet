@@ -14,7 +14,7 @@ Output: [1, 4, 1, 2, 1, 0, 0]
 
 ## Constraints
 
-- `1 <= len(temperatures) <= 10000`
+- `1 <= len(temperatures) <= 10^5`
 - `30 <= temperatures[i] <= 100`
 
 <details>

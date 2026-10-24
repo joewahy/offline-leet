@@ -18,7 +18,7 @@ Output: 3
 
 ## Constraints
 
-- `1 <= len(position) == len(speed) <= 10000`
+- `1 <= len(position) == len(speed) <= 10^5`
 - `0 <= position[i] < target <= 10^6`, all positions are distinct
 - `1 <= speed[i] <= 100`
 

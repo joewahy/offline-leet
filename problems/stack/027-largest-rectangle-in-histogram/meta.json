@@ -1,1 +1,1 @@
-{"id": 27, "title": "Largest Rectangle in Histogram", "category": "stack", "difficulty": "Hard", "method": "largestRectangleArea", "complexity": {"time": "O(n)", "space": "O(n)"}}
+{"id": 27, "title": "Largest Rectangle in Histogram", "category": "stack", "difficulty": "Hard", "method": "largestRectangleArea", "complexity": {"time": "O(n)", "space": "O(n)"}, "hidden": true}

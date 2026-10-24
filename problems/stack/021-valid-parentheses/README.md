@@ -19,7 +19,7 @@ Output: False
 
 ## Constraints
 
-- `1 <= len(s) <= 10000`
+- `1 <= len(s) <= 10^5`
 
 ## Hints
 

@@ -16,7 +16,7 @@ Output: 6          # 4 + (13 / 5)
 
 ## Constraints
 
-- `1 <= len(tokens) <= 10000`
+- `1 <= len(tokens) <= 10^5`
 - Every token is an operator or an integer in the range `[-1000, 1000]`.
 - Intermediate results fit in a 32-bit signed integer.
 
