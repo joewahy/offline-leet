@@ -210,6 +210,7 @@ pre {
 .problem-row.current { background: var(--panel); font-weight: 600; }
 .problem-row .status { width: 14px; text-align: center; color: var(--muted); }
 .problem-row .status.solved { color: var(--pass); font-weight: 700; }
+.problem-row .status.due { color: var(--warn); }
 .problem-row .num { color: var(--muted); width: 26px; text-align: right; }
 .problem-row .name { flex: 1; }
 .problem-row .pill { border: 0; padding: 0; }

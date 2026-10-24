@@ -18,14 +18,16 @@ MAX_BODY = 1_000_000
 HINTS_BLOCK = re.compile(r"\n<details>.*?</details>\n", re.DOTALL)
 
 
-def _problem_summary(p):
+def _problem_summary(p, tried=None):
+    status, due = (tried if tried is not None else progress.summary()).get(p.key, ("todo", False))
     return {
         "key": p.key,
         "id": p.id,
         "title": p.title,
         "category": p.category,
         "difficulty": p.difficulty,
-        "status": progress.status(p.key),
+        "status": status,
+        "due": due,
     }
 
 
@@ -73,7 +75,8 @@ def make_handler():
                 return self._error(403, "forbidden")
             path = urlparse(self.path).path
             if path == "/api/problems":
-                return self._json([_problem_summary(p) for p in all_problems()])
+                tried = progress.summary()
+                return self._json([_problem_summary(p, tried) for p in all_problems()])
             if path.startswith("/api/problems/"):
                 parts = path.removeprefix("/api/problems/").split("/")
                 if len(parts) == 3 and parts[1] == "hint":
@@ -157,7 +160,7 @@ def make_handler():
                 outcome = run_problem(p)
                 progress.set_current(p.key)
                 progress.record(p.key, all_passed(outcome))
-                outcome["status"] = progress.status(p.key)
+                outcome["status"], outcome["due"] = progress.summary().get(p.key, ("todo", False))
                 return self._json(outcome)
             if parts[3] == "perf":
                 atomic_write_text(p.solution_path, code)

@@ -87,9 +87,9 @@ function renderList() {
   for (const p of problems) (byCategory[p.category] ||= []).push(p);
   const html = Object.entries(byCategory).map(([cat, items]) => {
     const rows = items.map((p) => {
-      const mark = p.status === "solved" ? "&#10003;" : p.status === "attempted" ? "&#9679;" : "";
+      const mark = p.due ? "&#8635;" : p.status === "solved" ? "&#10003;" : p.status === "attempted" ? "&#9679;" : "";
       return `<button class="problem-row${current && current.key === p.key ? " current" : ""}" data-key="${p.key}">
-        <span class="status ${p.status}">${mark}</span>
+        <span class="status ${p.status}${p.due ? " due" : ""}" ${p.due ? 'title="Due for review"' : ""}>${mark}</span>
         <span class="num">${p.id}</span>
         <span class="name">${esc(p.title)}</span>
         <span class="pill ${p.difficulty}">${p.difficulty}</span>
@@ -390,7 +390,7 @@ async function run() {
     $("#results").innerHTML = renderResults(outcome);
     $("#save-state").textContent = "Saved";
     const entry = problems.find((p) => p.key === current.key);
-    if (entry && outcome.status) { entry.status = outcome.status; renderList(); }
+    if (entry && outcome.status) { entry.status = outcome.status; entry.due = outcome.due; renderList(); }
   } catch (err) {
     $("#results").innerHTML = `<pre class="error-box">${esc(err.message)}</pre>`;
   } finally {

@@ -117,3 +117,16 @@ def test_reference_solution_opens_once_solved(server, sandboxed_state):
     status, data = call(server, f"/api/problems/{PROBLEM}/solution")
     assert status == 200
     assert data["solved"] is True
+
+
+def test_problem_list_marks_solved_problems_that_are_due_for_review(server, tmp_path, monkeypatch):
+    import datetime
+
+    monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
+    progress.record("001-contains-duplicate", True, today=datetime.date(2020, 1, 1))
+    progress.record(PROBLEM, True)
+    _, rows = call(server, "/api/problems")
+    by_key = {r["key"]: r for r in rows}
+    assert (by_key["001-contains-duplicate"]["status"], by_key["001-contains-duplicate"]["due"]) == ("solved", True)
+    assert (by_key[PROBLEM]["status"], by_key[PROBLEM]["due"]) == ("solved", False)
+    assert by_key["002-valid-anagram"]["due"] is False
