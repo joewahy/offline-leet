@@ -446,6 +446,17 @@ async function resetCode() {
   }
 }
 
+let celebrateTimer;
+
+function celebrate() {
+  const results = $("#results");
+  results.classList.remove("celebrate");
+  void results.offsetWidth;
+  results.classList.add("celebrate");
+  clearTimeout(celebrateTimer);
+  celebrateTimer = setTimeout(() => results.classList.remove("celebrate"), 1700);
+}
+
 async function run() {
   const btn = $("#run-btn");
   btn.disabled = true;
@@ -455,6 +466,7 @@ async function run() {
   try {
     const outcome = await api(`/api/problems/${current.key}/run`, { code: editor.getValue() });
     $("#results").innerHTML = renderResults(outcome);
+    if ($("#results .summary.pass")) celebrate();
     $("#save-state").textContent = "Saved";
     const entry = problems.find((p) => p.key === current.key);
     if (entry && outcome.status) { entry.status = outcome.status; entry.due = outcome.due; renderList(); }

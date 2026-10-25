@@ -159,6 +159,20 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
 .summary { font-weight: 600; margin-bottom: 8px; }
 .summary.pass { color: var(--pass); }
 .summary.fail { color: var(--fail); }
+@keyframes glow-text {
+  0% { text-shadow: 0 0 0 transparent; transform: scale(1); }
+  25% { text-shadow: 0 0 14px var(--pass); transform: scale(1.06); }
+  100% { text-shadow: 0 0 0 transparent; transform: scale(1); }
+}
+@keyframes pop-mark {
+  0% { transform: scale(0.2); opacity: 0; }
+  60% { transform: scale(1.35); opacity: 1; }
+  100% { transform: scale(1); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  #results.celebrate .summary.pass { display: inline-block; transform-origin: left center; animation: glow-text 1.6s ease-out; }
+  #results.celebrate .case.ok .mark { animation: pop-mark 0.45s ease-out backwards; }
+}
 .hidden-tests { margin: 10px 0; padding: 8px 10px; border-left: 3px solid var(--pass); }
 .hidden-tests.bad { border-left-color: var(--fail); }
 .hidden-tests p { margin: 4px 0; }
