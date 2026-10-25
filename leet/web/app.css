@@ -159,6 +159,11 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
 .summary { font-weight: 600; margin-bottom: 8px; }
 .summary.pass { color: var(--pass); }
 .summary.fail { color: var(--fail); }
+@keyframes glow-screen {
+  0% { box-shadow: inset 0 0 0 0 transparent; }
+  20% { box-shadow: inset 0 0 0 3px var(--pass), inset 0 0 120px 24px color-mix(in srgb, var(--pass) 55%, transparent); }
+  100% { box-shadow: inset 0 0 0 0 transparent; }
+}
 @keyframes glow-text {
   0% { text-shadow: 0 0 0 transparent; transform: scale(1); }
   25% { text-shadow: 0 0 14px var(--pass); transform: scale(1.06); }
@@ -168,6 +173,20 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
   0% { transform: scale(0.2); opacity: 0; }
   60% { transform: scale(1.35); opacity: 1; }
   100% { transform: scale(1); }
+}
+@keyframes confetti {
+  0% { transform: translate(0, 0) rotate(0) scale(1); opacity: 1; }
+  35% { transform: translate(calc(var(--dx) * 0.7), var(--up)) rotate(calc(var(--rot) * 0.5)) scale(1); opacity: 1; }
+  100% { transform: translate(var(--dx), var(--fall)) rotate(var(--rot)) scale(0.8); opacity: 0; }
+}
+#celebration { position: fixed; inset: 0; z-index: 40; pointer-events: none; overflow: hidden; animation: glow-screen 1.8s ease-out forwards; }
+#celebration i {
+  position: absolute;
+  width: 8px;
+  height: 12px;
+  border-radius: 2px;
+  background: var(--c);
+  animation: confetti var(--t) cubic-bezier(0.2, 0.6, 0.4, 1) forwards;
 }
 @media (prefers-reduced-motion: no-preference) {
   #results.celebrate .summary.pass { display: inline-block; transform-origin: left center; animation: glow-text 1.6s ease-out; }

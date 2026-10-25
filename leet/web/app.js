@@ -455,6 +455,32 @@ function celebrate() {
   results.classList.add("celebrate");
   clearTimeout(celebrateTimer);
   celebrateTimer = setTimeout(() => results.classList.remove("celebrate"), 1700);
+  if (!matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
+  confettiBurst(results.querySelector(".summary.pass"));
+}
+
+function confettiBurst(anchor) {
+  document.querySelector("#celebration")?.remove();
+  const rect = anchor.getBoundingClientRect();
+  const layer = document.createElement("div");
+  layer.id = "celebration";
+  const colors = ["var(--pass)", "var(--accent)", "var(--warn)", "#ffffff", "#ff7bd5"];
+  for (let i = 0; i < 44; i++) {
+    const bit = document.createElement("i");
+    const angle = Math.random() * Math.PI - Math.PI;
+    const power = 120 + Math.random() * 260;
+    bit.style.left = `${rect.left + Math.min(rect.width, 160) / 2}px`;
+    bit.style.top = `${rect.top + rect.height / 2}px`;
+    bit.style.setProperty("--c", colors[i % colors.length]);
+    bit.style.setProperty("--dx", `${Math.cos(angle) * power}px`);
+    bit.style.setProperty("--up", `${Math.sin(angle) * power - 40}px`);
+    bit.style.setProperty("--fall", `${180 + Math.random() * 220}px`);
+    bit.style.setProperty("--rot", `${(Math.random() - 0.5) * 900}deg`);
+    bit.style.setProperty("--t", `${1.3 + Math.random() * 0.7}s`);
+    layer.append(bit);
+  }
+  document.body.append(layer);
+  setTimeout(() => layer.remove(), 2200);
 }
 
 async function run() {
