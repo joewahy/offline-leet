@@ -238,6 +238,16 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
   flex-direction: column;
 }
 #drawer[hidden], #scrim[hidden] { display: none; }
+@keyframes drawer-in { from { transform: translateX(-100%); } }
+@keyframes drawer-out { to { transform: translateX(-100%); } }
+@keyframes scrim-in { from { opacity: 0; } }
+@keyframes scrim-out { to { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  #drawer { animation: drawer-in 0.28s cubic-bezier(0.22, 1, 0.36, 1); }
+  #drawer.closing { animation: drawer-out 0.18s ease-in forwards; }
+  #scrim { animation: scrim-in 0.28s ease-out; }
+  #scrim.closing { animation: scrim-out 0.18s ease-in forwards; }
+}
 #drawer-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
 #drawer-head .muted { flex: 1; }
 #problem-list { overflow: auto; padding: 6px 8px 16px; }

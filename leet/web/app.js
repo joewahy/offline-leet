@@ -218,9 +218,21 @@ function closeRoadmapTopic() {
   document.querySelectorAll(".rm-node.selected").forEach((n) => n.classList.remove("selected"));
 }
 
+let drawerTimer;
+
 function setDrawer(open) {
-  $("#drawer").hidden = !open;
-  $("#scrim").hidden = !open;
+  const parts = [$("#drawer"), $("#scrim")];
+  clearTimeout(drawerTimer);
+  if (open) {
+    parts.forEach((el) => { el.classList.remove("closing"); el.hidden = false; });
+    return;
+  }
+  if (parts[0].hidden) return;
+  const animated = matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  parts.forEach((el) => el.classList.add("closing"));
+  drawerTimer = setTimeout(() => {
+    parts.forEach((el) => { el.hidden = true; el.classList.remove("closing"); });
+  }, animated ? 180 : 0);
 }
 
 async function flushSave() {
