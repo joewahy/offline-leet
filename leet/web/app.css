@@ -262,7 +262,8 @@ body.roadmap-open main { display: none; }
 body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn, #save-state) { display: none; }
 #roadmap-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--panel); }
 #roadmap-main { flex: 1; min-height: 0; display: flex; }
-#roadmap-body { flex: 1; min-width: 0; padding: 12px; }
+#roadmap-body { flex: 1; min-width: 0; overflow: hidden; cursor: grab; touch-action: none; }
+#roadmap-body.panning { cursor: grabbing; user-select: none; }
 #roadmap-topic {
   width: 340px;
   max-width: 50%;

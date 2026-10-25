@@ -173,6 +173,8 @@ function setupSplitters() {
     110, () => work.getBoundingClientRect().height - 140);
 }
 
+let roadmapView;
+
 function openRoadmap() {
   const stats = {};
   for (const p of problems) {
@@ -184,6 +186,7 @@ function openRoadmap() {
   $("#roadmap-count").textContent = `${solved} / ${problems.length} solved`;
   $("#roadmap-body").innerHTML = renderRoadmap(stats);
   $("#roadmap").hidden = false;
+  roadmapView.show();
   document.body.classList.add("roadmap-open");
   $("#roadmap-btn").innerHTML = "&larr; Back to problem";
 }
@@ -520,6 +523,7 @@ async function start() {
   $("#run-hint").textContent = isMac ? "⌘↵" : "Ctrl+↵";
   renderThemeButton();
   $("#theme-btn").onclick = toggleTheme;
+  roadmapView = initRoadmapView($("#roadmap-body"));
   $("#roadmap-btn").onclick = () => ($("#roadmap").hidden ? openRoadmap() : closeRoadmap());
   $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
   $("#roadmap-body").onkeydown = (e) => {
