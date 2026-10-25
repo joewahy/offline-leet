@@ -471,6 +471,12 @@ function celebrate() {
   confettiBurst(results.querySelector(".summary.pass"));
 }
 
+function endCelebration() {
+  clearTimeout(celebrateTimer);
+  $("#results").classList.remove("celebrate");
+  document.querySelector("#celebration")?.remove();
+}
+
 function confettiBurst(anchor) {
   document.querySelector("#celebration")?.remove();
   const rect = anchor.getBoundingClientRect();
@@ -526,23 +532,26 @@ function renderThemeButton() {
   btn.title = isLight() ? "Switch to dark mode" : "Switch to light mode";
 }
 
-let themeFadeTimer;
+let themeLight = isLight();
+
+function applyTheme() {
+  if (themeLight) document.documentElement.dataset.theme = "light";
+  else delete document.documentElement.dataset.theme;
+  renderThemeButton();
+  if (editor) monaco.editor.setTheme(themeLight ? "vs" : "vs-dark");
+}
 
 function toggleTheme() {
-  const light = !isLight();
-  const root = document.documentElement;
-  root.classList.add("theme-fade");
-  clearTimeout(themeFadeTimer);
-  themeFadeTimer = setTimeout(() => root.classList.remove("theme-fade"), 350);
-  if (light) document.documentElement.dataset.theme = "light";
-  else delete document.documentElement.dataset.theme;
+  themeLight = !themeLight;
   try {
-    localStorage.setItem("theme", light ? "light" : "dark");
+    localStorage.setItem("theme", themeLight ? "light" : "dark");
   } catch (err) {
     // the choice still applies, it just resets when the page reloads
   }
-  renderThemeButton();
-  if (editor) monaco.editor.setTheme(light ? "vs" : "vs-dark");
+  endCelebration();
+  const animated = matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  if (animated && document.startViewTransition) document.startViewTransition(applyTheme);
+  else applyTheme();
 }
 
 function initEditor() {
@@ -555,7 +564,7 @@ function initEditor() {
   };
   editor = monaco.editor.create($("#editor"), {
     language: "python",
-    theme: isLight() ? "vs" : "vs-dark",
+    theme: themeLight ? "vs" : "vs-dark",
     automaticLayout: true,
     minimap: { enabled: false },
     fontSize: 14,
