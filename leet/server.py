@@ -162,6 +162,7 @@ def make_handler():
                 progress.set_current(p.key)
                 progress.record(p.key, all_passed(outcome))
                 outcome["status"], outcome["due"] = progress.summary().get(p.key, ("todo", False))
+                outcome["due_on"] = progress.due_on(p.key)
                 return self._json(outcome)
             if parts[3] == "perf":
                 atomic_write_text(p.solution_path, code)

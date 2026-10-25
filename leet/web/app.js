@@ -9,6 +9,13 @@ let loadingCode = false;
 let hintCount = 0;
 let hintsShown = [];
 
+// Screen readers hear one short status line per run, not the whole results list.
+function announce(text) {
+  const live = $("#live");
+  live.textContent = "";
+  setTimeout(() => { live.textContent = text; }, 50);
+}
+
 function esc(s) {
   return String(s).replace(/[&<>"]/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]));
 }
@@ -90,15 +97,47 @@ function problemRow(p) {
   </button>`;
 }
 
+let listFilter = "all";
+let listQuery = "";
+
+function matchesList(p) {
+  if (listFilter === "todo" && p.status === "solved") return false;
+  if (listFilter === "due" && !p.due) return false;
+  const q = listQuery.trim().toLowerCase();
+  return !q || `${p.id} ${p.title}`.toLowerCase().includes(q);
+}
+
+// A due review comes first, then the first problem not yet solved, never the one already open.
+function nextUp() {
+  const other = (p) => !current || p.key !== current.key;
+  const due = problems.find((p) => p.due && other(p));
+  if (due) return { problem: due, label: "Review" };
+  const todo = problems.find((p) => p.status !== "solved" && other(p));
+  return todo ? { problem: todo, label: "Next" } : null;
+}
+
 function renderList() {
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#progress-count").textContent = `${solved} / ${problems.length} solved`;
+  const counts = { all: problems.length, todo: problems.length - solved, due: problems.filter((p) => p.due).length };
+  document.querySelectorAll("#problem-filter button").forEach((b) => {
+    const name = { all: "All", todo: "To do", due: "Due" }[b.dataset.filter];
+    b.textContent = `${name} ${counts[b.dataset.filter]}`;
+    b.setAttribute("aria-pressed", String(b.dataset.filter === listFilter));
+  });
+  const up = nextUp();
+  const upBtn = $("#next-up");
+  upBtn.hidden = !up;
+  if (up) {
+    upBtn.textContent = `${up.label}: ${up.problem.id}. ${up.problem.title} \u2192`;
+    upBtn.dataset.key = up.problem.key;
+  }
   const byCategory = {};
-  for (const p of problems) (byCategory[p.category] ||= []).push(p);
+  for (const p of problems.filter(matchesList)) (byCategory[p.category] ||= []).push(p);
   const html = Object.entries(byCategory).map(([cat, items]) => {
     return `<h3>${esc(categoryName(cat))}</h3>${items.map(problemRow).join("")}`;
   }).join("");
-  $("#problem-list").innerHTML = html;
+  $("#problem-list").innerHTML = html || '<p class="muted empty-list">No problems match.</p>';
 }
 
 function renderHints() {
@@ -139,8 +178,14 @@ function storeSize(name, px) {
 }
 
 // Drag a splitter to resize `target`; `measure` maps the pointer position to a size in px.
-function makeResizable(splitter, target, prop, name, measure, min, max) {
-  const apply = (px) => { target.style[prop] = `${Math.min(max(), Math.max(min, px))}px`; };
+function makeResizable(splitter, target, prop, name, measure, min, max, growKey, shrinkKey) {
+  const apply = (px) => {
+    const size = Math.min(max(), Math.max(min, px));
+    target.style[prop] = `${size}px`;
+    splitter.setAttribute("aria-valuenow", String(Math.round(size)));
+    splitter.setAttribute("aria-valuemin", String(min));
+    splitter.setAttribute("aria-valuemax", String(Math.round(max())));
+  };
   const saved = storedSize(name);
   if (saved) apply(saved);
   splitter.onpointerdown = (e) => {
@@ -161,6 +206,16 @@ function makeResizable(splitter, target, prop, name, measure, min, max) {
     target.style[prop] = "";
     storeSize(name, 0);
   };
+  splitter.onkeydown = (e) => {
+    const step = e.shiftKey ? 64 : 16;
+    const size = target.getBoundingClientRect()[prop];
+    if (e.key === growKey) apply(size + step);
+    else if (e.key === shrinkKey) apply(size - step);
+    else if (e.key === "Home") { target.style[prop] = ""; storeSize(name, 0); }
+    else return;
+    e.preventDefault();
+    if (e.key !== "Home") storeSize(name, target.getBoundingClientRect()[prop]);
+  };
 }
 
 function setupSplitters() {
@@ -168,9 +223,9 @@ function setupSplitters() {
   const work = $("#work");
   const results = $("#results");
   makeResizable($("#split-v"), left, "width", "left", (e) => e.clientX - left.getBoundingClientRect().left,
-    300, () => window.innerWidth - 320);
+    300, () => window.innerWidth - 320, "ArrowRight", "ArrowLeft");
   makeResizable($("#split-h"), results, "height", "results", (e) => work.getBoundingClientRect().bottom - e.clientY,
-    110, () => work.getBoundingClientRect().height - 140);
+    110, () => work.getBoundingClientRect().height - 140, "ArrowUp", "ArrowDown");
 }
 
 let roadmapView;
@@ -178,13 +233,15 @@ let roadmapView;
 function openRoadmap() {
   const stats = {};
   for (const p of problems) {
-    const s = (stats[p.category] ||= { solved: 0, total: 0 });
+    const s = (stats[p.category] ||= { solved: 0, total: 0, due: 0 });
     s.total += 1;
     if (p.status === "solved") s.solved += 1;
+    if (p.due) s.due += 1;
   }
+  const here = problems.find((p) => current && p.key === current.key);
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#roadmap-count").textContent = `${solved} / ${problems.length} solved`;
-  $("#roadmap-body").innerHTML = renderRoadmap(stats);
+  $("#roadmap-body").innerHTML = renderRoadmap(stats, here && here.category);
   $("#roadmap").hidden = false;
   roadmapView.show();
   document.body.classList.add("roadmap-open");
@@ -199,7 +256,7 @@ function closeRoadmap() {
   if (editor) editor.layout();
 }
 
-function selectRoadmapTopic(node) {
+function selectRoadmapTopic(node, focusPanel = false) {
   if (!node) return;
   const cat = node.dataset.cat;
   const items = problems.filter((p) => p.category === cat);
@@ -211,25 +268,59 @@ function selectRoadmapTopic(node) {
   $("#roadmap-topic-count").textContent = `${solved} / ${items.length} solved`;
   $("#roadmap-topic-list").innerHTML = items.map(problemRow).join("");
   $("#roadmap-topic").hidden = false;
+  if (focusPanel) $("#roadmap-topic-close").focus();
 }
 
 function closeRoadmapTopic() {
+  const node = document.querySelector(".rm-node.selected");
   $("#roadmap-topic").hidden = true;
   document.querySelectorAll(".rm-node.selected").forEach((n) => n.classList.remove("selected"));
+  node?.focus();
+}
+
+// On narrow screens the statement, editor and results share one pane at a time.
+function setPane(name) {
+  document.body.dataset.pane = name;
+  document.querySelectorAll("#tabs [role=tab]").forEach((tab) => {
+    const on = tab.dataset.pane === name;
+    tab.setAttribute("aria-selected", String(on));
+    tab.tabIndex = on ? 0 : -1;
+  });
+  if (name === "code" && editor) requestAnimationFrame(() => editor.layout());
+}
+
+function setMoreMenu(open) {
+  $("header").classList.toggle("more-open", open);
+  $("#more-btn").setAttribute("aria-expanded", String(open));
 }
 
 let drawerTimer;
+let drawerOpener = null;
+const BEHIND_DRAWER = "header, main, #tabs, #roadmap";
 
 function setDrawer(open) {
   const parts = [$("#drawer"), $("#scrim")];
   clearTimeout(drawerTimer);
   if (open) {
+    if (parts[0].hidden) drawerOpener = document.activeElement;
     parts.forEach((el) => { el.classList.remove("closing"); el.hidden = false; });
+    document.querySelectorAll(BEHIND_DRAWER).forEach((el) => { el.inert = true; });
+    const row = $("#problem-list .problem-row.current");
+    row?.scrollIntoView({ block: "center" });
+    if (matchMedia("(pointer: fine)").matches) {
+      $("#problem-search").focus({ preventScroll: true });
+      $("#problem-search").select();
+    } else {
+      (row || $("#close-drawer")).focus({ preventScroll: true });
+    }
     return;
   }
   if (parts[0].hidden) return;
   const animated = matchMedia("(prefers-reduced-motion: no-preference)").matches;
   parts.forEach((el) => el.classList.add("closing"));
+  document.querySelectorAll(BEHIND_DRAWER).forEach((el) => { el.inert = false; });
+  drawerOpener?.focus();
+  drawerOpener = null;
   drawerTimer = setTimeout(() => {
     parts.forEach((el) => { el.hidden = true; el.classList.remove("closing"); });
   }, animated ? 180 : 0);
@@ -276,6 +367,7 @@ async function openProblem(key) {
   $("#save-state").textContent = "";
   $("#results").innerHTML = '<p class="muted">Run your code to see results here.</p>';
   loadHints(data.key, data.hint_count || 0).catch(() => {});
+  setPane("problem");
   renderList();
   setDrawer(false);
   closeRoadmap();
@@ -355,6 +447,27 @@ async function runPerf() {
   }
 }
 
+function nextProblem() {
+  const i = problems.findIndex((p) => p.key === current.key);
+  const after = [...problems.slice(i + 1), ...problems.slice(0, i)];
+  return after.find((p) => p.status !== "solved") || problems[i + 1] || null;
+}
+
+function reviewNote(dueOn) {
+  if (!dueOn) return "";
+  const days = Math.round((new Date(`${dueOn}T00:00:00`) - new Date().setHours(0, 0, 0, 0)) / 86400000);
+  if (days <= 0) return "Due for review today";
+  return days === 1 ? "Next review tomorrow" : `Next review in ${days} days`;
+}
+
+function landingBlock(outcome) {
+  const note = reviewNote(outcome.due_on);
+  const next = nextProblem();
+  if (!note && !next) return "";
+  return `<div class="landing">${note ? `<span class="muted">${note}</span>` : ""}${next
+    ? `<button id="next-problem" data-key="${next.key}">Next: ${next.id}. ${esc(next.title)} &rarr;</button>` : ""}</div>`;
+}
+
 function renderResults(outcome) {
   if (outcome.load_error) {
     return `<div class="summary fail">Could not run your code</div><pre class="error-box">${esc(outcome.load_error)}</pre>`;
@@ -384,7 +497,10 @@ function renderResults(outcome) {
     : allPass ? `${visible} visible tests passed, but a hidden test failed`
     : `${visible} passed`;
   const summaryClass = accepted ? "pass" : "fail";
-  return `<div class="summary ${summaryClass}">${label}</div>${hidden ? hiddenBlock(hidden) : ""}<div class="cases">${cases}</div>${accepted ? perfBlock() : ""}`;
+  const caseList = accepted
+    ? `<details class="cases-fold"><summary>${results.length} test cases</summary><div class="cases">${cases}</div></details>`
+    : `<div class="cases">${cases}</div>`;
+  return `<div class="summary ${summaryClass}">${label}</div>${hidden ? hiddenBlock(hidden) : ""}${accepted ? landingBlock(outcome) + perfBlock() : ""}${caseList}`;
 }
 
 function hiddenBlock(hidden) {
@@ -406,11 +522,11 @@ function hiddenBlock(hidden) {
 }
 
 function closeSolution() {
-  $("#solution").hidden = true;
-  $("#solution-scrim").hidden = true;
+  const dialog = $("#solution");
+  if (dialog.open) dialog.close();
 }
 
-function confirmDialog({ title, lines, confirmLabel, danger = false }) {
+function confirmDialog({ title, lines, confirmLabel, danger = false, focusCancel = false }) {
   const dialog = $("#confirm");
   $("#confirm-title").textContent = title;
   $("#confirm-message").innerHTML = lines.map((line) => `<p>${esc(line)}</p>`).join("");
@@ -421,6 +537,7 @@ function confirmDialog({ title, lines, confirmLabel, danger = false }) {
   return new Promise((resolve) => {
     dialog.addEventListener("close", () => resolve(dialog.returnValue === "ok"), { once: true });
     dialog.showModal();
+    if (focusCancel) dialog.querySelector("[value=cancel]").focus();
   });
 }
 
@@ -436,6 +553,7 @@ async function showSolution() {
         title: "Show the solution?",
         lines: ["You have not solved this problem yet.", "Seeing the reference solution will spoil it."],
         confirmLabel: "Show solution",
+        focusCancel: true,
       });
       if (!go) return;
       data = await api(`/api/problems/${current.key}/solution?force=1`);
@@ -456,8 +574,8 @@ async function showSolution() {
   const explanation = data.explanation ? `<div class="explanation">${renderMarkdown(data.explanation)}</div>` : "";
   $("#solution-body").innerHTML = `${target}${explanation}<pre class="solution-code">${code}</pre>
     <p class="muted small">This is one valid solution. Yours can differ and still be right, so compare the approach and the complexity rather than the exact code.</p>`;
-  $("#solution").hidden = false;
-  $("#solution-scrim").hidden = false;
+  $("#solution-body").scrollTop = 0;
+  $("#solution").showModal();
 }
 
 async function resetCode() {
@@ -507,41 +625,45 @@ function confettiBurst(anchor) {
   const rect = anchor.getBoundingClientRect();
   const layer = document.createElement("div");
   layer.id = "celebration";
-  const colors = ["var(--pass)", "var(--accent)", "var(--warn)", "#ffffff", "#ff7bd5"];
-  for (let i = 0; i < 44; i++) {
+  const colors = ["var(--pass)", "var(--accent)", "var(--warn)"];
+  for (let i = 0; i < 20; i++) {
     const bit = document.createElement("i");
     const angle = Math.random() * Math.PI - Math.PI;
-    const power = 120 + Math.random() * 260;
+    const power = 70 + Math.random() * 140;
     bit.style.left = `${rect.left + Math.min(rect.width, 160) / 2}px`;
     bit.style.top = `${rect.top + rect.height / 2}px`;
     bit.style.setProperty("--c", colors[i % colors.length]);
     bit.style.setProperty("--dx", `${Math.cos(angle) * power}px`);
     bit.style.setProperty("--up", `${Math.sin(angle) * power - 40}px`);
-    bit.style.setProperty("--fall", `${180 + Math.random() * 220}px`);
+    bit.style.setProperty("--fall", `${90 + Math.random() * 110}px`);
     bit.style.setProperty("--rot", `${(Math.random() - 0.5) * 900}deg`);
-    bit.style.setProperty("--t", `${1.3 + Math.random() * 0.7}s`);
+    bit.style.setProperty("--t", `${0.9 + Math.random() * 0.5}s`);
     layer.append(bit);
   }
   document.body.append(layer);
-  setTimeout(() => layer.remove(), 2200);
+  setTimeout(() => layer.remove(), 1600);
 }
 
 async function run() {
   const btn = $("#run-btn");
   if (btn.disabled) return;
   btn.disabled = true;
+  setPane("results");
+  announce("Running…");
   $("#results").innerHTML = '<p class="muted">Running…</p>';
   clearTimeout(saveTimer);
   saveTimer = null;
   try {
     const outcome = await api(`/api/problems/${current.key}/run`, { code: editor.getValue() });
     $("#results").innerHTML = renderResults(outcome);
+    announce($("#results .summary")?.textContent || "");
     if ($("#results .summary.pass")) celebrate();
     $("#save-state").textContent = "Saved";
     const entry = problems.find((p) => p.key === current.key);
     if (entry && outcome.status) { entry.status = outcome.status; entry.due = outcome.due; renderList(); }
   } catch (err) {
     $("#results").innerHTML = `<pre class="error-box">${esc(err.message)}</pre>`;
+    announce("Run failed: " + err.message);
   } finally {
     btn.disabled = false;
   }
@@ -592,7 +714,7 @@ function initEditor() {
     theme: themeLight ? "vs" : "vs-dark",
     automaticLayout: true,
     minimap: { enabled: false },
-    fontSize: 14,
+    fontSize: matchMedia("(pointer: coarse)").matches ? 16 : 14,
     scrollBeyondLastLine: false,
     tabSize: 4,
     insertSpaces: true,
@@ -617,7 +739,7 @@ async function start() {
   $("#roadmap-body").onkeydown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      selectRoadmapTopic(e.target.closest(".rm-node"));
+      selectRoadmapTopic(e.target.closest(".rm-node"), true);
     }
   };
   $("#roadmap-topic-close").onclick = closeRoadmapTopic;
@@ -626,6 +748,26 @@ async function start() {
     if (!row) return;
     closeRoadmap();
     openProblem(row.dataset.key);
+  };
+  $("#more-btn").onclick = () => setMoreMenu(!$("header").classList.contains("more-open"));
+  $("#more-actions").addEventListener("click", (e) => {
+    if (e.target.closest("button")) setMoreMenu(false);
+  });
+  document.addEventListener("click", (e) => {
+    if (!e.target.closest("#more-btn, #more-actions")) setMoreMenu(false);
+  });
+  $("#tabs").onclick = (e) => {
+    const tab = e.target.closest("[role=tab]");
+    if (tab) setPane(tab.dataset.pane);
+  };
+  $("#tabs").onkeydown = (e) => {
+    const tabs = [...document.querySelectorAll("#tabs [role=tab]")];
+    const i = tabs.findIndex((t) => t.dataset.pane === document.body.dataset.pane);
+    const next = e.key === "ArrowRight" ? tabs[(i + 1) % tabs.length] : e.key === "ArrowLeft" ? tabs[(i + tabs.length - 1) % tabs.length] : null;
+    if (!next) return;
+    e.preventDefault();
+    setPane(next.dataset.pane);
+    next.focus();
   };
   $("#menu-btn").onclick = () => setDrawer(true);
   $("#close-drawer").onclick = () => setDrawer(false);
@@ -637,10 +779,28 @@ async function start() {
   $("#reset-btn").onclick = resetCode;
   $("#solution-btn").onclick = showSolution;
   $("#solution-close").onclick = closeSolution;
-  $("#solution-scrim").onclick = closeSolution;
+  $("#solution").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeSolution();
+  });
   $("#confirm").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) e.currentTarget.close("cancel");
   });
+  $("#problem-search").oninput = (e) => {
+    listQuery = e.target.value;
+    renderList();
+  };
+  $("#problem-search").onkeydown = (e) => {
+    if (e.key !== "Enter") return;
+    const first = problems.find(matchesList);
+    if (first) openProblem(first.key);
+  };
+  $("#problem-filter").onclick = (e) => {
+    const btn = e.target.closest("[data-filter]");
+    if (!btn) return;
+    listFilter = btn.dataset.filter;
+    renderList();
+  };
+  $("#next-up").onclick = (e) => openProblem(e.currentTarget.dataset.key);
   $("#problem-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
     if (row) openProblem(row.dataset.key);
@@ -648,6 +808,11 @@ async function start() {
   $("#results").onclick = (e) => {
     if (e.target.closest("#perf-btn")) {
       runPerf();
+      return;
+    }
+    const next = e.target.closest("#next-problem");
+    if (next) {
+      openProblem(next.dataset.key);
       return;
     }
     const btn = e.target.closest(".case > button");
@@ -658,12 +823,13 @@ async function start() {
   };
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
+      setMoreMenu(false);
       setDrawer(false);
       closeRoadmap();
       closeSolution();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
-    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open) {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open && !$("#solution").open) {
       e.preventDefault();
       run();
     }

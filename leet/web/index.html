@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>offline-leet</title>
   <script>
     try {
@@ -12,19 +12,22 @@
   <link rel="stylesheet" href="/app.css">
   <link rel="stylesheet" href="/vendor/monaco/vs/editor/editor.main.css">
 </head>
-<body>
+<body data-pane="problem">
   <header>
     <button id="roadmap-btn" class="ghost">&#10070; Roadmap</button>
     <button id="menu-btn" class="ghost" aria-label="Show problem list">&#9776; Problems</button>
     <div id="title"><span id="title-text">Loading…</span><span id="difficulty" class="pill"></span></div>
     <div class="spacer"></div>
     <span id="save-state"></span>
-    <button id="solution-btn" class="ghost" title="Show the reference solution">Solution</button>
-    <button id="reset-btn" class="ghost" title="Restore the starter code (your current code is backed up)">Reset</button>
+    <button id="more-btn" class="ghost" aria-haspopup="true" aria-expanded="false" aria-controls="more-actions">&#8943; More</button>
+    <div id="more-actions">
+      <button id="solution-btn" class="ghost" title="Show the reference solution">Solution</button>
+      <button id="reset-btn" class="ghost" title="Restore the starter code (your current code is backed up)">Reset</button>
+      <button id="theme-btn" class="ghost"></button>
+    </div>
     <button id="prev-btn" class="ghost" aria-label="Previous problem">&larr;</button>
     <button id="next-btn" class="ghost" aria-label="Next problem">&rarr;</button>
     <button id="run-btn" class="primary">Run <kbd id="run-hint"></kbd></button>
-    <button id="theme-btn" class="ghost"></button>
   </header>
 
   <main>
@@ -37,19 +40,35 @@
         <div id="hint-list"></div>
       </div>
     </section>
-    <div id="split-v" class="splitter" role="separator" aria-orientation="vertical" aria-label="Resize problem panel"></div>
+    <div id="split-v" class="splitter" role="separator" aria-orientation="vertical" aria-label="Resize problem panel" tabindex="0"></div>
     <section id="work">
       <div id="editor" aria-label="Code editor"></div>
-      <div id="split-h" class="splitter" role="separator" aria-orientation="horizontal" aria-label="Resize results panel"></div>
-      <div id="results" aria-live="polite"><p class="muted">Run your code to see results here.</p></div>
+      <div id="split-h" class="splitter" role="separator" aria-orientation="horizontal" aria-label="Resize results panel" tabindex="0"></div>
+      <div id="results"><p class="muted">Run your code to see results here.</p></div>
+      <div id="live" class="sr-only" role="status" aria-live="polite"></div>
     </section>
   </main>
 
-  <aside id="drawer" hidden>
+  <nav id="tabs" role="tablist" aria-label="Panels">
+    <button role="tab" data-pane="problem" aria-selected="true" aria-controls="left">Problem</button>
+    <button role="tab" data-pane="code" aria-selected="false" aria-controls="editor" tabindex="-1">Code</button>
+    <button role="tab" data-pane="results" aria-selected="false" aria-controls="results" tabindex="-1">Results</button>
+  </nav>
+
+  <aside id="drawer" role="dialog" aria-modal="true" aria-label="Problems" hidden>
     <div id="drawer-head">
       <strong>Problems</strong>
       <span id="progress-count" class="muted"></span>
       <button id="close-drawer" class="ghost" aria-label="Close">&times;</button>
+    </div>
+    <div id="drawer-tools">
+      <input id="problem-search" type="search" placeholder="Search by name or number" aria-label="Search problems" autocomplete="off">
+      <div id="problem-filter" role="group" aria-label="Filter problems">
+        <button class="ghost" data-filter="all" aria-pressed="true">All</button>
+        <button class="ghost" data-filter="todo" aria-pressed="false">To do</button>
+        <button class="ghost" data-filter="due" aria-pressed="false">Due</button>
+      </div>
+      <button id="next-up" hidden></button>
     </div>
     <div id="problem-list"></div>
   </aside>
@@ -77,14 +96,13 @@
     </div>
   </section>
 
-  <div id="solution" role="dialog" aria-label="Reference solution" hidden>
+  <dialog id="solution" aria-label="Reference solution">
     <div id="solution-head">
       <strong>Reference solution</strong>
       <button id="solution-close" class="ghost" aria-label="Close">&times;</button>
     </div>
     <div id="solution-body"></div>
-  </div>
-  <div id="solution-scrim" hidden></div>
+  </dialog>
 
   <dialog id="confirm" aria-labelledby="confirm-title">
     <form method="dialog">

@@ -85,3 +85,11 @@ def test_longest_overdue_comes_first(progress_file):
     progress.record("a", True, today=D(2026, 1, 10))
     progress.record("b", True, today=D(2026, 1, 1))
     assert progress.due_reviews(D(2026, 2, 1)) == ["b", "a"]
+
+
+def test_due_on_is_the_next_review_date_of_a_solved_problem(progress_file):
+    assert progress.due_on("p") is None
+    progress.record("p", False, today=D(2026, 1, 1))
+    assert progress.due_on("p") is None
+    progress.record("p", True, today=D(2026, 1, 1))
+    assert progress.due_on("p") == "2026-01-02"

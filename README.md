@@ -8,16 +8,17 @@ You need Python 3.11 or newer. Nothing else has to be installed, and nothing is 
 
 Double-click `Start.command` (or run `python3 -m leet serve`). Your browser opens `http://localhost:8765`.
 
-- Pick a problem from the **Problems** list (it shows solved and attempted marks).
+- Pick a problem from the **Problems** list (it shows solved and attempted marks). Search by name or number (Enter opens the first match), filter by All, To do or Due, or use the button under the filters: it jumps to a due review if there is one, otherwise to the next unsolved problem.
 - Read the statement on the left and write your solution in the editor on the right.
 - Press **Run** or Cmd+Enter (Ctrl+Enter elsewhere). Failures show the input, the expected value, your output, any error, and anything you printed.
 - Your code autosaves to the problem's `solution.py`.
-- **Roadmap** (left of **Problems**) shows the NeetCode topic map: each topic is a node with a progress bar, and the lines show which topics lead to which. Click a topic to open a panel listing its problems, then click one to start it. The roadmap replaces the problem view while it is open, and the button turns into **Back to problem** to return to where you were.
-- Drag the divider between the statement and the editor, or between the editor and the results, to resize them. Double-click a divider to reset it. Sizes are remembered in your browser.
+- **Roadmap** (left of **Problems**) shows the NeetCode topic map: each topic is a node with a progress bar and a solved count, a dot when a review is due and a dashed ring around the topic you are in, and the lines show which topics lead to which. Click a topic to open a panel listing its problems, then click one to start it. The roadmap replaces the problem view while it is open, and the button turns into **Back to problem** to return to where you were.
+- Drag the divider between the statement and the editor, or between the editor and the results, to resize them. Double-click a divider to reset it, or focus it and use the arrow keys (Home resets). Sizes are remembered in your browser.
 - Stuck on a Medium or Hard problem? Open a hint under the statement. There are three hints per problem, each more revealing than the last, each in its own collapsed toggle so nothing is spoiled until you open it.
 - On problems with hidden tests (see below), a run that passes the visible cases also runs a few big inputs. The problem only counts as solved when those pass too.
-- Once every test passes, the results show the problem's target time and space complexity and a **Compare with reference** button. It re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
+- Once every test passes, the results show when the problem comes back for review, a **Next** button for the next unsolved problem, the target time and space complexity, and a **Compare with reference** button. The passed cases fold into one line you can open. Compare re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
 - Solved problems come back for review on a schedule (1, 3, 7, 14, then 30 days). Due ones show a ↻ in the list and `leet list` marks them `review`. Passing a review that is due moves it to the next interval, and failing one starts its schedule over. Running a problem again before it is due changes nothing. Problems you solved before this was added are due right away.
+- On a phone the statement, editor and results become three tabs along the bottom, with **Run** beside them. Run jumps to the results, and Solution, Reset and the theme switch live under **More**. On the roadmap, pinch to zoom.
 - **Reset** puts the starter code back (after asking). Your previous code is saved first in `.leet-backups/` (not tracked by git), so a reset can be undone by copying it back.
 - **Solution** shows the reference solution, a short explanation of the approach and why it has that complexity, and its target complexity. If you have already solved the problem it opens straight away; otherwise it asks first, because it spoils the problem.
 

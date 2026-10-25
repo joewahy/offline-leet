@@ -115,6 +115,12 @@ def status(key):
     return "solved" if entry["solved"] else "attempted"
 
 
+def due_on(key):
+    """ISO date a solved problem next comes up for review, or None if it is not solved."""
+    entry = load()["problems"].get(key)
+    return entry.get("due") if entry and entry["solved"] else None
+
+
 def summary(today=None):
     """{key: (status, due)} for every problem that has been tried, from one read of the file."""
     today = today or datetime.date.today()

@@ -46,14 +46,14 @@ const ROADMAP_EDGES = [
 
 const NODE_W = 210;
 const NODE_LINE = 28;
-const NODE_PAD = 66;
+const NODE_PAD = 76;
 
 function nodeHeight(node) {
   return NODE_PAD + (node.label.length - 1) * NODE_LINE;
 }
 
-// `stats` maps a category to {solved, total}.
-function renderRoadmap(stats) {
+// `stats` maps a category to {solved, total, due}; `currentCat` is the topic of the open problem.
+function renderRoadmap(stats, currentCat) {
   const edges = ROADMAP_EDGES.map(([from, to]) => {
     const a = ROADMAP_NODES[from];
     const b = ROADMAP_NODES[to];
@@ -63,22 +63,27 @@ function renderRoadmap(stats) {
     return `<path class="rm-edge" d="M${a.x},${y1} C${a.x},${mid} ${b.x},${mid} ${b.x},${y2}"/>`;
   }).join("");
   const nodes = Object.entries(ROADMAP_NODES).map(([cat, node]) => {
-    const { solved, total } = stats[cat] || { solved: 0, total: 0 };
+    const { solved, total, due = 0 } = stats[cat] || { solved: 0, total: 0 };
     const h = nodeHeight(node);
     const left = node.x - NODE_W / 2;
     const top = node.y - h / 2;
     const done = total > 0 && solved === total;
-    const barW = NODE_W - 24;
+    const barW = NODE_W - 86;
+    const here = cat === currentCat;
+    const notes = [`${solved} of ${total} solved`, due ? `${due} due for review` : "", here ? "current topic" : ""].filter(Boolean).join(", ");
     const lines = node.label
       .map((line, i) => `<text x="${node.x}" y="${top + 31 + i * NODE_LINE}" text-anchor="middle">${esc(line)}</text>`)
       .join("");
-    return `<g class="rm-node${done ? " done" : ""}${total ? "" : " empty"}" data-cat="${cat}" role="button" tabindex="0"
-        aria-label="${esc(node.label.join(" "))}, ${solved} of ${total} solved">
-      <title>${esc(node.label.join(" "))}: ${solved} / ${total} solved</title>
+    return `<g class="rm-node${done ? " done" : ""}${total ? "" : " empty"}${here ? " here" : ""}" data-cat="${cat}" role="button" tabindex="0"
+        aria-label="${esc(node.label.join(" "))}, ${notes}">
+      <title>${esc(node.label.join(" "))}: ${notes}</title>
+      ${here ? `<rect class="rm-here" x="${left - 7}" y="${top - 7}" width="${NODE_W + 14}" height="${h + 14}" rx="15"/>` : ""}
       <rect class="rm-box" x="${left}" y="${top}" width="${NODE_W}" height="${h}" rx="9"/>
       ${lines}
-      <rect class="rm-track" x="${left + 12}" y="${top + h - 16}" width="${barW}" height="4" rx="2"/>
-      <rect class="rm-fill" x="${left + 12}" y="${top + h - 16}" width="${total ? (barW * solved) / total : 0}" height="4" rx="2"/>
+      <rect class="rm-track" x="${left + 12}" y="${top + h - 22}" width="${barW}" height="8" rx="4"/>
+      <rect class="rm-fill" x="${left + 12}" y="${top + h - 22}" width="${total ? (barW * solved) / total : 0}" height="8" rx="4"/>
+      <text class="rm-count" x="${left + NODE_W - 12}" y="${top + h - 13}" text-anchor="end">${solved}/${total}</text>
+      ${due ? `<circle class="rm-due" cx="${left + NODE_W - 4}" cy="${top + 4}" r="11"/>` : ""}
     </g>`;
   }).join("");
   return `<svg xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Roadmap"><g id="rm-viewport">${edges}${nodes}</g></svg>`;
@@ -90,8 +95,10 @@ const ROADMAP_ZOOM = { min: 0.2, max: 4 };
 // Pan and zoom for the roadmap svg, kept as a translate+scale on #rm-viewport.
 // The view survives re-renders; `fit()` recentres it.
 function initRoadmapView(container) {
-  const view = { scale: 1, x: 0, y: 0, ready: false };
+  const view = { scale: 1, x: 0, y: 0, ready: false, touched: false };
+  const pointers = new Map();
   let drag = null;
+  let pinch = null;
   let moved = false;
 
   const viewport = () => container.querySelector("#rm-viewport");
@@ -109,6 +116,7 @@ function initRoadmapView(container) {
     view.x = (width - b.w * view.scale) / 2 - b.x * view.scale;
     view.y = (height - b.h * view.scale) / 2 - b.y * view.scale;
     view.ready = true;
+    view.touched = false;
     apply();
   }
 
@@ -119,6 +127,7 @@ function initRoadmapView(container) {
     view.x = px - (px - view.x) * k;
     view.y = py - (py - view.y) * k;
     view.scale = scale;
+    view.touched = true;
     apply();
   }
 
@@ -134,13 +143,37 @@ function initRoadmapView(container) {
     zoomAt(Math.exp(-e.deltaY * speed), e.clientX - rect.left, e.clientY - rect.top);
   }, { passive: false });
 
+  const spread = () => {
+    const [a, b] = [...pointers.values()];
+    return { dist: Math.hypot(a.x - b.x, a.y - b.y), x: (a.x + b.x) / 2, y: (a.y + b.y) / 2 };
+  };
+
   container.addEventListener("pointerdown", (e) => {
     if (e.button !== 0) return;
+    pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pointers.size === 2) {
+      drag = null;
+      moved = true;
+      container.classList.add("panning");
+      pinch = spread();
+      return;
+    }
     drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, vx: view.x, vy: view.y };
     moved = false;
   });
 
   container.addEventListener("pointermove", (e) => {
+    if (pointers.has(e.pointerId)) pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+    if (pinch && pointers.size === 2) {
+      const now = spread();
+      const rect = container.getBoundingClientRect();
+      zoomAt(now.dist / pinch.dist, pinch.x - rect.left, pinch.y - rect.top);
+      view.x += now.x - pinch.x;
+      view.y += now.y - pinch.y;
+      apply();
+      pinch = now;
+      return;
+    }
     if (!drag || e.pointerId !== drag.id) return;
     const dx = e.clientX - drag.sx;
     const dy = e.clientY - drag.sy;
@@ -150,12 +183,25 @@ function initRoadmapView(container) {
       container.setPointerCapture(e.pointerId);
       container.classList.add("panning");
     }
+    view.touched = true;
     view.x = drag.vx + dx;
     view.y = drag.vy + dy;
     apply();
   });
 
   function endDrag(e) {
+    pointers.delete(e.pointerId);
+    if (pinch) {
+      pinch = null;
+      drag = null;
+      if (pointers.size === 1) {
+        const [id, at] = [...pointers.entries()][0];
+        drag = { id, sx: at.x, sy: at.y, vx: view.x, vy: view.y };
+      } else {
+        container.classList.remove("panning");
+      }
+      return;
+    }
     if (!drag || e.pointerId !== drag.id) return;
     drag = null;
     container.classList.remove("panning");
@@ -169,6 +215,11 @@ function initRoadmapView(container) {
     moved = false;
     e.stopImmediatePropagation();
   }, true);
+
+  // Keep the whole map in view when the window or orientation changes, unless the user has moved it.
+  new ResizeObserver(() => {
+    if (!view.touched) fit();
+  }).observe(container);
 
   return {
     show() {
