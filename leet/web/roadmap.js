@@ -81,5 +81,102 @@ function renderRoadmap(stats) {
       <rect class="rm-fill" x="${left + 12}" y="${top + h - 16}" width="${total ? (barW * solved) / total : 0}" height="4" rx="2"/>
     </g>`;
   }).join("");
-  return `<svg viewBox="200 20 1340 1310" xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Roadmap">${edges}${nodes}</svg>`;
+  return `<svg xmlns="http://www.w3.org/2000/svg" role="group" aria-label="Roadmap"><g id="rm-viewport">${edges}${nodes}</g></svg>`;
+}
+
+const ROADMAP_BOUNDS = { x: 200, y: 20, w: 1340, h: 1310 };
+const ROADMAP_ZOOM = { min: 0.2, max: 4 };
+
+// Pan and zoom for the roadmap svg, kept as a translate+scale on #rm-viewport.
+// The view survives re-renders; `fit()` recentres it.
+function initRoadmapView(container) {
+  const view = { scale: 1, x: 0, y: 0, ready: false };
+  let drag = null;
+  let moved = false;
+
+  const viewport = () => container.querySelector("#rm-viewport");
+
+  function apply() {
+    const g = viewport();
+    if (g) g.setAttribute("transform", `translate(${view.x} ${view.y}) scale(${view.scale})`);
+  }
+
+  function fit() {
+    const b = ROADMAP_BOUNDS;
+    const { width, height } = container.getBoundingClientRect();
+    if (!width || !height) return;
+    view.scale = Math.min(width / b.w, height / b.h);
+    view.x = (width - b.w * view.scale) / 2 - b.x * view.scale;
+    view.y = (height - b.h * view.scale) / 2 - b.y * view.scale;
+    view.ready = true;
+    apply();
+  }
+
+  // Zoom by `factor`, keeping the point (px, py) in container pixels fixed.
+  function zoomAt(factor, px, py) {
+    const scale = Math.min(ROADMAP_ZOOM.max, Math.max(ROADMAP_ZOOM.min, view.scale * factor));
+    const k = scale / view.scale;
+    view.x = px - (px - view.x) * k;
+    view.y = py - (py - view.y) * k;
+    view.scale = scale;
+    apply();
+  }
+
+  function zoomCentre(factor) {
+    const { width, height } = container.getBoundingClientRect();
+    zoomAt(factor, width / 2, height / 2);
+  }
+
+  container.addEventListener("wheel", (e) => {
+    e.preventDefault();
+    const rect = container.getBoundingClientRect();
+    const speed = e.ctrlKey ? 0.01 : 0.0015;
+    zoomAt(Math.exp(-e.deltaY * speed), e.clientX - rect.left, e.clientY - rect.top);
+  }, { passive: false });
+
+  container.addEventListener("pointerdown", (e) => {
+    if (e.button !== 0) return;
+    drag = { id: e.pointerId, sx: e.clientX, sy: e.clientY, vx: view.x, vy: view.y };
+    moved = false;
+  });
+
+  container.addEventListener("pointermove", (e) => {
+    if (!drag || e.pointerId !== drag.id) return;
+    const dx = e.clientX - drag.sx;
+    const dy = e.clientY - drag.sy;
+    if (!moved) {
+      if (Math.hypot(dx, dy) < 4) return;
+      moved = true;
+      container.setPointerCapture(e.pointerId);
+      container.classList.add("panning");
+    }
+    view.x = drag.vx + dx;
+    view.y = drag.vy + dy;
+    apply();
+  });
+
+  function endDrag(e) {
+    if (!drag || e.pointerId !== drag.id) return;
+    drag = null;
+    container.classList.remove("panning");
+  }
+  container.addEventListener("pointerup", endDrag);
+  container.addEventListener("pointercancel", endDrag);
+
+  // A drag that ends over a node must not count as a click on it.
+  container.addEventListener("click", (e) => {
+    if (!moved) return;
+    moved = false;
+    e.stopImmediatePropagation();
+  }, true);
+
+  return {
+    show() {
+      if (view.ready) apply();
+      else fit();
+    },
+    fit,
+    zoomIn: () => zoomCentre(1.25),
+    zoomOut: () => zoomCentre(0.8),
+  };
 }
