@@ -184,11 +184,16 @@ function openRoadmap() {
   $("#roadmap-count").textContent = `${solved} / ${problems.length} solved`;
   $("#roadmap-body").innerHTML = renderRoadmap(stats);
   $("#roadmap").hidden = false;
+  document.body.classList.add("roadmap-open");
+  $("#roadmap-btn").innerHTML = "&larr; Back to problem";
 }
 
 function closeRoadmap() {
   $("#roadmap").hidden = true;
   $("#roadmap-topic").hidden = true;
+  document.body.classList.remove("roadmap-open");
+  $("#roadmap-btn").innerHTML = "&#10070; Roadmap";
+  if (editor) editor.layout();
 }
 
 function selectRoadmapTopic(node) {
@@ -258,6 +263,7 @@ async function openProblem(key) {
   loadHints(data.key, data.hint_count || 0).catch(() => {});
   renderList();
   setDrawer(false);
+  closeRoadmap();
 }
 
 function step(delta) {
@@ -485,8 +491,7 @@ function initEditor() {
 
 async function start() {
   $("#run-hint").textContent = isMac ? "⌘↵" : "Ctrl+↵";
-  $("#roadmap-btn").onclick = openRoadmap;
-  $("#roadmap-close").onclick = closeRoadmap;
+  $("#roadmap-btn").onclick = () => ($("#roadmap").hidden ? openRoadmap() : closeRoadmap());
   $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
   $("#roadmap-body").onkeydown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
