@@ -9,6 +9,7 @@
 </head>
 <body>
   <header>
+    <button id="roadmap-btn" class="ghost" aria-label="Show roadmap">&#10070; Roadmap</button>
     <button id="menu-btn" class="ghost" aria-label="Show problem list">&#9776; Problems</button>
     <div id="title"><span id="title-text">Loading…</span><span id="difficulty" class="pill"></span></div>
     <div class="spacer"></div>
@@ -48,6 +49,15 @@
   </aside>
   <div id="scrim" hidden></div>
 
+  <div id="roadmap" role="dialog" aria-label="Roadmap" hidden>
+    <div id="roadmap-head">
+      <strong>Roadmap</strong>
+      <span id="roadmap-count" class="muted"></span>
+      <button id="roadmap-close" class="ghost" aria-label="Close">&times;</button>
+    </div>
+    <div id="roadmap-body"></div>
+  </div>
+
   <div id="solution" role="dialog" aria-label="Reference solution" hidden>
     <div id="solution-head">
       <strong>Reference solution</strong>
@@ -58,6 +68,7 @@
   <div id="solution-scrim" hidden></div>
 
   <script src="/vendor/monaco/vs/loader.js"></script>
+  <script src="/roadmap.js"></script>
   <script src="/app.js"></script>
 </body>
 </html>

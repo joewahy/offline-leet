@@ -172,6 +172,32 @@ function setupSplitters() {
     110, () => work.getBoundingClientRect().height - 140);
 }
 
+function openRoadmap() {
+  const stats = {};
+  for (const p of problems) {
+    const s = (stats[p.category] ||= { solved: 0, total: 0 });
+    s.total += 1;
+    if (p.status === "solved") s.solved += 1;
+  }
+  const solved = problems.filter((p) => p.status === "solved").length;
+  $("#roadmap-count").textContent = `${solved} / ${problems.length} solved`;
+  $("#roadmap-body").innerHTML = renderRoadmap(stats);
+  $("#roadmap").hidden = false;
+}
+
+function closeRoadmap() {
+  $("#roadmap").hidden = true;
+}
+
+function pickRoadmapNode(node) {
+  if (!node) return;
+  const inCategory = problems.filter((p) => p.category === node.dataset.cat);
+  const next = inCategory.find((p) => p.status !== "solved") || inCategory[0];
+  if (!next) return;
+  closeRoadmap();
+  openProblem(next.key);
+}
+
 function setDrawer(open) {
   $("#drawer").hidden = !open;
   $("#scrim").hidden = !open;
@@ -447,6 +473,15 @@ function initEditor() {
 
 async function start() {
   $("#run-hint").textContent = isMac ? "⌘↵" : "Ctrl+↵";
+  $("#roadmap-btn").onclick = openRoadmap;
+  $("#roadmap-close").onclick = closeRoadmap;
+  $("#roadmap-body").onclick = (e) => pickRoadmapNode(e.target.closest(".rm-node"));
+  $("#roadmap-body").onkeydown = (e) => {
+    if (e.key === "Enter" || e.key === " ") {
+      e.preventDefault();
+      pickRoadmapNode(e.target.closest(".rm-node"));
+    }
+  };
   $("#menu-btn").onclick = () => setDrawer(true);
   $("#close-drawer").onclick = () => setDrawer(false);
   $("#scrim").onclick = () => setDrawer(false);
@@ -476,6 +511,7 @@ async function start() {
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {
       setDrawer(false);
+      closeRoadmap();
       closeSolution();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
