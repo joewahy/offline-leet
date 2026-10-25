@@ -229,8 +229,25 @@ function setupSplitters() {
 }
 
 let roadmapView;
+let roadmapOpen = false;
+
+// Run `update` inside a view transition, or straight away when motion is reduced or unsupported.
+function withTransition(update, name) {
+  const animated = matchMedia("(prefers-reduced-motion: no-preference)").matches;
+  if (!animated || !document.startViewTransition) {
+    update();
+    return;
+  }
+  const root = document.documentElement;
+  const transition = document.startViewTransition(update);
+  if (name) {
+    root.classList.add(name);
+    transition.finished.finally(() => root.classList.remove(name));
+  }
+}
 
 function openRoadmap() {
+  roadmapOpen = true;
   const stats = {};
   for (const p of problems) {
     const s = (stats[p.category] ||= { solved: 0, total: 0, due: 0 });
@@ -241,19 +258,25 @@ function openRoadmap() {
   const here = problems.find((p) => current && p.key === current.key);
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#roadmap-count").textContent = `${solved} / ${problems.length} solved`;
-  $("#roadmap-body").innerHTML = renderRoadmap(stats, here && here.category);
-  $("#roadmap").hidden = false;
-  roadmapView.show();
-  document.body.classList.add("roadmap-open");
-  $("#roadmap-btn").innerHTML = "&larr; Back to problem";
+  withTransition(() => {
+    $("#roadmap-body").innerHTML = renderRoadmap(stats, here && here.category);
+    $("#roadmap").hidden = false;
+    roadmapView.show();
+    document.body.classList.add("roadmap-open");
+    $("#roadmap-btn").innerHTML = "&larr; Back to problem";
+  }, "vt-roadmap-open");
 }
 
 function closeRoadmap() {
-  $("#roadmap").hidden = true;
-  $("#roadmap-topic").hidden = true;
-  document.body.classList.remove("roadmap-open");
-  $("#roadmap-btn").innerHTML = "&#10070; Roadmap";
-  if (editor) editor.layout();
+  if (!roadmapOpen) return;
+  roadmapOpen = false;
+  withTransition(() => {
+    $("#roadmap").hidden = true;
+    $("#roadmap-topic").hidden = true;
+    document.body.classList.remove("roadmap-open");
+    $("#roadmap-btn").innerHTML = "&#10070; Roadmap";
+    if (editor) editor.layout();
+  });
 }
 
 function selectRoadmapTopic(node, focusPanel = false) {
@@ -734,7 +757,7 @@ async function start() {
   $("#roadmap-zoom-in").onclick = () => roadmapView.zoomIn();
   $("#roadmap-zoom-out").onclick = () => roadmapView.zoomOut();
   $("#roadmap-fit").onclick = () => roadmapView.fit();
-  $("#roadmap-btn").onclick = () => ($("#roadmap").hidden ? openRoadmap() : closeRoadmap());
+  $("#roadmap-btn").onclick = () => (roadmapOpen ? closeRoadmap() : openRoadmap());
   $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
   $("#roadmap-body").onkeydown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
@@ -746,7 +769,6 @@ async function start() {
   $("#roadmap-topic-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
     if (!row) return;
-    closeRoadmap();
     openProblem(row.dataset.key);
   };
   $("#more-btn").onclick = () => setMoreMenu(!$("header").classList.contains("more-open"));
