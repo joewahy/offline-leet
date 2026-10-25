@@ -462,6 +462,10 @@ async function run() {
   }
 }
 
+function isLight() {
+  return document.documentElement.dataset.theme === "light";
+}
+
 function initEditor() {
   const base = location.origin + "/vendor/monaco";
   self.MonacoEnvironment = {
@@ -470,10 +474,9 @@ function initEditor() {
       return "data:text/javascript;charset=utf-8," + encodeURIComponent(src);
     },
   };
-  const dark = matchMedia("(prefers-color-scheme: dark)");
   editor = monaco.editor.create($("#editor"), {
     language: "python",
-    theme: dark.matches ? "vs-dark" : "vs",
+    theme: isLight() ? "vs" : "vs-dark",
     automaticLayout: true,
     minimap: { enabled: false },
     fontSize: 14,
@@ -484,7 +487,6 @@ function initEditor() {
     suggestOnTriggerCharacters: false,
     wordBasedSuggestions: "off",
   });
-  dark.addEventListener("change", (e) => monaco.editor.setTheme(e.matches ? "vs-dark" : "vs"));
   editor.onDidChangeModelContent(scheduleSave);
   editor.addCommand(monaco.KeyMod.CtrlCmd | monaco.KeyCode.Enter, run);
 }
