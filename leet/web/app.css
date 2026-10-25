@@ -136,10 +136,20 @@ pre {
   height: 38%;
   min-height: 110px;
   overflow: auto;
-  border-top: 1px solid var(--border);
   background: var(--panel);
   padding: 12px 16px;
 }
+.splitter { flex: none; background: var(--border); position: relative; z-index: 2; }
+.splitter::after { content: ""; position: absolute; }
+.splitter:hover, .splitter.dragging { background: var(--accent); }
+#split-v { width: 1px; cursor: col-resize; }
+#split-v::after { inset: 0 -3px; }
+#split-h { height: 1px; cursor: row-resize; }
+#split-h::after { inset: -3px 0; }
+body.resizing { user-select: none; }
+body.resizing.col { cursor: col-resize; }
+body.resizing.row { cursor: row-resize; }
+body.resizing iframe, body.resizing #editor { pointer-events: none; }
 .summary { font-weight: 600; margin-bottom: 8px; }
 .summary.pass { color: var(--pass); }
 .summary.fail { color: var(--fail); }
@@ -216,7 +226,8 @@ pre {
 
 @media (max-width: 800px) {
   main { flex-direction: column; }
-  #left { width: 100%; max-height: 40%; border-right: 0; border-bottom: 1px solid var(--border); }
+  #left { width: 100% !important; max-height: 40%; border-right: 0; border-bottom: 1px solid var(--border); }
+  #split-v { display: none; }
 }
 
 .perf { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border); }

@@ -121,6 +121,57 @@ async function loadHints(key, count) {
   }
 }
 
+function storedSize(name) {
+  try {
+    return Number(localStorage.getItem("size:" + name)) || 0;
+  } catch (err) {
+    return 0;
+  }
+}
+
+function storeSize(name, px) {
+  try {
+    localStorage.setItem("size:" + name, String(Math.round(px)));
+  } catch (err) {
+    // sizes still work, they just reset when the page reloads
+  }
+}
+
+// Drag a splitter to resize `target`; `measure` maps the pointer position to a size in px.
+function makeResizable(splitter, target, prop, name, measure, min, max) {
+  const apply = (px) => { target.style[prop] = `${Math.min(max(), Math.max(min, px))}px`; };
+  const saved = storedSize(name);
+  if (saved) apply(saved);
+  splitter.onpointerdown = (e) => {
+    e.preventDefault();
+    splitter.setPointerCapture(e.pointerId);
+    splitter.classList.add("dragging");
+    document.body.classList.add("resizing", prop === "width" ? "col" : "row");
+  };
+  splitter.onpointermove = (e) => {
+    if (splitter.hasPointerCapture(e.pointerId)) apply(measure(e));
+  };
+  splitter.onpointerup = () => {
+    splitter.classList.remove("dragging");
+    document.body.classList.remove("resizing", "col", "row");
+    storeSize(name, target.getBoundingClientRect()[prop]);
+  };
+  splitter.ondblclick = () => {
+    target.style[prop] = "";
+    storeSize(name, 0);
+  };
+}
+
+function setupSplitters() {
+  const left = $("#left");
+  const work = $("#work");
+  const results = $("#results");
+  makeResizable($("#split-v"), left, "width", "left", (e) => e.clientX - left.getBoundingClientRect().left,
+    300, () => window.innerWidth - 320);
+  makeResizable($("#split-h"), results, "height", "results", (e) => work.getBoundingClientRect().bottom - e.clientY,
+    110, () => work.getBoundingClientRect().height - 140);
+}
+
 function setDrawer(open) {
   $("#drawer").hidden = !open;
   $("#scrim").hidden = !open;
@@ -402,6 +453,7 @@ async function start() {
   $("#prev-btn").onclick = () => step(-1);
   $("#next-btn").onclick = () => step(1);
   $("#run-btn").onclick = run;
+  setupSplitters();
   $("#reset-btn").onclick = resetCode;
   $("#solution-btn").onclick = showSolution;
   $("#solution-close").onclick = closeSolution;
