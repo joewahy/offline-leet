@@ -466,6 +466,25 @@ function isLight() {
   return document.documentElement.dataset.theme === "light";
 }
 
+function renderThemeButton() {
+  const btn = $("#theme-btn");
+  btn.textContent = isLight() ? "☾ Dark" : "☀ Light";
+  btn.title = isLight() ? "Switch to dark mode" : "Switch to light mode";
+}
+
+function toggleTheme() {
+  const light = !isLight();
+  if (light) document.documentElement.dataset.theme = "light";
+  else delete document.documentElement.dataset.theme;
+  try {
+    localStorage.setItem("theme", light ? "light" : "dark");
+  } catch (err) {
+    // the choice still applies, it just resets when the page reloads
+  }
+  renderThemeButton();
+  if (editor) monaco.editor.setTheme(light ? "vs" : "vs-dark");
+}
+
 function initEditor() {
   const base = location.origin + "/vendor/monaco";
   self.MonacoEnvironment = {
@@ -493,6 +512,8 @@ function initEditor() {
 
 async function start() {
   $("#run-hint").textContent = isMac ? "⌘↵" : "Ctrl+↵";
+  renderThemeButton();
+  $("#theme-btn").onclick = toggleTheme;
   $("#roadmap-btn").onclick = () => ($("#roadmap").hidden ? openRoadmap() : closeRoadmap());
   $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
   $("#roadmap-body").onkeydown = (e) => {
