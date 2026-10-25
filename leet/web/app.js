@@ -100,57 +100,25 @@ function renderList() {
   $("#problem-list").innerHTML = html;
 }
 
-function storedHints(key) {
-  try {
-    return Number(localStorage.getItem("hints:" + key)) || 0;
-  } catch (err) {
-    return 0;
-  }
-}
-
-function storeHints(key, n) {
-  try {
-    localStorage.setItem("hints:" + key, String(n));
-  } catch (err) {
-    // hints still work, they just reset when the page reloads
-  }
-}
-
 function renderHints() {
   $("#hints").hidden = hintCount === 0;
   if (!hintCount) return;
-  const shown = hintsShown.length;
+  $("#hint-label").textContent = `${hintCount} hints, collapsed until you open them`;
   $("#hint-list").innerHTML = hintsShown
-    .map((h, i) => `<div class="hint"><strong>Hint ${i + 1} of ${hintCount}</strong><p>${inline(h)}</p></div>`)
+    .map((h, i) => `<details class="hint"><summary>Hint ${i + 1} of ${hintCount}</summary><p>${inline(h)}</p></details>`)
     .join("");
-  $("#hint-label").textContent = shown ? `${shown} of ${hintCount} hints shown` : "Stuck? Hints stay hidden until you ask.";
-  const btn = $("#hint-btn");
-  btn.hidden = shown >= hintCount;
-  btn.textContent = `Show hint ${shown + 1}`;
-  $("#hint-list").scrollTop = $("#hint-list").scrollHeight;
 }
 
 async function loadHints(key, count) {
   hintCount = count;
   hintsShown = [];
   renderHints();
-  const n = Math.min(storedHints(key), count);
-  if (!n) return;
-  const loaded = await Promise.all(Array.from({ length: n }, (_, i) => api(`/api/problems/${key}/hint/${i + 1}`)));
+  if (!count) return;
+  const loaded = await Promise.all(Array.from({ length: count }, (_, i) => api(`/api/problems/${key}/hint/${i + 1}`)));
   if (current && current.key === key) {
     hintsShown = loaded.map((r) => r.hint);
     renderHints();
   }
-}
-
-async function showNextHint() {
-  const key = current.key;
-  const next = hintsShown.length + 1;
-  const res = await api(`/api/problems/${key}/hint/${next}`);
-  if (current.key !== key) return;
-  hintsShown.push(res.hint);
-  storeHints(key, next);
-  renderHints();
 }
 
 function setDrawer(open) {
@@ -438,7 +406,6 @@ async function start() {
   $("#solution-btn").onclick = showSolution;
   $("#solution-close").onclick = closeSolution;
   $("#solution-scrim").onclick = closeSolution;
-  $("#hint-btn").onclick = () => showNextHint().catch((err) => { $("#hint-label").textContent = err.message; });
   $("#problem-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
     if (row) openProblem(row.dataset.key);

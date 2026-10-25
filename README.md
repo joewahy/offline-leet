@@ -12,7 +12,7 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Read the statement on the left and write your solution in the editor on the right.
 - Press **Run** or Cmd+Enter (Ctrl+Enter elsewhere). Failures show the input, the expected value, your output, any error, and anything you printed.
 - Your code autosaves to the problem's `solution.py`.
-- Stuck on a Medium or Hard problem? Click **Show hint** under the statement. There are three hints per problem, each more revealing than the last, and they stay hidden until you ask. Hints you have opened are remembered in your browser.
+- Stuck on a Medium or Hard problem? Open a hint under the statement. There are three hints per problem, each more revealing than the last, each in its own collapsed toggle so nothing is spoiled until you open it.
 - On problems with hidden tests (see below), a run that passes the visible cases also runs a few big inputs. The problem only counts as solved when those pass too.
 - Once every test passes, the results show the problem's target time and space complexity and a **Compare with reference** button. It re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
 - Solved problems come back for review on a schedule (1, 3, 7, 14, then 30 days). Due ones show a ↻ in the list and `leet list` marks them `review`. Passing a review that is due moves it to the next interval, and failing one starts its schedule over. Running a problem again before it is due changes nothing. Problems you solved before this was added are due right away.
@@ -66,7 +66,7 @@ The starter code follows NeetCode's conventions. `ListNode`, `TreeNode`, `Node`,
 Other notes:
 
 - Statements and tests are original, not copied from LeetCode. Some examples use the same well-known inputs.
-- The 122 Medium and Hard problems have three tiered hints (`hints.json`). In the web UI they are revealed one at a time. In the problem's `README.md` they sit in a collapsed "Hints" section at the bottom (open it in VS Code's Markdown preview or on GitHub), so the statement itself stays spoiler-free. Easy problems keep a short, always-visible Hints section.
+- The 122 Medium and Hard problems have three tiered hints (`hints.json`). In the web UI they sit in collapsed toggles under the statement. In the problem's `README.md` they sit in a collapsed "Hints" section at the bottom (open it in VS Code's Markdown preview or on GitHub), so the statement itself stays spoiler-free. Easy problems keep a short, always-visible Hints section.
 - Each problem has hand-written cases plus larger generated ones. Where several answers are valid (Course Schedule II, Alien Dictionary, Gas Station and others), a checker verifies the answer instead of comparing to one exact value.
 - Design problems (LRU Cache, Twitter, Trie and others) are tested with a sequence of method calls and their expected results.
 - Each case has a time limit of 5 seconds, and a run stops at the first timeout.
