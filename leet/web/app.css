@@ -326,7 +326,7 @@ body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn,
 .rm-track { fill: #fff; }
 .rm-fill { fill: #1fbf75; }
 
-#solution-scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.35); z-index: 30; }
+#solution-scrim { position: fixed; inset: 0; background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); z-index: 30; }
 #solution {
   position: fixed;
   z-index: 31;
@@ -360,7 +360,10 @@ dialog#confirm::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur
 button.primary.danger { background: var(--fail); border-color: var(--fail); }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(0.97); } }
 @keyframes backdrop-in { from { opacity: 0; } }
+@keyframes solution-in { from { opacity: 0; transform: translateX(-50%) translateY(8px) scale(0.97); } }
 @media (prefers-reduced-motion: no-preference) {
+  #solution:not([hidden]) { animation: solution-in 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  #solution-scrim:not([hidden]) { animation: backdrop-in 0.2s ease-out; }
   dialog#confirm[open] { animation: dialog-in 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
   dialog#confirm[open]::backdrop { animation: backdrop-in 0.2s ease-out; }
 }
