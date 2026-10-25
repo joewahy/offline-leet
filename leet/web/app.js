@@ -410,6 +410,20 @@ function closeSolution() {
   $("#solution-scrim").hidden = true;
 }
 
+function confirmDialog({ title, lines, confirmLabel, danger = false }) {
+  const dialog = $("#confirm");
+  $("#confirm-title").textContent = title;
+  $("#confirm-message").innerHTML = lines.map((line) => `<p>${esc(line)}</p>`).join("");
+  const ok = $("#confirm-ok");
+  ok.textContent = confirmLabel;
+  ok.classList.toggle("danger", danger);
+  dialog.returnValue = "cancel";
+  return new Promise((resolve) => {
+    dialog.addEventListener("close", () => resolve(dialog.returnValue === "ok"), { once: true });
+    dialog.showModal();
+  });
+}
+
 async function showSolution() {
   if (!current) return;
   let data;
@@ -418,7 +432,12 @@ async function showSolution() {
       data = await api(`/api/problems/${current.key}/solution`);
     } catch (err) {
       if (err.status !== 403) throw err;
-      if (!confirm("You have not solved this problem yet.\n\nShow the reference solution anyway? It will spoil the problem.")) return;
+      const go = await confirmDialog({
+        title: "Show the solution?",
+        lines: ["You have not solved this problem yet.", "Seeing the reference solution will spoil it."],
+        confirmLabel: "Show solution",
+      });
+      if (!go) return;
       data = await api(`/api/problems/${current.key}/solution?force=1`);
     }
   } catch (err) {
@@ -443,7 +462,13 @@ async function showSolution() {
 
 async function resetCode() {
   if (!current) return;
-  if (!confirm("Replace your code with the starter code?\n\nYour current code is saved to a backup first.")) return;
+  const go = await confirmDialog({
+    title: "Reset to the starter code?",
+    lines: ["Your code in the editor will be replaced.", "A backup of your current code is saved first."],
+    confirmLabel: "Reset",
+    danger: true,
+  });
+  if (!go) return;
   clearTimeout(saveTimer);
   saveTimer = null;
   try {
@@ -613,6 +638,9 @@ async function start() {
   $("#solution-btn").onclick = showSolution;
   $("#solution-close").onclick = closeSolution;
   $("#solution-scrim").onclick = closeSolution;
+  $("#confirm").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) e.currentTarget.close("cancel");
+  });
   $("#problem-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
     if (row) openProblem(row.dataset.key);
@@ -635,7 +663,7 @@ async function start() {
       closeSolution();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
-    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden) {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open) {
       e.preventDefault();
       run();
     }

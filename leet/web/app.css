@@ -343,6 +343,27 @@ body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn,
   box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
 }
 #solution[hidden], #solution-scrim[hidden] { display: none; }
+dialog#confirm {
+  width: min(420px, 90vw);
+  padding: 0;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+}
+dialog#confirm::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
+#confirm form { padding: 22px 24px 18px; }
+#confirm h2 { margin: 0 0 8px; font-size: 16px; }
+#confirm-message p { margin: 0 0 6px; color: var(--muted); }
+.dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
+button.primary.danger { background: var(--fail); border-color: var(--fail); }
+@keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(0.97); } }
+@keyframes backdrop-in { from { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  dialog#confirm[open] { animation: dialog-in 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  dialog#confirm[open]::backdrop { animation: backdrop-in 0.2s ease-out; }
+}
 #solution-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 #solution-body { overflow: auto; padding: 4px 16px 14px; }
 .explanation h3 { font-size: 13px; margin: 14px 0 4px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
