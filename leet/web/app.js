@@ -524,6 +524,9 @@ async function start() {
   renderThemeButton();
   $("#theme-btn").onclick = toggleTheme;
   roadmapView = initRoadmapView($("#roadmap-body"));
+  $("#roadmap-zoom-in").onclick = () => roadmapView.zoomIn();
+  $("#roadmap-zoom-out").onclick = () => roadmapView.zoomOut();
+  $("#roadmap-fit").onclick = () => roadmapView.fit();
   $("#roadmap-btn").onclick = () => ($("#roadmap").hidden ? openRoadmap() : closeRoadmap());
   $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
   $("#roadmap-body").onkeydown = (e) => {
