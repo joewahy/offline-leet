@@ -485,6 +485,7 @@ function confettiBurst(anchor) {
 
 async function run() {
   const btn = $("#run-btn");
+  if (btn.disabled) return;
   btn.disabled = true;
   $("#results").innerHTML = '<p class="muted">Running…</p>';
   clearTimeout(saveTimer);
@@ -613,6 +614,10 @@ async function start() {
       closeSolution();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden) {
+      e.preventDefault();
+      run();
+    }
   });
   window.addEventListener("beforeunload", () => {
     if (saveTimer && current) {
