@@ -472,8 +472,14 @@ function renderThemeButton() {
   btn.title = isLight() ? "Switch to dark mode" : "Switch to light mode";
 }
 
+let themeFadeTimer;
+
 function toggleTheme() {
   const light = !isLight();
+  const root = document.documentElement;
+  root.classList.add("theme-fade");
+  clearTimeout(themeFadeTimer);
+  themeFadeTimer = setTimeout(() => root.classList.remove("theme-fade"), 350);
   if (light) document.documentElement.dataset.theme = "light";
   else delete document.documentElement.dataset.theme;
   try {
