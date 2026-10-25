@@ -12,7 +12,7 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Read the statement on the left and write your solution in the editor on the right.
 - Press **Run** or Cmd+Enter (Ctrl+Enter elsewhere). Failures show the input, the expected value, your output, any error, and anything you printed.
 - Your code autosaves to the problem's `solution.py`.
-- **Roadmap** (left of **Problems**) shows the NeetCode topic map: each topic is a node with a progress bar, and the lines show which topics lead to which. Click a topic to jump to its first unsolved problem.
+- **Roadmap** (left of **Problems**) shows the NeetCode topic map: each topic is a node with a progress bar, and the lines show which topics lead to which. Click a topic to open a panel listing its problems, then click one to start it.
 - Drag the divider between the statement and the editor, or between the editor and the results, to resize them. Double-click a divider to reset it. Sizes are remembered in your browser.
 - Stuck on a Medium or Hard problem? Open a hint under the statement. There are three hints per problem, each more revealing than the last, each in its own collapsed toggle so nothing is spoiled until you open it.
 - On problems with hidden tests (see below), a run that passes the visible cases also runs a few big inputs. The problem only counts as solved when those pass too.

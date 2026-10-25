@@ -55,7 +55,17 @@
       <span id="roadmap-count" class="muted"></span>
       <button id="roadmap-close" class="ghost" aria-label="Close">&times;</button>
     </div>
-    <div id="roadmap-body"></div>
+    <div id="roadmap-main">
+      <div id="roadmap-body"></div>
+      <aside id="roadmap-topic" aria-label="Topic problems" hidden>
+        <div id="roadmap-topic-head">
+          <strong id="roadmap-topic-name"></strong>
+          <span id="roadmap-topic-count" class="muted"></span>
+          <button id="roadmap-topic-close" class="ghost" aria-label="Close topic">&times;</button>
+        </div>
+        <div id="roadmap-topic-list"></div>
+      </aside>
+    </div>
   </div>
 
   <div id="solution" role="dialog" aria-label="Reference solution" hidden>

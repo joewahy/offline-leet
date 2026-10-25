@@ -80,22 +80,23 @@ function categoryName(cat) {
   return CATEGORY_NAMES[cat] || cat.replace(/-/g, " ");
 }
 
+function problemRow(p) {
+  const mark = p.due ? "&#8635;" : p.status === "solved" ? "&#10003;" : p.status === "attempted" ? "&#9679;" : "";
+  return `<button class="problem-row${current && current.key === p.key ? " current" : ""}" data-key="${p.key}">
+    <span class="status ${p.status}${p.due ? " due" : ""}" ${p.due ? 'title="Due for review"' : ""}>${mark}</span>
+    <span class="num">${p.id}</span>
+    <span class="name">${esc(p.title)}</span>
+    <span class="pill ${p.difficulty}">${p.difficulty}</span>
+  </button>`;
+}
+
 function renderList() {
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#progress-count").textContent = `${solved} / ${problems.length} solved`;
   const byCategory = {};
   for (const p of problems) (byCategory[p.category] ||= []).push(p);
   const html = Object.entries(byCategory).map(([cat, items]) => {
-    const rows = items.map((p) => {
-      const mark = p.due ? "&#8635;" : p.status === "solved" ? "&#10003;" : p.status === "attempted" ? "&#9679;" : "";
-      return `<button class="problem-row${current && current.key === p.key ? " current" : ""}" data-key="${p.key}">
-        <span class="status ${p.status}${p.due ? " due" : ""}" ${p.due ? 'title="Due for review"' : ""}>${mark}</span>
-        <span class="num">${p.id}</span>
-        <span class="name">${esc(p.title)}</span>
-        <span class="pill ${p.difficulty}">${p.difficulty}</span>
-      </button>`;
-    }).join("");
-    return `<h3>${esc(categoryName(cat))}</h3>${rows}`;
+    return `<h3>${esc(categoryName(cat))}</h3>${items.map(problemRow).join("")}`;
   }).join("");
   $("#problem-list").innerHTML = html;
 }
@@ -187,15 +188,26 @@ function openRoadmap() {
 
 function closeRoadmap() {
   $("#roadmap").hidden = true;
+  $("#roadmap-topic").hidden = true;
 }
 
-function pickRoadmapNode(node) {
+function selectRoadmapTopic(node) {
   if (!node) return;
-  const inCategory = problems.filter((p) => p.category === node.dataset.cat);
-  const next = inCategory.find((p) => p.status !== "solved") || inCategory[0];
-  if (!next) return;
-  closeRoadmap();
-  openProblem(next.key);
+  const cat = node.dataset.cat;
+  const items = problems.filter((p) => p.category === cat);
+  if (!items.length) return;
+  document.querySelectorAll(".rm-node.selected").forEach((n) => n.classList.remove("selected"));
+  node.classList.add("selected");
+  const solved = items.filter((p) => p.status === "solved").length;
+  $("#roadmap-topic-name").textContent = ROADMAP_NODES[cat].label.join(" ");
+  $("#roadmap-topic-count").textContent = `${solved} / ${items.length} solved`;
+  $("#roadmap-topic-list").innerHTML = items.map(problemRow).join("");
+  $("#roadmap-topic").hidden = false;
+}
+
+function closeRoadmapTopic() {
+  $("#roadmap-topic").hidden = true;
+  document.querySelectorAll(".rm-node.selected").forEach((n) => n.classList.remove("selected"));
 }
 
 function setDrawer(open) {
@@ -475,12 +487,19 @@ async function start() {
   $("#run-hint").textContent = isMac ? "⌘↵" : "Ctrl+↵";
   $("#roadmap-btn").onclick = openRoadmap;
   $("#roadmap-close").onclick = closeRoadmap;
-  $("#roadmap-body").onclick = (e) => pickRoadmapNode(e.target.closest(".rm-node"));
+  $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
   $("#roadmap-body").onkeydown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
-      pickRoadmapNode(e.target.closest(".rm-node"));
+      selectRoadmapTopic(e.target.closest(".rm-node"));
     }
+  };
+  $("#roadmap-topic-close").onclick = closeRoadmapTopic;
+  $("#roadmap-topic-list").onclick = (e) => {
+    const row = e.target.closest(".problem-row");
+    if (!row) return;
+    closeRoadmap();
+    openProblem(row.dataset.key);
   };
   $("#menu-btn").onclick = () => setDrawer(true);
   $("#close-drawer").onclick = () => setDrawer(false);
