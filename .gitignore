@@ -11,3 +11,4 @@ progress.json.lock
 .DS_Store
 .leet-backups/
 .leet-cache/
+.impeccable/
