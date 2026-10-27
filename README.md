@@ -2,6 +2,8 @@
 
 Practice all 150 NeetCode problems in Python with no internet. Everything runs on your machine: a local web page with a code editor, or the command line and VS Code if you prefer.
 
+![Writing a solution, running it against the tests, then opening the roadmap](docs/demo.gif)
+
 ## Quick start
 
 You need Python 3.11 or newer. Nothing else has to be installed, and nothing is downloaded when you run it.
