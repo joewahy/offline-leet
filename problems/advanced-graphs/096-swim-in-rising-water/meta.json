@@ -1,1 +1,1 @@
-{"id": 96, "title": "Swim in Rising Water", "category": "advanced-graphs", "difficulty": "Hard", "method": "swimInWater", "complexity": {"time": "O(n^2 log n), n x n grid", "space": "O(n^2)"}}
+{"id": 96, "title": "Swim in Rising Water", "category": "advanced-graphs", "difficulty": "Hard", "method": "swimInWater", "complexity": {"time": "O(n^2 log n), n x n grid", "space": "O(n^2)"}, "hidden": true}

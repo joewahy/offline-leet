@@ -23,7 +23,7 @@ Output: [[3, -1, 0, 1],
 
 ## Constraints
 
-- `1 <= rows, cols <= 60`
+- `1 <= rows, cols`, and `rows * cols <= 10^5`
 - Cells are `-1`, `0` or `2147483647`.
 
 <details>

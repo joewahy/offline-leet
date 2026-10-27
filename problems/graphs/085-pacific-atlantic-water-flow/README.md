@@ -19,8 +19,8 @@ Output: [[0,4],[1,3],[1,4],[2,2],[3,0],[3,1],[4,0]]
 
 ## Constraints
 
-- `1 <= rows, cols <= 30`
-- `0 <= heights[r][c] <= 100`
+- `1 <= rows, cols`, and `rows * cols <= 10^5`
+- `0 <= heights[r][c] <= 10^5`
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>

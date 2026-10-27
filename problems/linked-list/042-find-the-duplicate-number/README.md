@@ -16,7 +16,7 @@ Output: 4
 
 ## Constraints
 
-- `1 <= n <= 10000`
+- `1 <= n <= 10^5`
 - `len(nums) == n + 1`
 
 <details>

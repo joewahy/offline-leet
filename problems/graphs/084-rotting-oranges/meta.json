@@ -1,1 +1,1 @@
-{"id": 84, "title": "Rotting Oranges", "category": "graphs", "difficulty": "Medium", "method": "orangesRotting", "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}}
+{"id": 84, "title": "Rotting Oranges", "category": "graphs", "difficulty": "Medium", "method": "orangesRotting", "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}, "hidden": true}

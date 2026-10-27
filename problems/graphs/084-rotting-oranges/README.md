@@ -18,7 +18,7 @@ Output: -1
 
 ## Constraints
 
-- `1 <= rows, cols <= 60`
+- `1 <= rows, cols`, and `rows * cols <= 10^5`
 - `grid[i][j]` is `0`, `1` or `2`.
 
 <details>

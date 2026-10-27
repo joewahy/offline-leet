@@ -1,1 +1,1 @@
-{"id": 85, "title": "Pacific Atlantic Water Flow", "category": "graphs", "difficulty": "Medium", "method": "pacificAtlantic", "compare": "unordered", "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}}
+{"id": 85, "title": "Pacific Atlantic Water Flow", "category": "graphs", "difficulty": "Medium", "method": "pacificAtlantic", "compare": "unordered", "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}, "hidden": true}

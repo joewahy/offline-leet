@@ -88,4 +88,5 @@ Runs happen in a subprocess with a per-case timeout (default 5s) and, inside the
 - Hidden tests (big inputs built on demand) exist for the problems listed by `leet list --hidden`; there is no separate submit step, they run with every test run.
 - Every problem has a written explanation (`explanation.md`) shown above the reference solution.
 - Spaced repetition: solved problems are due for review after 1, 3, 7, 14, then 30 days (`leet next`, a mark in `leet list` and the web list).
-- Not done: hidden tests for the other problems (trees, graphs, linked lists, 2D DP, backtracking and others), timer.
+- Hidden tests cover 58 problems, including linked lists, tries and the graph problems where a slower approach can pass the stored cases. The rest are left out on purpose: their input size is capped by the problem (backtracking, DP) or every sensible approach is linear (trees, binary search, most bit and math problems).
+- Not done: timer.

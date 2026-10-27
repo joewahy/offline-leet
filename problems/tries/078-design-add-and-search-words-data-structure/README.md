@@ -22,7 +22,7 @@ search("b..")   -> True
 
 - `1 <= len(word) <= 20`
 - `addWord` words contain lowercase letters; `search` words contain lowercase letters and `.`
-- At most `10000` calls are made, and at most 2 dots appear in any searched word.
+- At most `10^5` calls are made, and at most 2 dots appear in any searched word.
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>

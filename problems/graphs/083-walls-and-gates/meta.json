@@ -1,1 +1,1 @@
-{"id": 83, "title": "Walls and Gates", "category": "graphs", "difficulty": "Medium", "method": "wallsAndGates", "inplace": 0, "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}}
+{"id": 83, "title": "Walls and Gates", "category": "graphs", "difficulty": "Medium", "method": "wallsAndGates", "inplace": 0, "complexity": {"time": "O(rows * cols)", "space": "O(rows * cols)"}, "hidden": true}

@@ -18,7 +18,7 @@ Output: a deep copy with the same structure
 
 ## Constraints
 
-- `0 <= number of nodes <= 1000`
+- `0 <= number of nodes <= 10^5`
 - `-100 <= node.val <= 100`
 
 <details>

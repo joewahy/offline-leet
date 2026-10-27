@@ -1,1 +1,1 @@
-{"id": 91, "title": "Redundant Connection", "category": "graphs", "difficulty": "Medium", "method": "findRedundantConnection", "complexity": {"time": "O(E), nearly linear with union-find", "space": "O(V)"}}
+{"id": 91, "title": "Redundant Connection", "category": "graphs", "difficulty": "Medium", "method": "findRedundantConnection", "complexity": {"time": "O(E), nearly linear with union-find", "space": "O(V)"}, "hidden": true}

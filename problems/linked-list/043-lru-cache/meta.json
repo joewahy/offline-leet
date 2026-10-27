@@ -1,1 +1,1 @@
-{"id": 43, "title": "LRU Cache", "category": "linked-list", "difficulty": "Medium", "method": "LRUCache", "design": "LRUCache", "complexity": {"time": "O(1) per operation", "space": "O(capacity)"}}
+{"id": 43, "title": "LRU Cache", "category": "linked-list", "difficulty": "Medium", "method": "LRUCache", "design": "LRUCache", "complexity": {"time": "O(1) per operation", "space": "O(capacity)"}, "hidden": true}

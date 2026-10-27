@@ -16,7 +16,7 @@ Output: False
 
 ## Constraints
 
-- `1 <= len(s) <= 100`
+- `1 <= len(s) <= 10^5`
 - Each character is `(`, `)` or `*`.
 
 <details>

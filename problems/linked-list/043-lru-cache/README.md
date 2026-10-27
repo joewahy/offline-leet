@@ -26,9 +26,9 @@ get(4)      -> 4
 
 ## Constraints
 
-- `1 <= capacity <= 100`
-- `0 <= key <= 1000`, `0 <= value <= 10^5`
-- At most `10000` calls are made.
+- `1 <= capacity <= 10^5`
+- `0 <= key <= 10^5`, `0 <= value <= 10^5`
+- At most `10^5` calls are made.
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>

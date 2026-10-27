@@ -77,9 +77,11 @@ Other notes:
 
 ## Hidden tests
 
-Some problems (39 so far, listed by `leet list --hidden`) also have hidden tests: a few inputs with up to 100,000 elements (or, for Pow(x, n), huge exponents), built when you run, not stored in the repo. They run only after every visible case passes. A solution that is too slow (for example O(n^2)) times out on them, and a failure shows the case number and the size of the input, not the input itself. Those problems' statements allow up to 10^5 elements to match.
+Some problems (58 so far, listed by `leet list --hidden`) also have hidden tests: a few inputs with up to 100,000 elements, grid cells, nodes, edges or calls (or, for Pow(x, n), huge exponents), built when you run, not stored in the repo. They run only after every visible case passes. A solution that is too slow (for example O(n^2)) times out on them, and a failure shows the case number and the size of the input, not the input itself. Those problems' statements allow up to 10^5 elements to match.
 
-- The first run of a problem builds its hidden inputs (a second or two) and caches them in `.leet-cache/` (not tracked by git, up to about 100 MB for all of them).
+Only problems where a slower approach can plausibly pass the stored cases have them. Problems whose input size is capped by the problem itself (Backtracking, the 2-D and most 1-D DP problems) are not covered, nor are ones where every sensible approach is linear or where the only slower alternative is a plain scan that stays fast at 10^5 elements (Binary Search, Trees, most Bit Manipulation and Math & Geometry).
+
+- The first run of a problem builds its hidden inputs (a second or two) and caches them in `.leet-cache/` (not tracked by git, up to about 200 MB for all of them).
 - `leet test` and the web UI treat a hidden failure like any other failure: the problem stays "attempted".
 - `leet validate` runs the reference solutions against the hidden tests too, so a reference that is too slow is caught.
 - Recursion is capped at depth 10,000, so a recursive solution that goes one call per element can hit a recursion error on a 100,000-element input. Use a loop or an explicit stack for those.

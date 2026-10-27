@@ -14,8 +14,8 @@ Output: []
 
 ## Constraints
 
-- `0 <= k <= 100`
-- `0 <= length of each list <= 100`, and the total number of nodes is at most `10000`
+- `0 <= k <= 10^4`
+- `0 <= length of each list <= 10^5`, and the total number of nodes is at most `10^5`
 - `-1000 <= node.val <= 1000`
 
 <details>

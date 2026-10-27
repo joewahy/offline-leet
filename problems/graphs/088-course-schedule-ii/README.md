@@ -16,8 +16,8 @@ Output: [0, 1, 2, 3]      # [0, 2, 1, 3] is also accepted
 
 ## Constraints
 
-- `1 <= numCourses <= 2000`
-- `0 <= len(prerequisites) <= 3000`
+- `1 <= numCourses <= 10^5`
+- `0 <= len(prerequisites) <= 10^5`
 - All pairs are distinct.
 
 <details>

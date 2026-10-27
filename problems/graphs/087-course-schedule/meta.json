@@ -1,1 +1,1 @@
-{"id": 87, "title": "Course Schedule", "category": "graphs", "difficulty": "Medium", "method": "canFinish", "complexity": {"time": "O(V + E)", "space": "O(V + E)"}}
+{"id": 87, "title": "Course Schedule", "category": "graphs", "difficulty": "Medium", "method": "canFinish", "complexity": {"time": "O(V + E)", "space": "O(V + E)"}, "hidden": true}

@@ -1,1 +1,1 @@
-{"id": 90, "title": "Number of Connected Components in an Undirected Graph", "category": "graphs", "difficulty": "Medium", "method": "countComponents", "complexity": {"time": "O(V + E), nearly linear with union-find", "space": "O(V)"}}
+{"id": 90, "title": "Number of Connected Components in an Undirected Graph", "category": "graphs", "difficulty": "Medium", "method": "countComponents", "complexity": {"time": "O(V + E), nearly linear with union-find", "space": "O(V)"}, "hidden": true}

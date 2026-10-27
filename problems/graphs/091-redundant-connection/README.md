@@ -16,7 +16,7 @@ Output: [1, 4]
 
 ## Constraints
 
-- `3 <= n <= 1000`, and `len(edges) == n`
+- `3 <= n <= 10^5`, and `len(edges) == n`
 - `1 <= a < b <= n` is not guaranteed; an edge may be written in either direction.
 - There are no repeated edges.
 

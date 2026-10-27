@@ -25,9 +25,9 @@ getNewsFeed(1)   -> [5]
 ## Constraints
 
 - `1 <= userId, followerId, followeeId <= 500`
-- `0 <= tweetId <= 10^4`, tweet ids are unique
+- `0 <= tweetId <= 10^5`, tweet ids are unique
 - `followerId != followeeId`
-- At most `10000` calls are made.
+- At most `10^5` calls are made.
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>

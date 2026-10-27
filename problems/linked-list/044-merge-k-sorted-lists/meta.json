@@ -1,1 +1,1 @@
-{"id": 44, "title": "Merge k Sorted Lists", "category": "linked-list", "difficulty": "Hard", "method": "mergeKLists", "arg_types": ["list_of_list_node"], "return_type": "list_node", "complexity": {"time": "O(N log k), N = total nodes", "space": "O(k)"}}
+{"id": 44, "title": "Merge k Sorted Lists", "category": "linked-list", "difficulty": "Hard", "method": "mergeKLists", "arg_types": ["list_of_list_node"], "return_type": "list_node", "complexity": {"time": "O(N log k), N = total nodes", "space": "O(k)"}, "hidden": true}

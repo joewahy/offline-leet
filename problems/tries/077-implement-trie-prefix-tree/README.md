@@ -24,7 +24,7 @@ search("Hell")       -> True
 
 - `1 <= len(word), len(prefix) <= 1000`
 - Strings consist of English letters.
-- At most `10000` calls are made.
+- At most `10^5` calls are made.
 
 <details>
 <summary>Hints (spoilers: open one at a time)</summary>

@@ -18,7 +18,7 @@ Output: [2, 10, 4, 8, 6]
 
 ## Constraints
 
-- `1 <= number of nodes <= 5000`
+- `1 <= number of nodes <= 10^5`
 - `1 <= node.val <= 1000`
 
 <details>

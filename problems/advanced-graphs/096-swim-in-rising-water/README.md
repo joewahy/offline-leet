@@ -16,7 +16,7 @@ Output: 16
 
 ## Constraints
 
-- `1 <= n <= 40`
+- `1 <= n`, and `n * n <= 10^5`
 - All values in `grid` are distinct.
 
 <details>

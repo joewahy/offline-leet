@@ -1,1 +1,1 @@
-{"id": 42, "title": "Find the Duplicate Number", "category": "linked-list", "difficulty": "Medium", "method": "findDuplicate", "complexity": {"time": "O(n)", "space": "O(1)"}}
+{"id": 42, "title": "Find the Duplicate Number", "category": "linked-list", "difficulty": "Medium", "method": "findDuplicate", "complexity": {"time": "O(n)", "space": "O(1)"}, "hidden": true}

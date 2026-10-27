@@ -16,8 +16,8 @@ Output: -1
 
 ## Constraints
 
-- `1 <= k <= n <= 1000`
-- `0 <= len(times) <= 5000`
+- `1 <= k <= n <= 10^5`
+- `0 <= len(times) <= 10^5`
 - `1 <= w <= 100`, and each `(u, v)` pair appears at most once
 
 <details>

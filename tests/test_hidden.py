@@ -92,10 +92,12 @@ def test_every_hidden_problem_has_a_generator_and_no_other_does():
 
 
 def test_hidden_problems_state_the_size_the_tests_use():
+    import re
+
     from leet.problems import all_problems
 
     for p in all_problems():
         if p.hidden and "constraints are unchanged" not in p.hidden_path.read_text():
-            assert "10^5" in p.readme_path.read_text() or "100000" in p.readme_path.read_text(), (
+            assert re.search(r"10\^5|100000|\d \* 10\^4", p.readme_path.read_text()), (
                 f"{p.key}: README constraints do not allow the hidden tests' size"
             )

@@ -17,7 +17,7 @@ Output: 0          # "cog" is not in the list
 ## Constraints
 
 - `1 <= len(beginWord) <= 10`, and `len(endWord) == len(beginWord)`
-- `1 <= len(wordList) <= 3000`, and every word has the same length
+- `1 <= len(wordList) <= 5 * 10^4`, and every word has the same length
 - Words consist of lowercase letters; the words in `wordList` are unique.
 
 <details>

@@ -16,8 +16,8 @@ Output: 3
 
 ## Constraints
 
-- `1 <= n <= 5000`
-- `0 <= len(edges) <= 5000`
+- `1 <= n <= 10^5`
+- `0 <= len(edges) <= 10^5`
 - There are no duplicate edges and no self-loops.
 
 <details>
