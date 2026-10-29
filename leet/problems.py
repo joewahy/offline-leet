@@ -75,6 +75,13 @@ class Problem:
         return json.loads((self.dir / "tests.json").read_text())
 
     @property
+    def notes_path(self):
+        return self.dir / "notes.md"
+
+    def load_notes(self):
+        return self.notes_path.read_text() if self.notes_path.exists() else ""
+
+    @property
     def custom_path(self):
         return self.dir / "custom.json"
 

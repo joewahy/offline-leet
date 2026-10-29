@@ -18,6 +18,7 @@ Double-click `Start.command` (or run `python3 -m leet serve`). Your browser open
 - Drag the divider between the statement and the editor, or between the editor and the results, to resize them. Double-click a divider to reset it, or focus it and use the arrow keys (Home resets). Sizes are remembered in your browser.
 - A stopwatch in the header counts the time you spend on an unsolved problem. It runs only while the page is visible and the roadmap is closed, and it adds up across sessions (saved in `progress.json`). Click it to pause or resume. When the problem passes, it stops and shows how long the solve took, and the results repeat it.
 - **Custom** (in the header, or under **More** on a phone) opens a dialog for your own test cases. Type the input as JSON, one argument per line (for Two Sum: the list on one line and the target on the next), and optionally the expected value. **Add and run** saves the case and runs all of them against your current code. A case with no expected value just shows what your code returned and printed. Cases are saved in `custom.json` beside the problem's `tests.json`, are tracked by git like your solution, and never count towards solved, attempts or streaks.
+- **My notes** (under the statement) is a place for what tripped you up and the pattern to remember. It autosaves to `notes.md` beside the problem, shows a dot when there is something in it, and stays collapsed so you can review a problem without reading your own answer first.
 - Stuck on a Medium or Hard problem? Open a hint under the statement. There are three hints per problem, each more revealing than the last, each in its own collapsed toggle so nothing is spoiled until you open it.
 - On problems with hidden tests (see below), a run that passes the visible cases also runs a few big inputs. The problem only counts as solved when those pass too.
 - Once every test passes, the results show when the problem comes back for review, a **Next** button for the next unsolved problem, the target time and space complexity, and a **Compare with reference** button. The passed cases fold into one line you can open. Compare re-runs your solution and the reference on the biggest test inputs and tells you how your speed and memory compare (see "Performance check" below).
@@ -65,6 +66,7 @@ problems/<category>/<id>-<slug>/
   starter.py     the original starter code, used by Reset
   tests.json     test cases
   custom.json    your own test cases (only once you add one)
+  notes.md       your own notes (only once you write one)
   meta.json      title, difficulty, method name, how to compare results
 reference/       reference solutions (spoilers!)
 ```

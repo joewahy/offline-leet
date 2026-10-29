@@ -130,6 +130,24 @@ main { flex: 1; display: flex; min-height: 0; }
 .hint { margin-top: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
 .hint summary { font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer; }
 .hint p { margin: 6px 0 0; }
+#notes { border-top: 1px solid var(--border); background: var(--panel); padding: 8px 14px 10px; }
+#notes summary { font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer; }
+#notes.has-notes summary::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 6px; border-radius: 50%; background: var(--accent); vertical-align: middle; }
+#notes-state { font-weight: 400; margin-left: 4px; }
+#notes-text {
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  margin-top: 8px;
+  padding: 6px 8px;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  font: inherit;
+  resize: vertical;
+}
+#notes-text:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 #statement h1 { font-size: 20px; margin: 0 0 12px; }
 #statement h2 { font-size: 14px; margin: 22px 0 6px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 #statement p { margin: 0 0 10px; }
@@ -469,7 +487,8 @@ button.primary.danger { background: var(--fail); border-color: var(--fail); }
   button { min-height: 44px; }
   #prev-btn, #next-btn, #close-drawer, #roadmap-topic-close, #solution-close, #roadmap-zoom-in, #roadmap-zoom-out { min-width: 44px; }
   .problem-row { min-height: 44px; }
-  .hint summary { padding: 6px 0; }
+  .hint summary, #notes summary { padding: 6px 0; }
+  #notes-text { font-size: 16px; }
   #problem-search { font-size: 16px; padding: 10px 12px; }
   .cases-fold > summary { display: flex; align-items: center; min-height: 44px; }
   #custom-form textarea { font-size: 16px; }

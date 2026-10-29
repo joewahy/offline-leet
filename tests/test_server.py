@@ -226,3 +226,31 @@ def test_run_custom_reports_an_error_in_the_solution(server, untouched_solution)
 def test_run_custom_needs_code_and_cases(server, untouched_solution):
     assert call(server, f"/api/problems/{PROBLEM}/run-custom", {"cases": [{"args": [[1]]}]})[0] == 400
     assert call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": "x = 1", "cases": []})[0] == 400
+
+
+@pytest.fixture
+def no_notes_file():
+    path = find(PROBLEM).notes_path
+    assert not path.exists()
+    yield path
+    path.unlink(missing_ok=True)
+
+
+def test_notes_are_saved_beside_the_problem_and_served_back(server, no_notes_file):
+    assert call(server, f"/api/problems/{PROBLEM}")[1]["notes"] == ""
+    assert call(server, f"/api/problems/{PROBLEM}/notes", {"text": "Use a set.\n\nWatch duplicates."})[0] == 200
+    assert no_notes_file.read_text() == "Use a set.\n\nWatch duplicates."
+    assert call(server, f"/api/problems/{PROBLEM}")[1]["notes"] == "Use a set.\n\nWatch duplicates."
+
+
+def test_empty_notes_remove_the_file(server, no_notes_file):
+    call(server, f"/api/problems/{PROBLEM}/notes", {"text": "x"})
+    assert no_notes_file.exists()
+    call(server, f"/api/problems/{PROBLEM}/notes", {"text": "  \n"})
+    assert not no_notes_file.exists()
+
+
+def test_notes_need_text(server, no_notes_file):
+    assert call(server, f"/api/problems/{PROBLEM}/notes", {"text": 5})[0] == 400
+    assert call(server, f"/api/problems/{PROBLEM}/notes", {})[0] == 400
+    assert not no_notes_file.exists()

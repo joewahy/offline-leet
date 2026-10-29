@@ -161,6 +161,31 @@ async function loadHints(key, count) {
   }
 }
 
+let notesTimer = null;
+
+function renderNotes(text) {
+  $("#notes-text").value = text;
+  $("#notes").classList.toggle("has-notes", !!text.trim());
+  $("#notes-state").textContent = "";
+}
+
+async function flushNotes() {
+  if (!notesTimer || !current) return;
+  clearTimeout(notesTimer);
+  notesTimer = null;
+  await api(`/api/problems/${current.key}/notes`, { text: $("#notes-text").value });
+  $("#notes-state").textContent = "Saved";
+}
+
+function scheduleNotes() {
+  $("#notes").classList.toggle("has-notes", !!$("#notes-text").value.trim());
+  $("#notes-state").textContent = "Editing\u2026";
+  clearTimeout(notesTimer);
+  notesTimer = setTimeout(() => {
+    flushNotes().catch((err) => { $("#notes-state").textContent = "Save failed: " + err.message; });
+  }, 600);
+}
+
 function storedSize(name) {
   try {
     return Number(localStorage.getItem("size:" + name)) || 0;
@@ -527,6 +552,7 @@ function scheduleSave() {
 
 async function openProblem(key) {
   await flushSave();
+  await flushNotes().catch(() => {});
   timerSync();
   await flushTime().catch(() => {});
   const data = await api(`/api/problems/${key}`);
@@ -545,6 +571,7 @@ async function openProblem(key) {
   loadingCode = false;
   $("#save-state").textContent = "";
   $("#results").innerHTML = '<p class="muted">Run your code to see results here.</p>';
+  renderNotes(data.notes || "");
   loadHints(data.key, data.hint_count || 0).catch(() => {});
   setPane("problem");
   renderList();
@@ -1101,6 +1128,7 @@ async function start() {
   $("#next-btn").onclick = () => step(1);
   $("#run-btn").onclick = run;
   $("#timer-btn").onclick = toggleTimer;
+  $("#notes-text").oninput = scheduleNotes;
   setInterval(timerSync, 1000);
   document.addEventListener("visibilitychange", () => {
     timerSync();
@@ -1201,6 +1229,9 @@ async function start() {
     }
   });
   window.addEventListener("beforeunload", () => {
+    if (notesTimer && current) {
+      navigator.sendBeacon(`/api/problems/${current.key}/notes`, new Blob([JSON.stringify({ text: $("#notes-text").value })], { type: "application/json" }));
+    }
     if (saveTimer && current) {
       navigator.sendBeacon(`/api/problems/${current.key}/save`, new Blob([JSON.stringify({ code: editor.getValue() })], { type: "application/json" }));
     }

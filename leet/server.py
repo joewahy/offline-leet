@@ -113,6 +113,7 @@ def make_handler():
                 "complexity": p.complexity,
                 "sample": p.load_cases()[0],
                 "custom": p.load_custom(),
+                "notes": p.load_notes(),
                 "seconds": progress.seconds(p.key),
                 "solve_seconds": progress.solve_seconds(p.key),
             })
@@ -185,6 +186,15 @@ def make_handler():
                     return self._error(400, "missing code or cases")
                 atomic_write_text(p.solution_path, code)
                 return self._json(run_custom(p, cases))
+            if parts[3] == "notes":
+                text = body.get("text")
+                if not isinstance(text, str):
+                    return self._error(400, "missing text")
+                if text.strip():
+                    atomic_write_text(p.notes_path, text)
+                else:
+                    p.notes_path.unlink(missing_ok=True)
+                return self._json({"ok": True})
             if parts[3] == "time":
                 spent = body.get("seconds")
                 if isinstance(spent, bool) or not isinstance(spent, (int, float)) or not 0 < spent <= MAX_TIME_REPORT:

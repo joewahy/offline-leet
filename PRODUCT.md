@@ -23,7 +23,7 @@ Fully offline and private: no account, no network after setup, no telemetry, and
 - Also usable via CLI (`leet list/next/start/test/reset/perf/serve/validate`) and VS Code tasks, plus a Dev Container.
 
 ## Capabilities and Constraints
-- Web UI: problems list with solved/attempted/due marks, search and All/To do/Due filters, a next-problem jump, Monaco editor with autosave, Run (Cmd/Ctrl+Enter), resizable panes, three tiered hints on Medium/Hard problems, reference Solution (gated behind a confirm until solved), Compare with reference, Reset (backs up first), Roadmap topic map, light and dark themes, phone layout with statement/editor/results tabs.
+- Web UI: problems list with solved/attempted/due marks, search and All/To do/Due filters, a next-problem jump, Monaco editor with autosave, Run (Cmd/Ctrl+Enter), resizable panes, three tiered hints on Medium/Hard problems, reference Solution (gated behind a confirm until solved), Compare with reference, Reset (backs up first), Roadmap topic map with a streak and activity heatmap, per-problem stopwatch, custom test cases, personal notes, light and dark themes, phone layout with statement/editor/results tabs.
 - No network dependency may be introduced: no CDN assets, web fonts, analytics, or runtime downloads.
 - Timeouts rely on Unix signals, so macOS and Linux only; user code runs unsandboxed.
 - Statements, tests, hints, and reference solutions are original, not copied from LeetCode.
