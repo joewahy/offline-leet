@@ -829,6 +829,10 @@ function loadTestCases(data) {
 
 function renderTestCases() {
   const box = $("#testcases");
+  if (current && !current.params) {
+    box.innerHTML = '<p class="error-box">The server is running older code than this page, so test cases, notes and the timer cannot work yet. Stop it (Ctrl+C in the terminal) and start it again, then reload this page.</p>';
+    return;
+  }
   const chips = tc.cases.map((c, i) => {
     const r = tc.results && tc.results[i];
     const mark = !r ? "" : r.ok === true ? '<span class="tc-mark ok" aria-hidden="true">&#10003;</span>'
