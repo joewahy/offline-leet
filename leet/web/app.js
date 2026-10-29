@@ -250,6 +250,9 @@ function setupSplitters() {
     300, () => window.innerWidth - 320, "ArrowRight", "ArrowLeft");
   makeResizable($("#split-h"), results, "height", "results", (e) => work.getBoundingClientRect().bottom - e.clientY,
     110, () => work.getBoundingClientRect().height - 140, "ArrowUp", "ArrowDown");
+  const notes = $("#notes-text");
+  makeResizable($("#notes-split"), notes, "height", "notes", (e) => notes.getBoundingClientRect().bottom - e.clientY,
+    80, () => left.getBoundingClientRect().height - 120, "ArrowUp", "ArrowDown");
 }
 
 let roadmapView;
@@ -634,27 +637,29 @@ function renderResults(outcome) {
   const passed = results.filter((r) => r.ok).length;
   const allPass = passed === results.length;
   const firstBad = results.findIndex((r) => !r.ok);
-  const cases = results.map((r, i) => {
+  const own = (tc.results || []).flatMap((r, i) => (r && tc.cases[i] ? [{ ...r, args: tc.cases[i].args, label: `Custom ${i + 1}` }] : []));
+  const shown = [...results.map((r, i) => ({ ...r, label: `Case ${i + 1}` })), ...own];
+  const selected = firstBad < 0 ? 0 : firstBad;
+  const cases = shown.map((r, i) => {
     const detail = [
       `<dt>Input</dt><dd><pre>${esc(short(r.args.map(py).join(", ")))}</pre></dd>`,
-      `<dt>Expected</dt><dd><pre>${esc(short(py(r.expected)))}</pre></dd>`,
+      r.ok === null ? "" : `<dt>Expected</dt><dd><pre>${esc(short(py(r.expected)))}</pre></dd>`,
       r.error ? `<dt>Error</dt><dd><pre class="error-box">${esc(r.error)}</pre></dd>` : `<dt>Your output</dt><dd><pre>${esc(short(py(r.got)))}</pre></dd>`,
       r.stdout ? `<dt>Printed</dt><dd><pre>${esc(r.stdout)}</pre></dd>` : "",
     ].join("");
-    return `<div class="case ${r.ok ? "ok" : "bad"}">
-      <button aria-expanded="${i === firstBad}"><span class="mark">${r.ok ? "&#10003;" : "&#10007;"}</span>Case ${i + 1}
-        <span class="preview">${esc(short(r.args.map(py).join(", "), 120))}</span></button>
-      <dl class="detail" ${i === firstBad ? "" : "hidden"}>${detail}</dl>
-    </div>`;
+    return `<dl class="detail" data-i="${i}" ${i === selected ? "" : "hidden"}>${detail}</dl>`;
+  }).join("");
+  const chips = shown.map((r, i) => {
+    const mark = r.ok === null ? "" : `<span class="tc-mark ${r.ok ? "ok" : "bad"}" aria-hidden="true">${r.ok ? "&#10003;" : "&#10007;"}</span>`;
+    const state = r.ok === null ? "" : r.ok ? ", passed" : ", failed";
+    return `<button type="button" class="out-chip${i === selected ? " selected" : ""}" data-i="${i}" aria-pressed="${i === selected}" aria-label="${r.label}${state}">${mark}${r.label}</button>`;
   }).join("");
   const hidden = outcome.hidden && !outcome.hidden.skipped ? outcome.hidden : null;
   const hiddenOk = !hidden || !(hidden.error || hidden.failure);
   const accepted = allPass && hiddenOk;
-  const verdict = accepted ? { label: "Correct", cls: "pass" } : verdictFor(
+  const verdict = accepted ? { label: "Accepted", cls: "pass" } : verdictFor(
     results.find((r) => !r.ok) || (hidden.error ? { error: "Traceback" } : hidden.failure));
-  const caseList = accepted
-    ? `<details class="cases-fold"><summary>${results.length} test cases</summary><div class="cases">${cases}</div></details>`
-    : `<div class="cases">${cases}</div>`;
+  const caseList = `<div class="out-cases"><div class="tc-chips">${chips}</div>${cases}</div>`;
   return `<div class="verdict-row"><span class="summary ${verdict.cls}">${verdict.label}</span>
     <span class="muted">Passed test cases: ${passed} / ${results.length}</span></div>${customNote()}${hidden ? hiddenBlock(hidden) : ""}${accepted ? landingBlock(outcome) + perfBlock() : ""}${caseList}`;
 }
@@ -1089,6 +1094,11 @@ async function start() {
   $("#prev-btn").onclick = () => step(-1);
   $("#next-btn").onclick = () => step(1);
   $("#run-btn").onclick = run;
+  // On a phone the results panel is hidden while editing, so Run floats over the header instead.
+  const narrow = matchMedia("(max-width: 700px)");
+  const placeRun = () => (narrow.matches ? $("header") : $("#results-bar")).append($("#run-btn"));
+  narrow.onchange = placeRun;
+  placeRun();
   $("#notes-text").oninput = scheduleNotes;
   setupSplitters();
   $("#reset-btn").onclick = resetCode;
@@ -1152,11 +1162,14 @@ async function start() {
       openProblem(next.dataset.key);
       return;
     }
-    const btn = e.target.closest(".case > button");
-    if (!btn) return;
-    const detail = btn.nextElementSibling;
-    detail.hidden = !detail.hidden;
-    btn.setAttribute("aria-expanded", String(!detail.hidden));
+    const chip = e.target.closest(".out-chip");
+    if (!chip) return;
+    const box = chip.closest(".out-cases");
+    box.querySelectorAll(".out-chip").forEach((c) => {
+      c.classList.toggle("selected", c === chip);
+      c.setAttribute("aria-pressed", String(c === chip));
+    });
+    box.querySelectorAll(".detail").forEach((d) => { d.hidden = d.dataset.i !== chip.dataset.i; });
   };
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape") {

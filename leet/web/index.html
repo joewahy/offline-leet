@@ -27,7 +27,6 @@
     </div>
     <button id="prev-btn" class="ghost" aria-label="Previous problem">&larr;</button>
     <button id="next-btn" class="ghost" aria-label="Next problem">&rarr;</button>
-    <button id="run-btn" class="primary">Run <kbd id="run-hint"></kbd></button>
   </header>
 
   <main>
@@ -41,7 +40,10 @@
       </div>
       <details id="notes">
         <summary>My notes <span id="notes-state" class="muted"></span></summary>
-        <textarea id="notes-text" rows="5" aria-label="My notes for this problem" placeholder="What tripped you up, the pattern to remember, edge cases to check next time" spellcheck="true"></textarea>
+        <div id="notes-box">
+          <div id="notes-split" class="splitter" role="separator" aria-orientation="horizontal" aria-label="Resize notes" tabindex="0"></div>
+          <textarea id="notes-text" rows="5" aria-label="My notes for this problem" placeholder="What tripped you up, the pattern to remember, edge cases to check next time" spellcheck="true"></textarea>
+        </div>
       </details>
     </section>
     <div id="split-v" class="splitter" role="separator" aria-orientation="vertical" aria-label="Resize problem panel" tabindex="0"></div>
@@ -49,9 +51,12 @@
       <div id="editor" aria-label="Code editor"></div>
       <div id="split-h" class="splitter" role="separator" aria-orientation="horizontal" aria-label="Resize results panel" tabindex="0"></div>
       <div id="results">
-        <div id="results-tabs" role="tablist" aria-label="Test cases and output">
-          <button role="tab" id="tab-testcase" data-view="testcase" aria-selected="true" aria-controls="testcases">Test Case</button>
-          <button role="tab" id="tab-output" data-view="output" aria-selected="false" aria-controls="output" tabindex="-1">Output</button>
+        <div id="results-bar">
+          <div id="results-tabs" role="tablist" aria-label="Test cases and output">
+            <button role="tab" id="tab-testcase" data-view="testcase" aria-selected="true" aria-controls="testcases">Test Case</button>
+            <button role="tab" id="tab-output" data-view="output" aria-selected="false" aria-controls="output" tabindex="-1">Output</button>
+          </div>
+          <button id="run-btn" class="primary">Run <kbd id="run-hint"></kbd></button>
         </div>
         <div id="testcases" role="tabpanel" aria-labelledby="tab-testcase"></div>
         <div id="output" role="tabpanel" aria-labelledby="tab-output" hidden><p class="muted">Run your code to see results here.</p></div>
