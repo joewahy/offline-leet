@@ -401,11 +401,11 @@ function selectRoadmapTopic(node, focusPanel = false) {
   if (focusPanel) $("#roadmap-topic-close").focus();
 }
 
-function closeRoadmapTopic() {
+function closeRoadmapTopic(restoreFocus = true) {
   const node = document.querySelector(".rm-node.selected");
   $("#roadmap-topic").hidden = true;
   document.querySelectorAll(".rm-node.selected").forEach((n) => n.classList.remove("selected"));
-  node?.focus();
+  if (restoreFocus) node?.focus();
 }
 
 // On narrow screens the statement, editor and results share one pane at a time.
@@ -1014,14 +1014,18 @@ async function start() {
   $("#roadmap-zoom-out").onclick = () => roadmapView.zoomOut();
   $("#roadmap-fit").onclick = () => roadmapView.fit();
   $("#roadmap-btn").onclick = () => (roadmapOpen ? closeRoadmap() : openRoadmap());
-  $("#roadmap-body").onclick = (e) => selectRoadmapTopic(e.target.closest(".rm-node"));
+  $("#roadmap-body").onclick = (e) => {
+    const node = e.target.closest(".rm-node");
+    if (node) selectRoadmapTopic(node);
+    else closeRoadmapTopic(false);
+  };
   $("#roadmap-body").onkeydown = (e) => {
     if (e.key === "Enter" || e.key === " ") {
       e.preventDefault();
       selectRoadmapTopic(e.target.closest(".rm-node"), true);
     }
   };
-  $("#roadmap-topic-close").onclick = closeRoadmapTopic;
+  $("#roadmap-topic-close").onclick = () => closeRoadmapTopic();
   $("#stats-activity").onpointerover = (e) => {
     const cell = e.target.closest(".heat");
     if (cell) showHeatTip(cell);
