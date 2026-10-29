@@ -185,33 +185,36 @@ def no_custom_file():
 
 
 def test_custom_cases_are_saved_beside_the_problem_and_served_back(server, no_custom_file):
-    cases = [{"args": [[1, 2, 1]], "expected": True}, {"args": [[3]]}]
+    cases = [{"args": [[1, 2, 1]]}, {"args": [[3]]}]
     assert call(server, f"/api/problems/{PROBLEM}/custom", {"cases": cases})[1] == {"cases": cases}
     status, data = call(server, f"/api/problems/{PROBLEM}")
     assert data["custom"] == cases
     assert data["sample"] == find(PROBLEM).load_cases()[0]
+    assert data["params"] == ["nums"]
     call(server, f"/api/problems/{PROBLEM}/custom", {"cases": []})
     assert not no_custom_file.exists()
     assert call(server, f"/api/problems/{PROBLEM}")[1]["custom"] == []
 
 
 @pytest.mark.parametrize("cases", [
-    "nope", [1], [{"expected": 1}], [{"args": "x"}], [{"args": [], "extra": 1}], [{"args": []}] * 51,
+    "nope", [1], [{"expected": 1}], [{"args": "x"}], [{"args": [], "extra": 1}], [{"args": [], "expected": 1}],
+    [{"args": []}] * 51,
 ])
 def test_custom_cases_must_be_well_formed(server, no_custom_file, cases):
     assert call(server, f"/api/problems/{PROBLEM}/custom", {"cases": cases})[0] == 400
     assert not no_custom_file.exists()
 
 
-def test_run_custom_checks_cases_that_have_an_expected_value_and_shows_the_rest(server, untouched_solution):
+def test_run_custom_takes_the_expected_answer_from_the_reference(server, untouched_solution):
     code = "class Solution:\n    def longestConsecutive(self, nums):\n        print('hi')\n        return len(set(nums))\n"
-    cases = [{"args": [[1, 1, 1]], "expected": 1}, {"args": [[1, 1, 1]], "expected": 2}, {"args": [[4, 5]]}]
+    cases = [{"args": [[7]]}, {"args": [[1, 3, 5]]}, {"args": [[5, 5, 5]]}]
     before = progress.summary()
     status, outcome = call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": code, "cases": cases})
     assert status == 200
-    ok, bad, free = outcome["results"]
-    assert (ok["ok"], bad["ok"], free["ok"]) == (True, False, None)
-    assert "expected" not in free and free["got"] == 2
+    ok, bad, other = outcome["results"]
+    assert (ok["ok"], ok["expected"], ok["got"]) == (True, 1, 1)
+    assert (bad["ok"], bad["expected"], bad["got"]) == (False, 1, 3)
+    assert (other["ok"], other["expected"]) == (True, 1)
     assert ok["stdout"] == "hi\n"
     assert "hidden" not in outcome
     assert progress.summary() == before
@@ -221,6 +224,14 @@ def test_run_custom_reports_an_error_in_the_solution(server, untouched_solution)
     code = "class Solution:\n    def longestConsecutive(self, nums):\n        return 1 / 0\n"
     status, outcome = call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": code, "cases": [{"args": [[1]]}]})
     assert "ZeroDivisionError" in outcome["results"][0]["error"]
+
+
+def test_run_custom_flags_an_input_the_reference_cannot_handle(server, untouched_solution):
+    code = "class Solution:\n    def longestConsecutive(self, nums):\n        return 0\n"
+    status, outcome = call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": code, "cases": [{"args": ["x"]}]})
+    result = outcome["results"][0]
+    assert result["ok"] is None
+    assert "input may be invalid" in result["error"]
 
 
 def test_run_custom_needs_code_and_cases(server, untouched_solution):

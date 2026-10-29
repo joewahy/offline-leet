@@ -15,3 +15,9 @@ def test_starter_loads(problem):
         module = load_module(problem.starter_path, problem)
     name = problem.design or (problem.roundtrip or {}).get("class") or "Solution"
     assert hasattr(module, name), f"starter.py does not define {name}"
+
+
+def test_every_problem_has_a_name_for_each_argument():
+    for p in all_problems():
+        assert len(p.param_names()) == len(p.load_cases()[0]["args"]), p.key
+        assert all(n.isidentifier() or n in ("operations", "arguments") for n in p.param_names()), p.key

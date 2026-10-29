@@ -34,11 +34,11 @@ def _problem_summary(p, tried=None):
 
 
 def _valid_cases(cases):
-    """Custom cases are a short list of {"args": [...], "expected": any (optional)}."""
+    """Custom cases are a short list of {"args": [...]}; the reference solution supplies the expected answers."""
     return (
         isinstance(cases, list)
         and len(cases) <= MAX_CUSTOM_CASES
-        and all(isinstance(c, dict) and isinstance(c.get("args"), list) and set(c) <= {"args", "expected"} for c in cases)
+        and all(isinstance(c, dict) and isinstance(c.get("args"), list) and set(c) == {"args"} for c in cases)
     )
 
 
@@ -111,6 +111,7 @@ def make_handler():
                 "code": p.solution_path.read_text(),
                 "hint_count": len(p.load_hints()),
                 "complexity": p.complexity,
+                "params": p.param_names(),
                 "sample": p.load_cases()[0],
                 "custom": p.load_custom(),
                 "notes": p.load_notes(),

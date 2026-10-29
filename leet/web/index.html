@@ -22,7 +22,6 @@
     <span id="save-state"></span>
     <button id="more-btn" class="ghost" aria-haspopup="true" aria-expanded="false" aria-controls="more-actions">&#8943; More</button>
     <div id="more-actions">
-      <button id="custom-btn" class="ghost" title="Try your own test cases">Custom</button>
       <button id="solution-btn" class="ghost" title="Show the reference solution">Solution</button>
       <button id="reset-btn" class="ghost" title="Restore the starter code (your current code is backed up)">Reset</button>
       <button id="theme-btn" class="ghost"></button>
@@ -50,7 +49,14 @@
     <section id="work">
       <div id="editor" aria-label="Code editor"></div>
       <div id="split-h" class="splitter" role="separator" aria-orientation="horizontal" aria-label="Resize results panel" tabindex="0"></div>
-      <div id="results"><p class="muted">Run your code to see results here.</p></div>
+      <div id="results">
+        <div id="results-tabs" role="tablist" aria-label="Test cases and output">
+          <button role="tab" id="tab-testcase" data-view="testcase" aria-selected="true" aria-controls="testcases">Test Case</button>
+          <button role="tab" id="tab-output" data-view="output" aria-selected="false" aria-controls="output" tabindex="-1">Output</button>
+        </div>
+        <div id="testcases" role="tabpanel" aria-labelledby="tab-testcase"></div>
+        <div id="output" role="tabpanel" aria-labelledby="tab-output" hidden><p class="muted">Run your code to see results here.</p></div>
+      </div>
       <div id="live" class="sr-only" role="status" aria-live="polite"></div>
     </section>
   </main>
@@ -125,29 +131,6 @@
       <button id="solution-close" class="ghost" aria-label="Close">&times;</button>
     </div>
     <div id="solution-body"></div>
-  </dialog>
-
-  <dialog id="custom" aria-label="Custom test cases">
-    <div id="custom-head">
-      <strong>Custom tests</strong>
-      <span id="custom-summary" class="muted"></span>
-      <button id="custom-close" class="ghost" aria-label="Close">&times;</button>
-    </div>
-    <div id="custom-body">
-      <pre id="custom-load-error" class="error-box" hidden></pre>
-      <div id="custom-list" class="cases"></div>
-      <form id="custom-form" autocomplete="off">
-        <label for="custom-args">Input <span class="muted">JSON, one value per argument, one argument per line</span></label>
-        <textarea id="custom-args" rows="3" spellcheck="false"></textarea>
-        <label for="custom-expected">Expected <span class="muted">JSON, optional: leave it empty to just see the output</span></label>
-        <textarea id="custom-expected" rows="2" spellcheck="false"></textarea>
-        <p id="custom-error" class="error-box" role="alert" hidden></p>
-        <div class="dialog-actions">
-          <button type="button" id="custom-run" class="ghost">Run all</button>
-          <button type="submit" id="custom-add" class="primary">Add and run</button>
-        </div>
-      </form>
-    </div>
   </dialog>
 
   <dialog id="confirm" aria-labelledby="confirm-title">

@@ -1,4 +1,5 @@
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -73,6 +74,24 @@ class Problem:
 
     def load_cases(self):
         return json.loads((self.dir / "tests.json").read_text())
+
+    def param_names(self):
+        """Names for the arguments of a case, as the starter code spells them, for labelling inputs."""
+        if self.design:
+            return ["operations", "arguments"]
+        method = self.roundtrip["encode"] if self.roundtrip else self.method
+        found = re.search(rf"def {re.escape(method)}\(self,?(.*?)\)\s*(?:->|:)", self.load_starter(), re.DOTALL)
+        names, depth, current = [], 0, ""
+        for ch in (found.group(1) if found else "") + ",":
+            if ch == "," and depth == 0:
+                if current.strip():
+                    names.append(re.split(r"[:=]", current, 1)[0].strip())
+                current = ""
+                continue
+            depth += ch in "(["
+            depth -= ch in "])"
+            current += ch
+        return names
 
     @property
     def notes_path(self):

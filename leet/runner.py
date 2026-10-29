@@ -2,7 +2,8 @@
 
 Usage: python -m leet.runner <problem-dir-name> [--reference] [--stdin-cases]
 
-With --stdin-cases the cases are a JSON list read from stdin instead of tests.json, and hidden tests are skipped.
+With --stdin-cases the cases are a JSON list of {"args": [...]} read from stdin instead of tests.json, with the
+expected answers taken from the reference solution, and hidden tests are skipped.
 """
 import contextlib
 import copy
@@ -114,7 +115,7 @@ def check_case(problem, checker, case, got, raw, inputs, result):
 
 
 def run_case(problem, module, checker, case):
-    """Run one case. A case with no "expected" (a custom one) just reports what the solution returned."""
+    """Run one case. A case with no "expected" just reports what the solution returned."""
     result = {"args": case["args"], "stdout": ""}
     if "expected" in case:
         result["expected"] = case["expected"]
@@ -138,6 +139,14 @@ def run_case(problem, module, checker, case):
         signal.setitimer(signal.ITIMER_REAL, 0)
     result["stdout"] = buf.getvalue()
     return result
+
+
+def run_custom_case(problem, module, reference, checker, case):
+    """Run a user-written input. The expected answer is whatever the reference solution returns for it."""
+    truth = run_case(problem, reference, None, {"args": case["args"]})
+    if "error" in truth:
+        return {"args": case["args"], "ok": None, "stdout": "", "error": "Could not work out the expected answer, so the input may be invalid:\n" + truth["error"]}
+    return run_case(problem, module, checker, {"args": case["args"], "expected": truth["got"]})
 
 
 def hidden_cases(problem):
@@ -192,6 +201,9 @@ def main(argv):
         return
     custom = "--stdin-cases" in argv
     cases = json.loads(sys.stdin.read()) if custom else problem.load_cases()
+    if custom:
+        with contextlib.redirect_stdout(io.StringIO()):
+            reference = load_module(problem.reference_path, problem)
     results = []
     stopped = False
     for case in cases:
@@ -199,7 +211,8 @@ def main(argv):
             results.append({**case, "ok": False, "got": None, "stdout": "",
                             "error": "skipped after an earlier timeout or memory error"})
             continue
-        result = run_case(problem, module, checker, case)
+        result = (run_custom_case(problem, module, reference, checker, case) if custom
+                  else run_case(problem, module, checker, case))
         stopped = result.get("error", "").startswith(STOP_ERRORS)
         results.append(result)
     outcome = {"results": results}

@@ -553,6 +553,7 @@ function scheduleSave() {
 async function openProblem(key) {
   await flushSave();
   await flushNotes().catch(() => {});
+  await flushTestCases().catch(() => {});
   timerSync();
   await flushTime().catch(() => {});
   const data = await api(`/api/problems/${key}`);
@@ -570,7 +571,9 @@ async function openProblem(key) {
   editor.setValue(data.code);
   loadingCode = false;
   $("#save-state").textContent = "";
-  $("#results").innerHTML = '<p class="muted">Run your code to see results here.</p>';
+  $("#output").innerHTML = '<p class="muted">Run your code to see results here.</p>';
+  loadTestCases(data);
+  showResultsView("testcase");
   renderNotes(data.notes || "");
   loadHints(data.key, data.hint_count || 0).catch(() => {});
   setPane("problem");
@@ -699,15 +702,21 @@ function renderResults(outcome) {
   const hidden = outcome.hidden && !outcome.hidden.skipped ? outcome.hidden : null;
   const hiddenOk = !hidden || !(hidden.error || hidden.failure);
   const accepted = allPass && hiddenOk;
-  const visible = `${passed}/${results.length}`;
-  const label = accepted ? `Accepted: ${visible} passed`
-    : allPass ? `${visible} visible tests passed, but a hidden test failed`
-    : `${visible} passed`;
-  const summaryClass = accepted ? "pass" : "fail";
+  const verdict = accepted ? { label: "Correct", cls: "pass" } : verdictFor(
+    results.find((r) => !r.ok) || (hidden.error ? { error: "Traceback" } : hidden.failure));
   const caseList = accepted
     ? `<details class="cases-fold"><summary>${results.length} test cases</summary><div class="cases">${cases}</div></details>`
     : `<div class="cases">${cases}</div>`;
-  return `<div class="summary ${summaryClass}">${label}</div>${hidden ? hiddenBlock(hidden) : ""}${accepted ? landingBlock(outcome) + perfBlock() : ""}${caseList}`;
+  return `<div class="verdict-row"><span class="summary ${verdict.cls}">${verdict.label}</span>
+    <span class="muted">Passed test cases: ${passed} / ${results.length}</span></div>${customNote()}${hidden ? hiddenBlock(hidden) : ""}${accepted ? landingBlock(outcome) + perfBlock() : ""}${caseList}`;
+}
+
+// One line under the verdict about the cases in the Test Case tab, with a way back to them.
+function customNote() {
+  const checked = tc.results ? tc.results.filter((r) => r && r.ok !== null) : [];
+  if (!checked.length) return "";
+  const right = checked.filter((r) => r.ok).length;
+  return `<p><button type="button" class="goto-testcase">Your test cases: ${right} of ${checked.length} correct</button></p>`;
 }
 
 function hiddenBlock(hidden) {
@@ -785,146 +794,128 @@ async function showSolution() {
   $("#solution").showModal();
 }
 
-let customCases = [];
-let customResults = null;
+// Your own test cases live in the results panel. Their expected answers come from the reference solution.
+let tc = { cases: [], texts: [], sel: 0, results: null, timer: null };
 
-function customCaseHtml(c, i) {
-  const r = customResults && customResults[i];
-  const state = !r ? "" : r.ok === true ? "ok" : r.ok === false ? "bad" : "free";
-  const mark = state === "ok" ? "&#10003;" : state === "bad" ? "&#10007;" : state === "free" ? "&rarr;" : "&middot;";
-  const input = c.args.map(py).join(", ");
-  const rows = [
-    `<dt>Input</dt><dd><pre>${esc(short(input))}</pre></dd>`,
-    "expected" in c ? `<dt>Expected</dt><dd><pre>${esc(short(py(c.expected)))}</pre></dd>` : "",
-  ];
-  if (r) {
-    rows.push(r.error
-      ? `<dt>Error</dt><dd><pre class="error-box">${esc(r.error)}</pre></dd>`
-      : `<dt>Your output</dt><dd><pre>${esc(short(py(r.got)))}</pre></dd>`);
-    if (r.stdout) rows.push(`<dt>Printed</dt><dd><pre>${esc(r.stdout)}</pre></dd>`);
-  }
-  const open = state === "bad" || state === "free";
-  return `<div class="case custom ${state}">
-    <button type="button" class="case-toggle" aria-expanded="${open}"><span class="mark">${mark}</span>Case ${i + 1}
-      <span class="preview">${esc(short(input, 120))}</span></button>
-    <button type="button" class="case-del ghost" data-i="${i}" aria-label="Delete custom case ${i + 1}">&times;</button>
-    <dl class="detail" ${open ? "" : "hidden"}>${rows.join("")}</dl>
-  </div>`;
-}
-
-function renderCustom() {
-  $("#custom-list").innerHTML = customCases.map(customCaseHtml).join("");
-  $("#custom-run").disabled = !customCases.length;
-  const checked = customResults ? customResults.filter((r) => r.ok !== null) : [];
-  const summary = !customResults ? `${customCases.length} saved`
-    : checked.length ? `${checked.filter((r) => r.ok).length} of ${checked.length} checked cases pass`
-    : "Ran, nothing to check";
-  $("#custom-summary").textContent = customCases.length ? summary : "";
-}
-
-function showCustomError(message) {
-  const box = $("#custom-error");
-  box.textContent = message || "";
-  box.hidden = !message;
-}
-
-function parseCustomForm() {
-  const lines = $("#custom-args").value.split("\n").map((l) => l.trim()).filter(Boolean);
-  if (!lines.length) throw new Error("Enter the input: one JSON value per argument, one argument per line.");
-  const hint = "Use true, false, null and double quotes.";
-  const args = lines.map((line, i) => {
-    try { return JSON.parse(line); } catch (err) { throw new Error(`Argument ${i + 1} is not valid JSON. ${hint}`); }
+function showResultsView(view) {
+  document.querySelectorAll("#results-tabs [role=tab]").forEach((tab) => {
+    const on = tab.dataset.view === view;
+    tab.setAttribute("aria-selected", String(on));
+    tab.tabIndex = on ? 0 : -1;
   });
-  const text = $("#custom-expected").value.trim();
-  const found = { args };
-  if (text) {
-    try { found.expected = JSON.parse(text); } catch (err) { throw new Error(`Expected is not valid JSON. ${hint}`); }
-  }
-  return found;
+  $("#testcases").hidden = view !== "testcase";
+  $("#output").hidden = view !== "output";
 }
 
-async function saveCustom() {
-  await api(`/api/problems/${current.key}/custom`, { cases: customCases });
-  current.custom = structuredClone(customCases);
+function verdictFor(r) {
+  if (r.ok) return { label: "Correct", cls: "pass" };
+  const err = r.error || "";
+  if (r.ok === null) return { label: "Invalid input", cls: "fail" };
+  if (err.startsWith("time limit exceeded")) return { label: "Time Limit Exceeded", cls: "fail" };
+  if (err.startsWith("memory limit exceeded")) return { label: "Memory Limit Exceeded", cls: "fail" };
+  if (err.includes("Traceback")) return { label: "Runtime Error", cls: "fail" };
+  return { label: "Wrong Answer", cls: "fail" };
 }
 
-async function runCustom() {
-  if (!current || !customCases.length) return;
-  const buttons = [$("#custom-run"), $("#custom-add")];
-  buttons.forEach((b) => { b.disabled = true; });
-  $("#custom-load-error").hidden = true;
-  clearTimeout(saveTimer);
-  saveTimer = null;
-  try {
-    const outcome = await api(`/api/problems/${current.key}/run-custom`, { code: editor.getValue(), cases: customCases });
-    customResults = outcome.results || null;
-    if (outcome.load_error) {
-      $("#custom-load-error").textContent = outcome.load_error;
-      $("#custom-load-error").hidden = false;
-    }
-    $("#save-state").textContent = "Saved";
-  } catch (err) {
-    customResults = null;
-    showCustomError("Run failed: " + err.message);
-  } finally {
-    buttons.forEach((b) => { b.disabled = false; });
-    renderCustom();
-    announce($("#custom-summary").textContent);
-  }
+function paramName(i) {
+  return (current && current.params && current.params[i]) || `arg ${i + 1}`;
 }
 
-async function addCustomCase(e) {
-  e.preventDefault();
-  let found;
-  try {
-    found = parseCustomForm();
-  } catch (err) {
-    showCustomError(err.message);
+function loadTestCases(data) {
+  tc = { cases: structuredClone(data.custom || []), texts: [], sel: 0, results: null, timer: null };
+  tc.texts = tc.cases.map((c) => c.args.map((a) => JSON.stringify(a)));
+  renderTestCases();
+}
+
+function renderTestCases() {
+  const box = $("#testcases");
+  const chips = tc.cases.map((c, i) => {
+    const r = tc.results && tc.results[i];
+    const mark = !r ? "" : r.ok === true ? '<span class="tc-mark ok" aria-hidden="true">&#10003;</span>'
+      : r.ok === false ? '<span class="tc-mark bad" aria-hidden="true">&#10007;</span>' : "";
+    const state = !r ? "" : r.ok === true ? ", correct" : r.ok === false ? ", wrong" : "";
+    return `<button type="button" class="tc-chip${i === tc.sel ? " selected" : ""}" data-i="${i}" aria-pressed="${i === tc.sel}" aria-label="Case ${i + 1}${state}">${mark}Case ${i + 1}</button>`;
+  }).join("");
+  const add = '<button type="button" class="tc-add ghost" aria-label="Add a test case" title="Add a test case">+</button>';
+  const del = tc.cases.length ? '<button type="button" class="tc-del ghost">Delete case</button>' : "";
+  if (!tc.cases.length) {
+    box.innerHTML = `<div class="tc-chips">${add}</div>
+      <p class="muted tc-empty">Add a case to try your own input. The expected answer is worked out by the reference solution, and it runs whenever you press Run.</p>`;
     return;
   }
-  showCustomError("");
-  customCases.push(found);
-  try {
-    await saveCustom();
-  } catch (err) {
-    customCases.pop();
-    showCustomError("Could not save the case: " + err.message);
-    return;
+  const fields = tc.texts[tc.sel].map((text, p) => `<div class="tc-field">
+      <label for="tc-arg-${p}">${esc(paramName(p))} =</label>
+      <input id="tc-arg-${p}" data-p="${p}" value="${esc(text)}" spellcheck="false" autocomplete="off" aria-describedby="tc-problem-${p}">
+      <p class="tc-problem" id="tc-problem-${p}" hidden>Not valid JSON. Use true, false, null and double quotes.</p>
+    </div>`).join("");
+  box.innerHTML = `<div class="tc-chips">${chips}${add}${del}</div>${fields}${testCaseResult()}`;
+}
+
+function testCaseResult() {
+  const r = tc.results && tc.results[tc.sel];
+  if (!r) return "";
+  const v = verdictFor(r);
+  const rows = [];
+  if (r.ok !== null) rows.push(`<dt>Expected</dt><dd><pre>${esc(short(py(r.expected)))}</pre></dd>`);
+  if (r.error) rows.push(`<dt>Error</dt><dd><pre class="error-box">${esc(r.error)}</pre></dd>`);
+  else rows.push(`<dt>Your output</dt><dd><pre>${esc(short(py(r.got)))}</pre></dd>`);
+  if (r.stdout) rows.push(`<dt>Printed</dt><dd><pre>${esc(r.stdout)}</pre></dd>`);
+  return `<div class="tc-result"><div class="summary ${v.cls}">${v.label}</div><dl class="detail">${rows.join("")}</dl></div>`;
+}
+
+async function saveTestCases() {
+  clearTimeout(tc.timer);
+  tc.timer = null;
+  await api(`/api/problems/${current.key}/custom`, { cases: tc.cases });
+  current.custom = structuredClone(tc.cases);
+}
+
+async function flushTestCases() {
+  if (tc.timer && current) await saveTestCases();
+}
+
+function saveTestCasesSoon() {
+  clearTimeout(tc.timer);
+  tc.timer = setTimeout(() => { saveTestCases().catch(() => {}); }, 500);
+}
+
+function addTestCase() {
+  if (tc.cases.length >= 50) return;
+  const from = tc.cases[tc.sel] ? tc.cases[tc.sel].args : (current.sample ? current.sample.args : current.params.map(() => null));
+  tc.cases.push({ args: structuredClone(from) });
+  tc.texts.push(from.map((a) => JSON.stringify(a)));
+  tc.results = null;
+  tc.sel = tc.cases.length - 1;
+  saveTestCasesSoon();
+  renderTestCases();
+  $("#tc-arg-0")?.focus();
+}
+
+function deleteTestCase() {
+  tc.cases.splice(tc.sel, 1);
+  tc.texts.splice(tc.sel, 1);
+  tc.results = null;
+  tc.sel = Math.max(0, Math.min(tc.sel, tc.cases.length - 1));
+  saveTestCasesSoon();
+  renderTestCases();
+}
+
+// Keep the typed text, and only accept it as the case once every field parses.
+function editTestCase(input) {
+  const p = Number(input.dataset.p);
+  tc.texts[tc.sel][p] = input.value;
+  const parsed = tc.texts[tc.sel].map((t) => { try { return { v: JSON.parse(t) }; } catch (err) { return null; } });
+  const ok = parsed[p] !== null;
+  input.classList.toggle("invalid", !ok);
+  input.setAttribute("aria-invalid", String(!ok));
+  $(`#tc-problem-${p}`).hidden = ok;
+  if (parsed.every(Boolean)) {
+    tc.cases[tc.sel].args = parsed.map((x) => x.v);
+    if (tc.results) tc.results[tc.sel] = null;
+    saveTestCasesSoon();
   }
-  $("#custom-args").value = "";
-  $("#custom-expected").value = "";
-  await runCustom();
 }
 
-async function deleteCustomCase(i) {
-  const removed = customCases.splice(i, 1);
-  customResults = null;
-  try {
-    await saveCustom();
-  } catch (err) {
-    customCases.splice(i, 0, ...removed);
-    showCustomError("Could not delete the case: " + err.message);
-  }
-  renderCustom();
-}
-
-function openCustom() {
-  if (!current) return;
-  customCases = structuredClone(current.custom || []);
-  customResults = null;
-  showCustomError("");
-  $("#custom-load-error").hidden = true;
-  const sample = current.sample;
-  $("#custom-args").placeholder = sample ? sample.args.map((a) => JSON.stringify(a)).join("\n") : "";
-  $("#custom-expected").placeholder = sample ? JSON.stringify(sample.expected) : "";
-  renderCustom();
-  $("#custom").showModal();
-}
-
-function closeCustom() {
-  const dialog = $("#custom");
-  if (dialog.open) dialog.close();
-}
 
 async function resetCode() {
   if (!current) return;
@@ -942,7 +933,9 @@ async function resetCode() {
     loadingCode = true;
     editor.setValue(data.code);
     loadingCode = false;
-    $("#results").innerHTML = '<p class="muted">Run your code to see results here.</p>';
+    $("#output").innerHTML = '<p class="muted">Run your code to see results here.</p>';
+    tc.results = null;
+    renderTestCases();
     $("#save-state").textContent = data.backed_up ? "Reset (backup kept)" : "Reset";
   } catch (err) {
     $("#save-state").textContent = "Reset failed: " + err.message;
@@ -959,7 +952,7 @@ function celebrate() {
   clearTimeout(celebrateTimer);
   celebrateTimer = setTimeout(() => results.classList.remove("celebrate"), 1700);
   if (!matchMedia("(prefers-reduced-motion: no-preference)").matches) return;
-  confettiBurst(results.querySelector(".summary.pass"));
+  confettiBurst(results.querySelector("#output .summary.pass"));
 }
 
 function endCelebration() {
@@ -997,23 +990,32 @@ async function run() {
   if (btn.disabled) return;
   btn.disabled = true;
   setPane("results");
+  showResultsView("output");
   announce("Running…");
-  $("#results").innerHTML = '<p class="muted">Running…</p>';
+  $("#output").innerHTML = '<p class="muted">Running…</p>';
   clearTimeout(saveTimer);
   saveTimer = null;
   try {
     timerSync();
     await flushTime().catch(() => {});
-    const outcome = await api(`/api/problems/${current.key}/run`, { code: editor.getValue() });
+    await flushTestCases().catch(() => {});
+    const code = editor.getValue();
+    const own = tc.cases.length
+      ? api(`/api/problems/${current.key}/run-custom`, { code, cases: tc.cases }).catch(() => null)
+      : Promise.resolve(null);
+    const outcome = await api(`/api/problems/${current.key}/run`, { code });
+    const ran = await own;
+    tc.results = ran && ran.results && ran.results.length === tc.cases.length ? ran.results : null;
+    renderTestCases();
     if (outcome.status === "solved") stopTimerAsSolved(outcome.solve_seconds || 0);
-    $("#results").innerHTML = renderResults(outcome);
-    announce($("#results .summary")?.textContent || "");
-    if ($("#results .summary.pass")) celebrate();
+    $("#output").innerHTML = renderResults(outcome);
+    announce($("#output .verdict-row")?.textContent.replace(/\s+/g, " ").trim() || "");
+    if ($("#output .summary.pass")) celebrate();
     $("#save-state").textContent = "Saved";
     const entry = problems.find((p) => p.key === current.key);
     if (entry && outcome.status) { entry.status = outcome.status; entry.due = outcome.due; renderList(); }
   } catch (err) {
-    $("#results").innerHTML = `<pre class="error-box">${esc(err.message)}</pre>`;
+    $("#output").innerHTML = `<pre class="error-box">${esc(err.message)}</pre>`;
     announce("Run failed: " + err.message);
   } finally {
     btn.disabled = false;
@@ -1147,35 +1149,6 @@ async function start() {
   setupSplitters();
   $("#reset-btn").onclick = resetCode;
   $("#solution-btn").onclick = showSolution;
-  $("#custom-btn").onclick = openCustom;
-  $("#custom-close").onclick = closeCustom;
-  $("#custom-run").onclick = runCustom;
-  $("#custom-form").onsubmit = addCustomCase;
-  $("#custom-form").onkeydown = (e) => {
-    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
-      e.preventDefault();
-      $("#custom-form").requestSubmit();
-    }
-  };
-  $("#custom-list").onclick = (e) => {
-    const del = e.target.closest(".case-del");
-    if (del) {
-      deleteCustomCase(Number(del.dataset.i));
-      return;
-    }
-    const btn = e.target.closest(".case-toggle");
-    if (!btn) return;
-    const detail = btn.parentElement.querySelector(".detail");
-    detail.hidden = !detail.hidden;
-    btn.setAttribute("aria-expanded", String(!detail.hidden));
-  };
-  $("#custom").addEventListener("click", (e) => {
-    if (e.target === e.currentTarget) closeCustom();
-  });
-  $("#solution-close").onclick = closeSolution;
-  $("#solution").addEventListener("click", (e) => {
-    if (e.target === e.currentTarget) closeSolution();
-  });
   $("#confirm").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) e.currentTarget.close("cancel");
   });
@@ -1199,7 +1172,33 @@ async function start() {
     const row = e.target.closest(".problem-row");
     if (row) openProblem(row.dataset.key);
   };
+  $("#results-tabs").onclick = (e) => {
+    const tab = e.target.closest("[data-view]");
+    if (tab) showResultsView(tab.dataset.view);
+  };
+  $("#results-tabs").onkeydown = (e) => {
+    if (e.key !== "ArrowLeft" && e.key !== "ArrowRight") return;
+    e.preventDefault();
+    const view = e.key === "ArrowLeft" ? "testcase" : "output";
+    showResultsView(view);
+    $(`#tab-${view}`).focus();
+  };
+  $("#testcases").oninput = (e) => {
+    if (e.target.matches("input[data-p]")) editTestCase(e.target);
+  };
+  $("#testcases").onclick = (e) => {
+    const chip = e.target.closest(".tc-chip");
+    if (chip) {
+      tc.sel = Number(chip.dataset.i);
+      renderTestCases();
+    } else if (e.target.closest(".tc-add")) addTestCase();
+    else if (e.target.closest(".tc-del")) deleteTestCase();
+  };
   $("#results").onclick = (e) => {
+    if (e.target.closest(".goto-testcase")) {
+      showResultsView("testcase");
+      return;
+    }
     if (e.target.closest("#perf-btn")) {
       runPerf();
       return;
@@ -1223,12 +1222,15 @@ async function start() {
       closeSolution();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
-    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open && !$("#solution").open && !$("#custom").open) {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open && !$("#solution").open) {
       e.preventDefault();
       run();
     }
   });
   window.addEventListener("beforeunload", () => {
+    if (tc.timer && current) {
+      navigator.sendBeacon(`/api/problems/${current.key}/custom`, new Blob([JSON.stringify({ cases: tc.cases })], { type: "application/json" }));
+    }
     if (notesTimer && current) {
       navigator.sendBeacon(`/api/problems/${current.key}/notes`, new Blob([JSON.stringify({ text: $("#notes-text").value })], { type: "application/json" }));
     }
