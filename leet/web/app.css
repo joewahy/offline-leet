@@ -178,7 +178,7 @@ pre {
 #results-tabs button[aria-selected="true"] { color: var(--text); border-bottom-color: var(--accent); }
 #output, #testcases { flex: 1; min-height: 0; overflow: auto; padding: 12px 16px; }
 #output[hidden], #testcases[hidden] { display: none; }
-.verdict-row { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 8px; }
+.verdict-row { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 4px 16px; margin-bottom: 18px; }
 .verdict-row .summary { margin: 0; font-size: 18px; }
 .goto-testcase { border: 0; background: transparent; padding: 0; color: var(--accent); text-decoration: underline; text-underline-offset: 2px; }
 .tc-chips { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; margin-bottom: 12px; }
@@ -206,7 +206,7 @@ pre {
 #testcases input.invalid { border-color: var(--fail); }
 .tc-field .tc-problem { margin: 4px 0 0; font-size: 12px; color: var(--fail); }
 .tc-result { margin-top: 14px; padding-top: 10px; border-top: 1px solid var(--border); }
-.tc-result .summary { font-size: 16px; margin-bottom: 4px; }
+.tc-result .summary { font-size: 16px; margin-bottom: 10px; }
 .tc-empty { margin: 4px 0 12px; }
 .splitter { flex: none; background: var(--border); position: relative; z-index: 2; }
 .splitter::after { content: ""; position: absolute; }
