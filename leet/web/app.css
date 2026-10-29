@@ -126,7 +126,8 @@ main { flex: 1; display: flex; min-height: 0; }
 .hint { margin-top: 8px; padding: 8px 10px; border: 1px solid var(--border); border-radius: 6px; background: var(--bg); }
 .hint summary { font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer; }
 .hint p { margin: 6px 0 0; }
-#notes { border-top: 1px solid var(--border); background: var(--panel); padding: 8px 14px 10px; }
+#notes { position: relative; border-top: 1px solid var(--border); background: var(--panel); padding: 8px 14px 10px; }
+#notes[open] #notes-text { position: absolute; left: 0; right: 0; bottom: 100%; margin: 0; border-radius: 0; border-width: 1px 0; box-shadow: 0 -6px 18px rgba(0, 0, 0, 0.18); }
 #notes summary { font-size: 12px; font-weight: 600; color: var(--accent); cursor: pointer; }
 #notes.has-notes summary::after { content: ""; display: inline-block; width: 6px; height: 6px; margin-left: 6px; border-radius: 50%; background: var(--accent); vertical-align: middle; }
 #notes-state { font-weight: 400; margin-left: 4px; }
@@ -141,7 +142,7 @@ main { flex: 1; display: flex; min-height: 0; }
   border: 1px solid var(--border);
   border-radius: 6px;
   font: inherit;
-  resize: vertical;
+  resize: none;
 }
 #notes-text:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
 #statement h1 { font-size: 20px; margin: 0 0 12px; }
