@@ -27,7 +27,7 @@ Fully offline and private: no account, no network after setup, no telemetry, and
 - No network dependency may be introduced: no CDN assets, web fonts, analytics, or runtime downloads.
 - Timeouts rely on Unix signals, so macOS and Linux only; user code runs unsandboxed.
 - Statements, tests, hints, and reference solutions are original, not copied from LeetCode.
-- Hidden tests exist for 58 problems; there is no timer yet.
+- Hidden tests exist for 58 problems. A header stopwatch times each first solve.
 
 ## Evidence on Hand
 Real content throughout: 150 problems under `problems/`, reference solutions under `reference/`, a built web UI under `leet/web/`. No testimonials, users, or metrics exist; none should be invented.

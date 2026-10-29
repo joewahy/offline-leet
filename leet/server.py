@@ -15,6 +15,7 @@ from leet.reset import reset
 
 WEB_DIR = Path(__file__).resolve().parent / "web"
 MAX_BODY = 1_000_000
+MAX_TIME_REPORT = 3600  # seconds one request may add to a problem's timer
 HINTS_BLOCK = re.compile(r"\n<details>.*?</details>\n", re.DOTALL)
 
 
@@ -98,6 +99,8 @@ def make_handler():
                 "code": p.solution_path.read_text(),
                 "hint_count": len(p.load_hints()),
                 "complexity": p.complexity,
+                "seconds": progress.seconds(p.key),
+                "solve_seconds": progress.solve_seconds(p.key),
             })
 
         def _get_solution(self, key, force):
@@ -153,6 +156,11 @@ def make_handler():
             if parts[3] == "reset":
                 backup = reset(p)
                 return self._json({"code": p.load_starter(), "backed_up": backup is not None})
+            if parts[3] == "time":
+                spent = body.get("seconds")
+                if isinstance(spent, bool) or not isinstance(spent, (int, float)) or not 0 < spent <= MAX_TIME_REPORT:
+                    return self._error(400, "bad seconds")
+                return self._json({"seconds": progress.add_seconds(p.key, spent)})
             code = body.get("code")
             if not isinstance(code, str):
                 return self._error(400, "missing code")
@@ -166,6 +174,7 @@ def make_handler():
                 progress.record(p.key, all_passed(outcome))
                 outcome["status"], outcome["due"] = progress.summary().get(p.key, ("todo", False))
                 outcome["due_on"] = progress.due_on(p.key)
+                outcome["solve_seconds"] = progress.solve_seconds(p.key)
                 return self._json(outcome)
             if parts[3] == "perf":
                 atomic_write_text(p.solution_path, code)

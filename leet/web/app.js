@@ -231,6 +231,90 @@ function setupSplitters() {
 let roadmapView;
 let roadmapOpen = false;
 
+// The stopwatch counts only while the problem is open and visible, and stops for good once it is solved.
+const FLUSH_EVERY = 15;
+let timer = null;
+
+function fmtClock(total) {
+  const s = Math.floor(total);
+  const h = Math.floor(s / 3600);
+  const m = Math.floor((s % 3600) / 60);
+  const ss = String(s % 60).padStart(2, "0");
+  return h ? `${h}:${String(m).padStart(2, "0")}:${ss}` : `${m}:${ss}`;
+}
+
+function timerCounting() {
+  return !!timer && !timer.solved && !timer.paused && !document.hidden && !roadmapOpen;
+}
+
+// Fold the time since the last call into the totals, then note whether the clock is running from here.
+function timerSync() {
+  if (!timer) return;
+  const now = performance.now();
+  if (timer.last !== null) {
+    const spent = (now - timer.last) / 1000;
+    timer.seconds += spent;
+    timer.unsent += spent;
+  }
+  timer.last = timerCounting() ? now : null;
+  renderTimer();
+  if (timer.unsent >= FLUSH_EVERY) flushTime().catch(() => {});
+}
+
+function renderTimer() {
+  const btn = $("#timer-btn");
+  if (!timer || (timer.solved && !timer.solveSeconds)) {
+    btn.hidden = true;
+    return;
+  }
+  btn.hidden = false;
+  btn.classList.toggle("paused", timer.paused && !timer.solved);
+  btn.classList.toggle("solved", timer.solved);
+  btn.disabled = timer.solved;
+  if (timer.solved) {
+    btn.textContent = `\u2713 ${fmtClock(timer.solveSeconds)}`;
+    btn.title = `Solved in ${fmtClock(timer.solveSeconds)}`;
+    return;
+  }
+  btn.textContent = `${timer.paused ? "\u23f8 " : ""}${fmtClock(timer.seconds)}`;
+  btn.title = timer.paused ? "Resume the timer" : "Pause the timer";
+  btn.setAttribute("aria-label", `${timer.paused ? "Paused at" : "Time spent:"} ${fmtClock(timer.seconds)}. ${btn.title}`);
+}
+
+async function flushTime() {
+  if (!timer || timer.unsent < 1) return;
+  const { key } = timer;
+  const sending = Math.floor(timer.unsent);
+  timer.unsent -= sending;
+  try {
+    await api(`/api/problems/${key}/time`, { seconds: sending });
+  } catch (err) {
+    if (timer && timer.key === key) timer.unsent += sending;
+    throw err;
+  }
+}
+
+function startTimer(data) {
+  timer = { key: data.key, seconds: data.seconds || 0, unsent: 0, last: null, paused: false,
+    solved: data.status === "solved", solveSeconds: data.solve_seconds || 0 };
+  timerSync();
+}
+
+function toggleTimer() {
+  if (!timer || timer.solved) return;
+  timerSync();
+  timer.paused = !timer.paused;
+  timerSync();
+}
+
+function stopTimerAsSolved(solveSeconds) {
+  if (!timer || timer.solved) return;
+  timerSync();
+  timer.solved = true;
+  timer.solveSeconds = solveSeconds || 0;
+  timerSync();
+}
+
 // Run `update` inside a view transition, or straight away when motion is reduced or unsupported.
 function withTransition(update, name) {
   const animated = matchMedia("(prefers-reduced-motion: no-preference)").matches;
@@ -310,7 +394,9 @@ function openRoadmapContents() {
 }
 
 function openRoadmap() {
+  timerSync();
   roadmapOpen = true;
+  timerSync();
   withTransition(() => {
     openRoadmapContents();
     $("#roadmap").hidden = false;
@@ -322,7 +408,9 @@ function openRoadmap() {
 
 function closeRoadmap() {
   if (!roadmapOpen) return;
+  timerSync();
   roadmapOpen = false;
+  timerSync();
   withTransition(() => {
     $("#roadmap").hidden = true;
     $("#roadmap-topic").hidden = true;
@@ -427,8 +515,11 @@ function scheduleSave() {
 
 async function openProblem(key) {
   await flushSave();
+  timerSync();
+  await flushTime().catch(() => {});
   const data = await api(`/api/problems/${key}`);
   current = data;
+  startTimer(data);
   history.replaceState(null, "", "#" + key);
   document.title = `${data.title} · offline-leet`;
   $("#title-text").textContent = `${data.id}. ${data.title}`;
@@ -537,7 +628,8 @@ function reviewNote(dueOn) {
 }
 
 function landingBlock(outcome) {
-  const note = reviewNote(outcome.due_on);
+  const review = reviewNote(outcome.due_on);
+  const note = [outcome.solve_seconds ? `Solved in ${fmtClock(outcome.solve_seconds)}` : "", review].filter(Boolean).join(" \u00b7 ");
   const next = nextProblem();
   if (!note && !next) return "";
   return `<div class="landing">${note ? `<span class="muted">${note}</span>` : ""}${next
@@ -730,7 +822,10 @@ async function run() {
   clearTimeout(saveTimer);
   saveTimer = null;
   try {
+    timerSync();
+    await flushTime().catch(() => {});
     const outcome = await api(`/api/problems/${current.key}/run`, { code: editor.getValue() });
+    if (outcome.status === "solved") stopTimerAsSolved(outcome.solve_seconds || 0);
     $("#results").innerHTML = renderResults(outcome);
     announce($("#results .summary")?.textContent || "");
     if ($("#results .summary.pass")) celebrate();
@@ -852,6 +947,22 @@ async function start() {
   $("#prev-btn").onclick = () => step(-1);
   $("#next-btn").onclick = () => step(1);
   $("#run-btn").onclick = run;
+  $("#timer-btn").onclick = toggleTimer;
+  setInterval(timerSync, 1000);
+  document.addEventListener("visibilitychange", () => {
+    timerSync();
+    if (document.hidden) flushTime().catch(() => {});
+  });
+  addEventListener("pagehide", () => {
+    timerSync();
+    if (timer && timer.unsent >= 1) {
+      fetch(`/api/problems/${timer.key}/time`, {
+        method: "POST", keepalive: true,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ seconds: Math.floor(timer.unsent) }),
+      }).catch(() => {});
+    }
+  });
   setupSplitters();
   $("#reset-btn").onclick = resetCode;
   $("#solution-btn").onclick = showSolution;
