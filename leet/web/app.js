@@ -287,6 +287,22 @@ function renderRoadmapStats() {
   loadActivity().catch(() => {});
 }
 
+function showHeatTip(cell) {
+  const tip = $("#heat-tip");
+  tip.textContent = cell.dataset.tip;
+  tip.hidden = false;
+  const box = cell.getBoundingClientRect();
+  const width = tip.offsetWidth;
+  const left = Math.min(Math.max(8, box.left + box.width / 2 - width / 2), window.innerWidth - width - 8);
+  const above = box.top - tip.offsetHeight - 6;
+  tip.style.left = `${left}px`;
+  tip.style.top = `${above >= 8 ? above : box.bottom + 6}px`;
+}
+
+function hideHeatTip() {
+  $("#heat-tip").hidden = true;
+}
+
 async function loadActivity() {
   const activity = await api("/api/activity");
   const box = $("#stats-activity");
@@ -360,6 +376,7 @@ function openRoadmap() {
 function closeRoadmap() {
   if (!roadmapOpen) return;
   roadmapOpen = false;
+  hideHeatTip();
   withTransition(() => {
     $("#roadmap").hidden = true;
     $("#roadmap-topic").hidden = true;
@@ -1005,6 +1022,13 @@ async function start() {
     }
   };
   $("#roadmap-topic-close").onclick = closeRoadmapTopic;
+  $("#stats-activity").onpointerover = (e) => {
+    const cell = e.target.closest(".heat");
+    if (cell) showHeatTip(cell);
+  };
+  $("#stats-activity").onpointerout = (e) => {
+    if (e.target.closest(".heat")) hideHeatTip();
+  };
   $("#random-btn").onclick = openRandomUnsolved;
   $("#clear-progress-btn").onclick = clearProgress;
   $("#roadmap-topic-list").onclick = (e) => {

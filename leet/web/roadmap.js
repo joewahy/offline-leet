@@ -297,14 +297,16 @@ function renderActivity(activity) {
     const iso = day.toISOString().slice(0, 10);
     const runs = activity.days[iso] || 0;
     if (runs) active += 1;
-    const when = day.toLocaleDateString(undefined, { month: "short", day: "numeric", timeZone: "UTC" });
-    cells += `<i class="heat l${heatLevel(runs)}" title="${runs ? `${runs} ${runs === 1 ? "run" : "runs"}` : "No runs"} on ${when}"></i>`;
+    const when = day.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
+    cells += `<i class="heat l${heatLevel(runs)}" data-tip="${when}: ${runs ? `${runs} ${runs === 1 ? "run" : "runs"}` : "no runs"}"></i>`;
   }
   const streak = activity.current_streak;
   const label = `${active} active ${active === 1 ? "day" : "days"} in the last ${HEAT_WEEKS} weeks, `
     + `current streak ${streak} ${streak === 1 ? "day" : "days"}, longest ${activity.longest_streak}`;
-  const caption = `Last ${HEAT_WEEKS} weeks \u00b7 best streak ${activity.longest_streak}`;
-  return { html: `<div class="heat-caption muted">${caption}</div><div class="heat-grid" role="img" aria-label="${label}">${cells}</div>`, label };
+  const best = activity.longest_streak;
+  const captions = `<div class="heat-caption muted">Best streak: ${best} ${best === 1 ? "day" : "days"}</div>`
+    + `<div class="heat-caption muted">Last ${HEAT_WEEKS} weeks</div>`;
+  return { html: `${captions}<div class="heat-grid" role="img" aria-label="${label}">${cells}</div>`, label };
 }
 
 function streakText(streak) {
