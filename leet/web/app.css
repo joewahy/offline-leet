@@ -370,7 +370,7 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
 body.roadmap-open main { display: none; }
 body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn, #save-state) { display: none; }
 #roadmap-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--panel); }
-#roadmap-main { flex: 1; min-height: 0; display: flex; }
+#roadmap-main { flex: 1; min-height: 0; display: flex; overflow: hidden; }
 #roadmap-stage { flex: 1; min-width: 0; position: relative; display: flex; }
 #roadmap-body { flex: 1; min-width: 0; overflow: hidden; cursor: grab; touch-action: none; }
 #roadmap-body.panning { cursor: grabbing; user-select: none; }
@@ -384,15 +384,19 @@ body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn,
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
 }
 #roadmap-topic[hidden] { display: none; }
-@keyframes topic-in { from { opacity: 0; transform: translateX(28px); } }
+@keyframes topic-in { from { opacity: 0; margin-right: calc(-1 * min(340px, 50%)); } }
 @keyframes topic-in-up { from { opacity: 0; transform: translateY(28px); } }
+@keyframes topic-out { to { opacity: 0; margin-right: calc(-1 * min(340px, 50%)); } }
+@keyframes topic-out-down { to { opacity: 0; transform: translateY(28px); } }
 @keyframes topic-list-in { from { opacity: 0; transform: translateY(6px); } }
 @media (prefers-reduced-motion: no-preference) {
   #roadmap-topic:not([hidden]) { animation: topic-in 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+  #roadmap-topic.closing { animation: topic-out 0.26s cubic-bezier(0.22, 1, 0.36, 1) forwards; pointer-events: none; }
   #roadmap-topic-list.swap { animation: topic-list-in 0.2s ease-out; }
 }
 @media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
   #roadmap-topic:not([hidden]) { animation-name: topic-in-up; }
+  #roadmap-topic.closing { animation-name: topic-out-down; }
 }
 #roadmap-topic-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
 #roadmap-topic-head .muted { flex: 1; }
@@ -468,11 +472,11 @@ body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn,
 @media (min-width: 701px) {
   #stats-activity { max-height: 220px; overflow: hidden; }
   /* While a topic's problems are open the card tucks away: no heatmap, a smaller ring. */
-  #roadmap-main:has(#roadmap-topic:not([hidden])) #roadmap-stats { padding: 12px 16px 10px; }
-  #roadmap-main:has(#roadmap-topic:not([hidden])) #stats-activity { max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; border-top-width: 0; }
-  #roadmap-main:has(#roadmap-topic:not([hidden])) #stats-ring { width: 96px; height: 96px; }
-  #roadmap-main:has(#roadmap-topic:not([hidden])) .ring-label strong { font-size: 26px; }
-  #roadmap-main:has(#roadmap-topic:not([hidden])) #stats-actions { margin-top: 8px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden]):not(.closing)) #roadmap-stats { padding: 12px 16px 10px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden]):not(.closing)) #stats-activity { max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; border-top-width: 0; }
+  #roadmap-main:has(#roadmap-topic:not([hidden]):not(.closing)) #stats-ring { width: 96px; height: 96px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden]):not(.closing)) .ring-label strong { font-size: 26px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden]):not(.closing)) #stats-actions { margin-top: 8px; }
 }
 @media (min-width: 701px) and (prefers-reduced-motion: no-preference) {
   #roadmap-stats { transition: padding 0.26s cubic-bezier(0.22, 1, 0.36, 1); }

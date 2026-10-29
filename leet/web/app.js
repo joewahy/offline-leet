@@ -359,7 +359,7 @@ function openRoadmapContents() {
   $("#roadmap-body").innerHTML = renderRoadmap(stats, here && here.category);
   renderRoadmapStats();
   const topic = document.querySelector("#roadmap-topic:not([hidden])");
-  if (topic) closeRoadmapTopic();
+  if (topic) closeRoadmapTopic(true, false);
 }
 
 function openRoadmap() {
@@ -379,12 +379,16 @@ function closeRoadmap() {
   hideHeatTip();
   withTransition(() => {
     $("#roadmap").hidden = true;
+    clearTimeout(topicTimer);
     $("#roadmap-topic").hidden = true;
+    $("#roadmap-topic").classList.remove("closing");
     document.body.classList.remove("roadmap-open");
     $("#roadmap-btn").innerHTML = "&#10070; Roadmap";
     if (editor) editor.layout();
   });
 }
+
+let topicTimer;
 
 function selectRoadmapTopic(node, focusPanel = false) {
   if (!node) return;
@@ -398,18 +402,32 @@ function selectRoadmapTopic(node, focusPanel = false) {
   $("#roadmap-topic-count").textContent = `${solved} / ${items.length} solved`;
   $("#roadmap-topic-list").innerHTML = items.map(problemRow).join("");
   const list = $("#roadmap-topic-list");
-  if (!$("#roadmap-topic").hidden) {
+  const panel = $("#roadmap-topic");
+  clearTimeout(topicTimer);
+  if (!panel.hidden && !panel.classList.contains("closing")) {
     list.classList.remove("swap");
     void list.offsetWidth;
     list.classList.add("swap");
   }
-  $("#roadmap-topic").hidden = false;
+  panel.classList.remove("closing");
+  panel.hidden = false;
   if (focusPanel) $("#roadmap-topic-close").focus();
 }
 
-function closeRoadmapTopic(restoreFocus = true) {
+function closeRoadmapTopic(restoreFocus = true, animate = true) {
   const node = document.querySelector(".rm-node.selected");
-  $("#roadmap-topic").hidden = true;
+  const panel = $("#roadmap-topic");
+  clearTimeout(topicTimer);
+  if (animate && !panel.hidden && matchMedia("(prefers-reduced-motion: no-preference)").matches) {
+    panel.classList.add("closing");
+    topicTimer = setTimeout(() => {
+      panel.hidden = true;
+      panel.classList.remove("closing");
+    }, 260);
+  } else {
+    panel.hidden = true;
+    panel.classList.remove("closing");
+  }
   document.querySelectorAll(".rm-node.selected").forEach((n) => n.classList.remove("selected"));
   if (restoreFocus) node?.focus();
 }
