@@ -107,36 +107,6 @@ def test_reset_all_without_a_progress_file_has_nothing_to_back_up(progress_file,
     assert progress.load() == {"current": None, "problems": {}}
 
 
-def test_seconds_add_up_without_marking_the_problem_attempted(progress_file):
-    assert progress.seconds("p") == 0
-    assert progress.add_seconds("p", 30) == 30
-    assert progress.add_seconds("p", 12.5) == 42.5
-    assert progress.seconds("p") == 42.5
-    assert progress.status("p") == "todo"
-    assert progress.summary() == {}
-
-
-def test_first_solve_records_the_time_spent_so_far(progress_file):
-    progress.add_seconds("p", 90)
-    progress.record("p", False, today=D(2026, 1, 1))
-    assert progress.solve_seconds("p") is None
-    progress.record("p", True, today=D(2026, 1, 1))
-    progress.add_seconds("p", 500)
-    progress.record("p", True, today=D(2026, 1, 2))
-    assert progress.solve_seconds("p") == 90
-
-
-def test_a_solve_with_no_timing_has_no_solve_seconds(progress_file):
-    progress.record("p", True, today=D(2026, 1, 1))
-    assert progress.solve_seconds("p") is None
-
-
-def test_reset_all_forgets_the_time_spent(progress_file, tmp_path):
-    progress.add_seconds("p", 30)
-    progress.reset_all(backup_dir=tmp_path / "backups")
-    assert progress.seconds("p") == 0
-
-
 def test_activity_counts_runs_per_day(progress_file):
     progress.record("p", False, today=D(2026, 1, 1))
     progress.record("p", True, today=D(2026, 1, 1))

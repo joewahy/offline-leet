@@ -55,10 +55,6 @@ header button { flex: none; white-space: nowrap; }
 #title { display: flex; align-items: center; gap: 10px; min-width: 0; font-weight: 600; font-size: 15px; margin-left: 6px; }
 #title-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 #save-state { color: var(--muted); font-size: 12px; margin-right: 6px; }
-#timer-btn { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-variant-numeric: tabular-nums; color: var(--muted); }
-#timer-btn:hover:not(:disabled) { color: var(--text); }
-#timer-btn.paused { color: var(--warn); }
-#timer-btn.solved { color: var(--pass); opacity: 1; cursor: default; }
 #more-actions { display: contents; }
 #more-btn, #tabs { display: none; }
 #run-btn { order: 1; }
@@ -372,7 +368,7 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
 }
 #roadmap[hidden] { display: none; }
 body.roadmap-open main { display: none; }
-body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn, #save-state, #timer-btn) { display: none; }
+body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn, #save-state) { display: none; }
 #roadmap-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--panel); }
 #roadmap-main { flex: 1; min-height: 0; display: flex; }
 #roadmap-stage { flex: 1; min-width: 0; position: relative; display: flex; }
@@ -508,7 +504,7 @@ button.primary.danger { background: var(--fail); border-color: var(--fail); }
   header::after { content: ""; order: 4; flex-basis: 100%; height: 0; }
   #title { order: 5; flex: 1 1 0; min-width: 0; margin-left: 0; }
   #title-text { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  #timer-btn, #prev-btn, #next-btn { order: 6; }
+  #prev-btn, #next-btn { order: 6; }
   #save-state { order: 7; flex-basis: 100%; margin: 0; }
   #save-state:empty { display: none; }
   body.roadmap-open #title { display: none; }

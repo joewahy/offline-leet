@@ -105,34 +105,11 @@ def record(key, solved, today=None):
             entry.setdefault("solved_at", today.isoformat())
             if first_time:
                 _schedule(entry, 1, today)
-                spent = data.get("seconds", {}).get(key)
-                if spent:
-                    entry["solve_seconds"] = spent
             elif was_due:
                 _schedule(entry, entry.get("box", 1) + 1, today)
         elif was_due:
             _schedule(entry, 1, today)
         save(data)
-
-
-def add_seconds(key, seconds):
-    """Add time spent on a problem. Kept apart from `problems` so viewing one does not mark it attempted."""
-    with _locked():
-        data = load()
-        times = data.setdefault("seconds", {})
-        times[key] = round(times.get(key, 0) + seconds, 1)
-        save(data)
-        return times[key]
-
-
-def seconds(key):
-    return load().get("seconds", {}).get(key, 0)
-
-
-def solve_seconds(key):
-    """Time spent before the first pass, or None if the problem is unsolved or was solved before timing."""
-    entry = load()["problems"].get(key)
-    return entry.get("solve_seconds") if entry else None
 
 
 def activity(today=None):

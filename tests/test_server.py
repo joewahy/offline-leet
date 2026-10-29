@@ -149,23 +149,6 @@ def test_progress_reset_clears_progress(server, tmp_path, monkeypatch):
     assert progress.summary() == {}
 
 
-def test_time_endpoint_adds_to_the_problem_total(server, tmp_path, monkeypatch):
-    monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
-    assert call(server, f"/api/problems/{PROBLEM}/time", {"seconds": 20})[1] == {"seconds": 20}
-    assert call(server, f"/api/problems/{PROBLEM}/time", {"seconds": 5})[1] == {"seconds": 25}
-    status, data = call(server, f"/api/problems/{PROBLEM}")
-    assert (data["seconds"], data["solve_seconds"]) == (25, None)
-    assert progress.summary() == {}
-
-
-@pytest.mark.parametrize("seconds", [0, -5, 3601, "9", True, None, float("nan")])
-def test_time_endpoint_rejects_bad_values(server, tmp_path, monkeypatch, seconds):
-    monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
-    status, data = call(server, f"/api/problems/{PROBLEM}/time", {"seconds": seconds})
-    assert status == 400
-    assert progress.seconds(PROBLEM) == 0
-
-
 def test_activity_endpoint_reports_runs_and_streaks(server, tmp_path, monkeypatch):
     monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
     status, data = call(server, "/api/activity")

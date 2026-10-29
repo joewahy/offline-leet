@@ -23,11 +23,11 @@ Fully offline and private: no account, no network after setup, no telemetry, and
 - Also usable via CLI (`leet list/next/start/test/reset/perf/serve/validate`) and VS Code tasks, plus a Dev Container.
 
 ## Capabilities and Constraints
-- Web UI: problems list with solved/attempted/due marks, search and All/To do/Due filters, a next-problem jump, Monaco editor with autosave, Run (Cmd/Ctrl+Enter), resizable panes, three tiered hints on Medium/Hard problems, reference Solution (gated behind a confirm until solved), Compare with reference, Reset (backs up first), Roadmap topic map with a streak and activity heatmap, per-problem stopwatch, custom test cases checked against the reference, personal notes, light and dark themes, phone layout with statement/editor/results tabs.
+- Web UI: problems list with solved/attempted/due marks, search and All/To do/Due filters, a next-problem jump, Monaco editor with autosave, Run (Cmd/Ctrl+Enter), resizable panes, three tiered hints on Medium/Hard problems, reference Solution (gated behind a confirm until solved), Compare with reference, Reset (backs up first), Roadmap topic map with a streak and activity heatmap, custom test cases checked against the reference, personal notes, light and dark themes, phone layout with statement/editor/results tabs.
 - No network dependency may be introduced: no CDN assets, web fonts, analytics, or runtime downloads.
 - Timeouts rely on Unix signals, so macOS and Linux only; user code runs unsandboxed.
 - Statements, tests, hints, and reference solutions are original, not copied from LeetCode.
-- Hidden tests exist for 58 problems. A header stopwatch times each first solve.
+- Hidden tests exist for 58 problems; there is no timer yet.
 
 ## Evidence on Hand
 Real content throughout: 150 problems under `problems/`, reference solutions under `reference/`, a built web UI under `leet/web/`. No testimonials, users, or metrics exist; none should be invented.
