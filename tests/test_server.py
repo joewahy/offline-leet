@@ -164,3 +164,13 @@ def test_time_endpoint_rejects_bad_values(server, tmp_path, monkeypatch, seconds
     status, data = call(server, f"/api/problems/{PROBLEM}/time", {"seconds": seconds})
     assert status == 400
     assert progress.seconds(PROBLEM) == 0
+
+
+def test_activity_endpoint_reports_runs_and_streaks(server, tmp_path, monkeypatch):
+    monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
+    status, data = call(server, "/api/activity")
+    assert status == 200
+    assert (data["days"], data["current_streak"], data["longest_streak"]) == ({}, 0, 0)
+    progress.record(PROBLEM, False)
+    status, data = call(server, "/api/activity")
+    assert (data["days"][data["today"]], data["current_streak"]) == (1, 1)

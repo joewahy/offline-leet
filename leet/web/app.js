@@ -343,6 +343,18 @@ function renderRoadmapStats() {
   el.innerHTML = ring;
   el.setAttribute("aria-label", label);
   $("#random-btn").disabled = !problems.some((p) => p.status !== "solved");
+  loadActivity().catch(() => {});
+}
+
+async function loadActivity() {
+  const activity = await api("/api/activity");
+  const box = $("#stats-activity");
+  const { html } = renderActivity(activity);
+  box.innerHTML = html;
+  box.hidden = false;
+  const solved = problems.filter((p) => p.status === "solved").length;
+  const streak = streakText(activity.current_streak);
+  $("#roadmap-count").textContent = `${solved} / ${problems.length} solved${streak ? ` \u00b7 ${streak}` : ""}`;
 }
 
 async function openRandomUnsolved() {

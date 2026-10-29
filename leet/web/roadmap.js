@@ -273,3 +273,40 @@ function renderStats(counts) {
     <div class="ring-label"><strong>${solved}</strong><span>/${all}</span><span>Solved</span></div>`;
   return { legend, ring, label: `${solved} of ${all} solved: ${RING_TIERS.map((t) => `${counts[t.name]?.solved || 0} of ${counts[t.name]?.total || 0} ${t.name}`).join(", ")}` };
 }
+
+const HEAT_WEEKS = 22;
+const HEAT_LEVELS = [1, 3, 6, 10];  // runs in a day needed for each shade after the first
+
+function heatLevel(runs) {
+  return runs ? 1 + HEAT_LEVELS.slice(1).filter((n) => runs >= n).length : 0;
+}
+
+const utcDay = (iso) => new Date(`${iso}T00:00:00Z`);
+
+// Weeks run left to right, Sunday on top, and the last column ends on today.
+function renderActivity(activity) {
+  const today = utcDay(activity.today);
+  const first = new Date(today);
+  first.setUTCDate(first.getUTCDate() - today.getUTCDay() - (HEAT_WEEKS - 1) * 7);
+  let cells = "";
+  let active = 0;
+  for (let i = 0; i < HEAT_WEEKS * 7; i++) {
+    const day = new Date(first);
+    day.setUTCDate(first.getUTCDate() + i);
+    if (day > today) break;
+    const iso = day.toISOString().slice(0, 10);
+    const runs = activity.days[iso] || 0;
+    if (runs) active += 1;
+    const when = day.toLocaleDateString(undefined, { month: "short", day: "numeric", timeZone: "UTC" });
+    cells += `<i class="heat l${heatLevel(runs)}" title="${runs ? `${runs} ${runs === 1 ? "run" : "runs"}` : "No runs"} on ${when}"></i>`;
+  }
+  const streak = activity.current_streak;
+  const label = `${active} active ${active === 1 ? "day" : "days"} in the last ${HEAT_WEEKS} weeks, `
+    + `current streak ${streak} ${streak === 1 ? "day" : "days"}, longest ${activity.longest_streak}`;
+  const caption = `Last ${HEAT_WEEKS} weeks \u00b7 best streak ${activity.longest_streak}`;
+  return { html: `<div class="heat-caption muted">${caption}</div><div class="heat-grid" role="img" aria-label="${label}">${cells}</div>`, label };
+}
+
+function streakText(streak) {
+  return streak ? `${streak} day streak` : "";
+}

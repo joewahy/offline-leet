@@ -135,3 +135,39 @@ def test_reset_all_forgets_the_time_spent(progress_file, tmp_path):
     progress.add_seconds("p", 30)
     progress.reset_all(backup_dir=tmp_path / "backups")
     assert progress.seconds("p") == 0
+
+
+def test_activity_counts_runs_per_day(progress_file):
+    progress.record("p", False, today=D(2026, 1, 1))
+    progress.record("p", True, today=D(2026, 1, 1))
+    progress.record("q", False, today=D(2026, 1, 2))
+    days = progress.activity(today=D(2026, 1, 2))["days"]
+    assert days == {"2026-01-01": 2, "2026-01-02": 1}
+
+
+def test_streaks_count_consecutive_days(progress_file):
+    for day in (1, 2, 3, 10, 11):
+        progress.record("p", False, today=D(2026, 1, day))
+    result = progress.activity(today=D(2026, 1, 11))
+    assert (result["current_streak"], result["longest_streak"]) == (2, 3)
+
+
+def test_streak_survives_a_day_with_no_run_yet_but_not_two(progress_file):
+    progress.record("p", False, today=D(2026, 1, 1))
+    progress.record("p", False, today=D(2026, 1, 2))
+    assert progress.activity(today=D(2026, 1, 3))["current_streak"] == 2
+    assert progress.activity(today=D(2026, 1, 4))["current_streak"] == 0
+    assert progress.activity(today=D(2026, 1, 4))["longest_streak"] == 2
+
+
+def test_activity_with_no_progress(progress_file):
+    assert progress.activity(today=D(2026, 1, 1)) == {
+        "days": {}, "current_streak": 0, "longest_streak": 0, "today": "2026-01-01"}
+
+
+def test_activity_falls_back_to_dates_recorded_before_runs_were_counted(progress_file):
+    progress.save({"current": None, "problems": {
+        "p": {"attempts": 3, "solved": True, "solved_at": "2026-01-05", "last_attempt": "2026-01-06"}}})
+    result = progress.activity(today=D(2026, 1, 6))
+    assert result["days"] == {"2026-01-05": 1, "2026-01-06": 1}
+    assert result["current_streak"] == 2

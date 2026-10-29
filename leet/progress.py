@@ -97,6 +97,8 @@ def record(key, solved, today=None):
         was_due = _is_due(entry, today)
         entry["attempts"] += 1
         entry["last_attempt"] = today.isoformat()
+        runs = data.setdefault("activity", {})
+        runs[today.isoformat()] = runs.get(today.isoformat(), 0) + 1
         if solved:
             first_time = not entry["solved"]
             entry["solved"] = True
@@ -131,6 +133,32 @@ def solve_seconds(key):
     """Time spent before the first pass, or None if the problem is unsolved or was solved before timing."""
     entry = load()["problems"].get(key)
     return entry.get("solve_seconds") if entry else None
+
+
+def activity(today=None):
+    """Runs per day, plus the current and longest streaks of days with at least one run.
+
+    Days from before runs were counted fall back to the dates already on each problem, as one run each.
+    The current streak survives a day without a run so far, so it does not read 0 each morning.
+    """
+    today = today or datetime.date.today()
+    data = load()
+    days = dict(data.get("activity", {}))
+    for entry in data["problems"].values():
+        for field in ("solved_at", "last_attempt"):
+            if entry.get(field):
+                days.setdefault(entry[field], 1)
+    active = sorted(datetime.date.fromisoformat(d) for d in days)
+    longest = run = 0
+    for i, day in enumerate(active):
+        run = run + 1 if i and (day - active[i - 1]).days == 1 else 1
+        longest = max(longest, run)
+    current = 0
+    day = today if today in active else today - datetime.timedelta(days=1)
+    while day in active:
+        current += 1
+        day -= datetime.timedelta(days=1)
+    return {"days": days, "current_streak": current, "longest_streak": longest, "today": today.isoformat()}
 
 
 def _schedule(entry, box, today):

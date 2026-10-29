@@ -78,6 +78,8 @@ def make_handler():
             if path == "/api/problems":
                 tried = progress.summary()
                 return self._json([_problem_summary(p, tried) for p in all_problems()])
+            if path == "/api/activity":
+                return self._json(progress.activity())
             if path.startswith("/api/problems/"):
                 parts = path.removeprefix("/api/problems/").split("/")
                 if len(parts) == 3 and parts[1] == "hint":
