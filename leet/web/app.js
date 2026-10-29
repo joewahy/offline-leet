@@ -102,7 +102,6 @@ let listQuery = "";
 
 function matchesList(p) {
   if (listFilter === "todo" && p.status === "solved") return false;
-  if (listFilter === "due" && !p.due) return false;
   const q = listQuery.trim().toLowerCase();
   return !q || `${p.id} ${p.title}`.toLowerCase().includes(q);
 }
@@ -119,9 +118,9 @@ function nextUp() {
 function renderList() {
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#progress-count").textContent = `${solved} / ${problems.length} solved`;
-  const counts = { all: problems.length, todo: problems.length - solved, due: problems.filter((p) => p.due).length };
+  const counts = { all: problems.length, todo: problems.length - solved };
   document.querySelectorAll("#problem-filter button").forEach((b) => {
-    const name = { all: "All", todo: "To do", due: "Due" }[b.dataset.filter];
+    const name = { all: "All", todo: "To do" }[b.dataset.filter];
     b.textContent = `${name} ${counts[b.dataset.filter]}`;
     b.setAttribute("aria-pressed", String(b.dataset.filter === listFilter));
   });

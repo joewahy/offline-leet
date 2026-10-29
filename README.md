@@ -10,7 +10,7 @@ You need Python 3.11 or newer. Nothing else has to be installed, and nothing is 
 
 Double-click `Start.command` (or run `python3 -m leet serve`). Your browser opens `http://localhost:8765`.
 
-- Pick a problem from the **Problems** list (it shows solved and attempted marks). Search by name or number (Enter opens the first match), filter by All, To do or Due, or use the button under the filters: it jumps to a due review if there is one, otherwise to the next unsolved problem.
+- Pick a problem from the **Problems** list (it shows solved and attempted marks). Search by name or number (Enter opens the first match), filter by All or To do, or use the button under the filters: it jumps to a due review if there is one, otherwise to the next unsolved problem.
 - Read the statement on the left and write your solution in the editor on the right.
 - Press **Run** or Cmd+Enter (Ctrl+Enter elsewhere). Failures show the input, the expected value, your output, any error, and anything you printed.
 - Your code autosaves to the problem's `solution.py`.
