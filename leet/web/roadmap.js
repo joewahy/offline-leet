@@ -296,9 +296,10 @@ function renderActivity(activity) {
     if (day > today) break;
     const iso = day.toISOString().slice(0, 10);
     const runs = activity.days[iso] || 0;
+    const passed = (activity.passes || {})[iso] || 0;
     if (runs) active += 1;
     const when = day.toLocaleDateString(undefined, { weekday: "short", month: "short", day: "numeric", year: "numeric", timeZone: "UTC" });
-    cells += `<i class="heat l${heatLevel(runs)}" data-tip="${when}: ${runs ? `${runs} ${runs === 1 ? "run" : "runs"}` : "no runs"}"></i>`;
+    cells += `<i class="heat l${heatLevel(runs)}" data-tip="${when}: ${runs ? `${runs} ${runs === 1 ? "run" : "runs"}, ${passed} correct` : "no runs"}"></i>`;
   }
   const streak = activity.current_streak;
   const label = `${active} active ${active === 1 ? "day" : "days"} in the last ${HEAT_WEEKS} weeks, `

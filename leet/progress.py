@@ -100,6 +100,9 @@ def record(key, solved, today=None):
         runs = data.setdefault("activity", {})
         runs[today.isoformat()] = runs.get(today.isoformat(), 0) + 1
         if solved:
+            passes = data.setdefault("passes", {})
+            passes[today.isoformat()] = passes.get(today.isoformat(), 0) + 1
+        if solved:
             first_time = not entry["solved"]
             entry["solved"] = True
             entry.setdefault("solved_at", today.isoformat())
@@ -113,18 +116,22 @@ def record(key, solved, today=None):
 
 
 def activity(today=None):
-    """Runs per day, plus the current and longest streaks of days with at least one run.
+    """Runs per day and runs that passed every test, plus the current and longest streaks of days with a run.
 
-    Days from before runs were counted fall back to the dates already on each problem, as one run each.
+    Days from before runs were counted fall back to the dates already on each problem, as one run each,
+    and a problem's first solve counts as a passing run.
     The current streak survives a day without a run so far, so it does not read 0 each morning.
     """
     today = today or datetime.date.today()
     data = load()
     days = dict(data.get("activity", {}))
+    passes = dict(data.get("passes", {}))
     for entry in data["problems"].values():
         for field in ("solved_at", "last_attempt"):
             if entry.get(field):
                 days.setdefault(entry[field], 1)
+        if entry.get("solved_at"):
+            passes.setdefault(entry["solved_at"], 1)
     active = sorted(datetime.date.fromisoformat(d) for d in days)
     longest = run = 0
     for i, day in enumerate(active):
@@ -135,7 +142,7 @@ def activity(today=None):
     while day in active:
         current += 1
         day -= datetime.timedelta(days=1)
-    return {"days": days, "current_streak": current, "longest_streak": longest, "today": today.isoformat()}
+    return {"days": days, "passes": passes, "current_streak": current, "longest_streak": longest, "today": today.isoformat()}
 
 
 def _schedule(entry, box, today):
