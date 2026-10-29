@@ -138,3 +138,12 @@ def test_solution_response_includes_the_explanation_when_there_is_one(server):
     assert data["explanation"].startswith("### Approach")
     status, data = call(server, "/api/problems/002-valid-anagram/solution?force=1")
     assert "explanation" in data
+
+
+def test_progress_reset_clears_progress(server, tmp_path, monkeypatch):
+    monkeypatch.setattr(progress, "PATH", tmp_path / "progress.json")
+    monkeypatch.setattr(progress, "BACKUP_DIR", tmp_path / "backups")
+    progress.record(PROBLEM, True)
+    status, data = call(server, "/api/progress/reset", {})
+    assert (status, data) == (200, {"backed_up": True})
+    assert progress.summary() == {}

@@ -2,6 +2,7 @@ import contextlib
 import datetime
 import json
 import threading
+import time
 
 try:
     import fcntl
@@ -10,6 +11,7 @@ except ImportError:  # Windows: threads in one process are still safe, separate 
 
 from leet.fsutil import atomic_write_text
 from leet.problems import ROOT
+from leet.reset import BACKUP_DIR
 
 PATH = ROOT / "progress.json"
 REVIEW_DAYS = (1, 3, 7, 14, 30)  # days until a solved problem is due, by box 1 to 5
@@ -56,6 +58,27 @@ def load():
 def save(data):
     with _locked():
         atomic_write_text(PATH, json.dumps(data, indent=2))
+
+
+def reset_all(backup_dir=None):
+    """Forget all progress, keeping the old file in the backup folder.
+
+    Returns the backup path, or None if there was no progress file. Solutions are untouched.
+    """
+    backup_dir = BACKUP_DIR if backup_dir is None else backup_dir
+    with _locked():
+        backup = None
+        if PATH.exists():
+            backup_dir.mkdir(parents=True, exist_ok=True)
+            stamp = time.strftime("%Y%m%d-%H%M%S")
+            backup = backup_dir / f"progress-{stamp}.json"
+            n = 1
+            while backup.exists():
+                backup = backup_dir / f"progress-{stamp}-{n}.json"
+                n += 1
+            atomic_write_text(backup, PATH.read_text())
+        save(_empty())
+        return backup
 
 
 def set_current(key):

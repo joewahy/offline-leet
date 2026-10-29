@@ -93,3 +93,15 @@ def test_due_on_is_the_next_review_date_of_a_solved_problem(progress_file):
     assert progress.due_on("p") is None
     progress.record("p", True, today=D(2026, 1, 1))
     assert progress.due_on("p") == "2026-01-02"
+
+
+def test_reset_all_clears_progress_and_keeps_a_backup(progress_file, tmp_path):
+    progress.record("p", True, today=D(2026, 1, 1))
+    backup = progress.reset_all(backup_dir=tmp_path / "backups")
+    assert progress.load() == {"current": None, "problems": {}}
+    assert json.loads(backup.read_text())["problems"]["p"]["solved"] is True
+
+
+def test_reset_all_without_a_progress_file_has_nothing_to_back_up(progress_file, tmp_path):
+    assert progress.reset_all(backup_dir=tmp_path / "backups") is None
+    assert progress.load() == {"current": None, "problems": {}}

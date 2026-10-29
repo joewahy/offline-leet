@@ -138,6 +138,9 @@ def make_handler():
             if self.headers.get("Content-Type", "").split(";")[0] != "application/json":
                 return self._error(415, "expected application/json")
             parts = urlparse(self.path).path.strip("/").split("/")
+            if parts == ["api", "progress", "reset"]:
+                backup = progress.reset_all()
+                return self._json({"backed_up": backup is not None})
             if len(parts) != 4 or parts[:2] != ["api", "problems"]:
                 return self._error(404, "not found")
             try:

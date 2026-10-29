@@ -231,3 +231,45 @@ function initRoadmapView(container) {
     zoomOut: () => zoomCentre(0.8),
   };
 }
+
+const RING = { size: 190, r: 80, stroke: 11, gap: 16, start: 195 };
+const RING_TIERS = [
+  { name: "Easy", cls: "easy" },
+  { name: "Medium", cls: "medium" },
+  { name: "Hard", cls: "hard" },
+];
+
+function ringPoint(deg) {
+  const rad = ((deg - 90) * Math.PI) / 180;
+  const c = RING.size / 2;
+  return `${(c + RING.r * Math.cos(rad)).toFixed(2)},${(c + RING.r * Math.sin(rad)).toFixed(2)}`;
+}
+
+function ringArc(from, to) {
+  const large = to - from > 180 ? 1 : 0;
+  return `M${ringPoint(from)} A${RING.r},${RING.r} 0 ${large} 1 ${ringPoint(to)}`;
+}
+
+// `counts` maps a difficulty to {solved, total}. Each difficulty gets an arc as long as its share of all problems.
+function renderStats(counts) {
+  const all = RING_TIERS.reduce((n, t) => n + (counts[t.name]?.total || 0), 0);
+  const solved = RING_TIERS.reduce((n, t) => n + (counts[t.name]?.solved || 0), 0);
+  const room = 360 - RING.gap * RING_TIERS.length;
+  let at = RING.start;
+  const arcs = RING_TIERS.map((t) => {
+    const { solved: s = 0, total = 0 } = counts[t.name] || {};
+    if (!total) return "";
+    const span = (room * total) / all;
+    const from = at;
+    at += span + RING.gap;
+    return `<path class="ring-track ${t.cls}" d="${ringArc(from, from + span)}"/>` +
+      (s ? `<path class="ring-fill ${t.cls}" d="${ringArc(from, from + (span * s) / total)}"/>` : "");
+  }).join("");
+  const legend = RING_TIERS.map((t) => {
+    const { solved: s = 0, total = 0 } = counts[t.name] || {};
+    return `<div class="${t.cls}"><dt>${t.name}</dt><dd>${s}/${total}</dd></div>`;
+  }).join("");
+  const ring = `<svg viewBox="0 0 ${RING.size} ${RING.size}" aria-hidden="true" fill="none" stroke-linecap="round" stroke-width="${RING.stroke}">${arcs}</svg>
+    <div class="ring-label"><strong>${solved}</strong><span>/${all}</span><span>Solved</span></div>`;
+  return { legend, ring, label: `${solved} of ${all} solved: ${RING_TIERS.map((t) => `${counts[t.name]?.solved || 0} of ${counts[t.name]?.total || 0} ${t.name}`).join(", ")}` };
+}

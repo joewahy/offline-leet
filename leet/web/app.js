@@ -246,8 +246,53 @@ function withTransition(update, name) {
   }
 }
 
-function openRoadmap() {
-  roadmapOpen = true;
+function renderRoadmapStats() {
+  const counts = {};
+  for (const p of problems) {
+    const c = (counts[p.difficulty] ||= { solved: 0, total: 0 });
+    c.total += 1;
+    if (p.status === "solved") c.solved += 1;
+  }
+  const { legend, ring, label } = renderStats(counts);
+  $("#stats-legend").innerHTML = legend;
+  const el = $("#stats-ring");
+  el.innerHTML = ring;
+  el.setAttribute("aria-label", label);
+  $("#random-btn").disabled = !problems.some((p) => p.status !== "solved");
+}
+
+async function openRandomUnsolved() {
+  const open = problems.filter((p) => p.status !== "solved");
+  const pool = open.filter((p) => !current || p.key !== current.key);
+  const choices = pool.length ? pool : open;
+  if (!choices.length) return;
+  await openProblem(choices[Math.floor(Math.random() * choices.length)].key);
+}
+
+async function clearProgress() {
+  const go = await confirmDialog({
+    title: "Delete all progress?",
+    lines: [
+      "Every problem goes back to unsolved and the review schedule is cleared.",
+      "Your code in each solution.py is not touched, and the old progress file is backed up first.",
+    ],
+    confirmLabel: "Delete progress",
+    danger: true,
+    focusCancel: true,
+  });
+  if (!go) return;
+  try {
+    await api("/api/progress/reset", {});
+    problems = await api("/api/problems");
+    renderList();
+    openRoadmapContents();
+    roadmapView.show();
+  } catch (err) {
+    $("#roadmap-count").textContent = "Delete failed: " + err.message;
+  }
+}
+
+function openRoadmapContents() {
   const stats = {};
   for (const p of problems) {
     const s = (stats[p.category] ||= { solved: 0, total: 0, due: 0 });
@@ -258,8 +303,16 @@ function openRoadmap() {
   const here = problems.find((p) => current && p.key === current.key);
   const solved = problems.filter((p) => p.status === "solved").length;
   $("#roadmap-count").textContent = `${solved} / ${problems.length} solved`;
+  $("#roadmap-body").innerHTML = renderRoadmap(stats, here && here.category);
+  renderRoadmapStats();
+  const topic = document.querySelector("#roadmap-topic:not([hidden])");
+  if (topic) closeRoadmapTopic();
+}
+
+function openRoadmap() {
+  roadmapOpen = true;
   withTransition(() => {
-    $("#roadmap-body").innerHTML = renderRoadmap(stats, here && here.category);
+    openRoadmapContents();
     $("#roadmap").hidden = false;
     roadmapView.show();
     document.body.classList.add("roadmap-open");
@@ -766,6 +819,8 @@ async function start() {
     }
   };
   $("#roadmap-topic-close").onclick = closeRoadmapTopic;
+  $("#random-btn").onclick = openRandomUnsolved;
+  $("#clear-progress-btn").onclick = clearProgress;
   $("#roadmap-topic-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
     if (!row) return;

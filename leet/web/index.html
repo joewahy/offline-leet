@@ -84,7 +84,23 @@
       <button id="roadmap-fit" class="ghost" title="Fit the whole roadmap">Fit</button>
     </div>
     <div id="roadmap-main">
-      <div id="roadmap-body"></div>
+      <div id="roadmap-stage">
+        <div id="roadmap-body"></div>
+        <section id="roadmap-stats" aria-label="Progress">
+          <div id="stats-body">
+            <dl id="stats-legend"></dl>
+            <div id="stats-ring" role="img"></div>
+          </div>
+          <div id="stats-actions">
+            <button id="random-btn" class="ghost" aria-label="Open a random unsolved problem" title="Random unsolved problem">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M16 3h5v5M4 20 21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/></svg>
+            </button>
+            <button id="clear-progress-btn" class="ghost" aria-label="Delete all progress" title="Delete all progress">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 6h18M8 6V4h8v2M6 6l1 14h10l1-14M10 11v5M14 11v5"/></svg>
+            </button>
+          </div>
+        </section>
+      </div>
       <aside id="roadmap-topic" aria-label="Topic problems" hidden>
         <div id="roadmap-topic-head">
           <strong id="roadmap-topic-name"></strong>
