@@ -1,6 +1,8 @@
 """Runs one problem's cases in a child process and prints JSON results.
 
-Usage: python -m leet.runner <problem-dir-name> [--reference]
+Usage: python -m leet.runner <problem-dir-name> [--reference] [--stdin-cases]
+
+With --stdin-cases the cases are a JSON list read from stdin instead of tests.json, and hidden tests are skipped.
 """
 import contextlib
 import copy
@@ -112,7 +114,10 @@ def check_case(problem, checker, case, got, raw, inputs, result):
 
 
 def run_case(problem, module, checker, case):
-    result = {"args": case["args"], "expected": case["expected"], "stdout": ""}
+    """Run one case. A case with no "expected" (a custom one) just reports what the solution returned."""
+    result = {"args": case["args"], "stdout": ""}
+    if "expected" in case:
+        result["expected"] = case["expected"]
     buf = io.StringIO()
     signal.signal(signal.SIGALRM, _on_alarm)
     signal.setitimer(signal.ITIMER_REAL, problem.timeout)
@@ -121,7 +126,7 @@ def run_case(problem, module, checker, case):
             got, raw, inputs = execute(problem, module, case["args"])
             got = norm(got)
             result["got"] = got
-            result["ok"] = check_case(problem, checker, case, got, raw, inputs, result)
+            result["ok"] = check_case(problem, checker, case, got, raw, inputs, result) if "expected" in case else None
     except BaseException as exc:
         result["ok"] = False
         result["error"] = (
@@ -185,9 +190,11 @@ def main(argv):
     except BaseException:
         print(json.dumps({"load_error": traceback.format_exc(limit=-3)}))
         return
+    custom = "--stdin-cases" in argv
+    cases = json.loads(sys.stdin.read()) if custom else problem.load_cases()
     results = []
     stopped = False
-    for case in problem.load_cases():
+    for case in cases:
         if stopped:
             results.append({**case, "ok": False, "got": None, "stdout": "",
                             "error": "skipped after an earlier timeout or memory error"})
@@ -196,7 +203,7 @@ def main(argv):
         stopped = result.get("error", "").startswith(STOP_ERRORS)
         results.append(result)
     outcome = {"results": results}
-    if problem.hidden:
+    if problem.hidden and not custom:
         if all(r["ok"] for r in results):
             outcome["hidden"] = run_hidden(problem, module, checker)
         else:

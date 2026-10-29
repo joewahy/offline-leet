@@ -758,6 +758,147 @@ async function showSolution() {
   $("#solution").showModal();
 }
 
+let customCases = [];
+let customResults = null;
+
+function customCaseHtml(c, i) {
+  const r = customResults && customResults[i];
+  const state = !r ? "" : r.ok === true ? "ok" : r.ok === false ? "bad" : "free";
+  const mark = state === "ok" ? "&#10003;" : state === "bad" ? "&#10007;" : state === "free" ? "&rarr;" : "&middot;";
+  const input = c.args.map(py).join(", ");
+  const rows = [
+    `<dt>Input</dt><dd><pre>${esc(short(input))}</pre></dd>`,
+    "expected" in c ? `<dt>Expected</dt><dd><pre>${esc(short(py(c.expected)))}</pre></dd>` : "",
+  ];
+  if (r) {
+    rows.push(r.error
+      ? `<dt>Error</dt><dd><pre class="error-box">${esc(r.error)}</pre></dd>`
+      : `<dt>Your output</dt><dd><pre>${esc(short(py(r.got)))}</pre></dd>`);
+    if (r.stdout) rows.push(`<dt>Printed</dt><dd><pre>${esc(r.stdout)}</pre></dd>`);
+  }
+  const open = state === "bad" || state === "free";
+  return `<div class="case custom ${state}">
+    <button type="button" class="case-toggle" aria-expanded="${open}"><span class="mark">${mark}</span>Case ${i + 1}
+      <span class="preview">${esc(short(input, 120))}</span></button>
+    <button type="button" class="case-del ghost" data-i="${i}" aria-label="Delete custom case ${i + 1}">&times;</button>
+    <dl class="detail" ${open ? "" : "hidden"}>${rows.join("")}</dl>
+  </div>`;
+}
+
+function renderCustom() {
+  $("#custom-list").innerHTML = customCases.map(customCaseHtml).join("");
+  $("#custom-run").disabled = !customCases.length;
+  const checked = customResults ? customResults.filter((r) => r.ok !== null) : [];
+  const summary = !customResults ? `${customCases.length} saved`
+    : checked.length ? `${checked.filter((r) => r.ok).length} of ${checked.length} checked cases pass`
+    : "Ran, nothing to check";
+  $("#custom-summary").textContent = customCases.length ? summary : "";
+}
+
+function showCustomError(message) {
+  const box = $("#custom-error");
+  box.textContent = message || "";
+  box.hidden = !message;
+}
+
+function parseCustomForm() {
+  const lines = $("#custom-args").value.split("\n").map((l) => l.trim()).filter(Boolean);
+  if (!lines.length) throw new Error("Enter the input: one JSON value per argument, one argument per line.");
+  const hint = "Use true, false, null and double quotes.";
+  const args = lines.map((line, i) => {
+    try { return JSON.parse(line); } catch (err) { throw new Error(`Argument ${i + 1} is not valid JSON. ${hint}`); }
+  });
+  const text = $("#custom-expected").value.trim();
+  const found = { args };
+  if (text) {
+    try { found.expected = JSON.parse(text); } catch (err) { throw new Error(`Expected is not valid JSON. ${hint}`); }
+  }
+  return found;
+}
+
+async function saveCustom() {
+  await api(`/api/problems/${current.key}/custom`, { cases: customCases });
+  current.custom = structuredClone(customCases);
+}
+
+async function runCustom() {
+  if (!current || !customCases.length) return;
+  const buttons = [$("#custom-run"), $("#custom-add")];
+  buttons.forEach((b) => { b.disabled = true; });
+  $("#custom-load-error").hidden = true;
+  clearTimeout(saveTimer);
+  saveTimer = null;
+  try {
+    const outcome = await api(`/api/problems/${current.key}/run-custom`, { code: editor.getValue(), cases: customCases });
+    customResults = outcome.results || null;
+    if (outcome.load_error) {
+      $("#custom-load-error").textContent = outcome.load_error;
+      $("#custom-load-error").hidden = false;
+    }
+    $("#save-state").textContent = "Saved";
+  } catch (err) {
+    customResults = null;
+    showCustomError("Run failed: " + err.message);
+  } finally {
+    buttons.forEach((b) => { b.disabled = false; });
+    renderCustom();
+    announce($("#custom-summary").textContent);
+  }
+}
+
+async function addCustomCase(e) {
+  e.preventDefault();
+  let found;
+  try {
+    found = parseCustomForm();
+  } catch (err) {
+    showCustomError(err.message);
+    return;
+  }
+  showCustomError("");
+  customCases.push(found);
+  try {
+    await saveCustom();
+  } catch (err) {
+    customCases.pop();
+    showCustomError("Could not save the case: " + err.message);
+    return;
+  }
+  $("#custom-args").value = "";
+  $("#custom-expected").value = "";
+  await runCustom();
+}
+
+async function deleteCustomCase(i) {
+  const removed = customCases.splice(i, 1);
+  customResults = null;
+  try {
+    await saveCustom();
+  } catch (err) {
+    customCases.splice(i, 0, ...removed);
+    showCustomError("Could not delete the case: " + err.message);
+  }
+  renderCustom();
+}
+
+function openCustom() {
+  if (!current) return;
+  customCases = structuredClone(current.custom || []);
+  customResults = null;
+  showCustomError("");
+  $("#custom-load-error").hidden = true;
+  const sample = current.sample;
+  $("#custom-args").placeholder = sample ? sample.args.map((a) => JSON.stringify(a)).join("\n") : "";
+  $("#custom-expected").placeholder = sample ? JSON.stringify(sample.expected) : "";
+  renderCustom();
+  $("#custom").showModal();
+}
+
+function closeCustom() {
+  const dialog = $("#custom");
+  if (dialog.open) dialog.close();
+}
+
 async function resetCode() {
   if (!current) return;
   const go = await confirmDialog({
@@ -978,6 +1119,31 @@ async function start() {
   setupSplitters();
   $("#reset-btn").onclick = resetCode;
   $("#solution-btn").onclick = showSolution;
+  $("#custom-btn").onclick = openCustom;
+  $("#custom-close").onclick = closeCustom;
+  $("#custom-run").onclick = runCustom;
+  $("#custom-form").onsubmit = addCustomCase;
+  $("#custom-form").onkeydown = (e) => {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter") {
+      e.preventDefault();
+      $("#custom-form").requestSubmit();
+    }
+  };
+  $("#custom-list").onclick = (e) => {
+    const del = e.target.closest(".case-del");
+    if (del) {
+      deleteCustomCase(Number(del.dataset.i));
+      return;
+    }
+    const btn = e.target.closest(".case-toggle");
+    if (!btn) return;
+    const detail = btn.parentElement.querySelector(".detail");
+    detail.hidden = !detail.hidden;
+    btn.setAttribute("aria-expanded", String(!detail.hidden));
+  };
+  $("#custom").addEventListener("click", (e) => {
+    if (e.target === e.currentTarget) closeCustom();
+  });
   $("#solution-close").onclick = closeSolution;
   $("#solution").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) closeSolution();
@@ -1029,7 +1195,7 @@ async function start() {
       closeSolution();
     }
     if ((e.metaKey || e.ctrlKey) && e.key === "s") { e.preventDefault(); flushSave(); }
-    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open && !$("#solution").open) {
+    if ((e.metaKey || e.ctrlKey) && e.key === "Enter" && !e.defaultPrevented && current && $("#roadmap").hidden && !$("#confirm").open && !$("#solution").open && !$("#custom").open) {
       e.preventDefault();
       run();
     }

@@ -9,12 +9,13 @@ from urllib.parse import parse_qs, urlparse
 
 from leet import progress
 from leet.fsutil import atomic_write_text
-from leet.execute import all_passed, run_perf, run_problem
+from leet.execute import all_passed, run_custom, run_perf, run_problem
 from leet.problems import all_problems, find
 from leet.reset import reset
 
 WEB_DIR = Path(__file__).resolve().parent / "web"
 MAX_BODY = 1_000_000
+MAX_CUSTOM_CASES = 50
 MAX_TIME_REPORT = 3600  # seconds one request may add to a problem's timer
 HINTS_BLOCK = re.compile(r"\n<details>.*?</details>\n", re.DOTALL)
 
@@ -30,6 +31,15 @@ def _problem_summary(p, tried=None):
         "status": status,
         "due": due,
     }
+
+
+def _valid_cases(cases):
+    """Custom cases are a short list of {"args": [...], "expected": any (optional)}."""
+    return (
+        isinstance(cases, list)
+        and len(cases) <= MAX_CUSTOM_CASES
+        and all(isinstance(c, dict) and isinstance(c.get("args"), list) and set(c) <= {"args", "expected"} for c in cases)
+    )
 
 
 def make_handler():
@@ -101,6 +111,8 @@ def make_handler():
                 "code": p.solution_path.read_text(),
                 "hint_count": len(p.load_hints()),
                 "complexity": p.complexity,
+                "sample": p.load_cases()[0],
+                "custom": p.load_custom(),
                 "seconds": progress.seconds(p.key),
                 "solve_seconds": progress.solve_seconds(p.key),
             })
@@ -158,6 +170,21 @@ def make_handler():
             if parts[3] == "reset":
                 backup = reset(p)
                 return self._json({"code": p.load_starter(), "backed_up": backup is not None})
+            if parts[3] in ("custom", "run-custom"):
+                cases = body.get("cases")
+                if not _valid_cases(cases):
+                    return self._error(400, "bad cases")
+                if parts[3] == "custom":
+                    if cases:
+                        atomic_write_text(p.custom_path, json.dumps(cases, indent=2))
+                    else:
+                        p.custom_path.unlink(missing_ok=True)
+                    return self._json({"cases": cases})
+                code = body.get("code")
+                if not isinstance(code, str) or not cases:
+                    return self._error(400, "missing code or cases")
+                atomic_write_text(p.solution_path, code)
+                return self._json(run_custom(p, cases))
             if parts[3] == "time":
                 spent = body.get("seconds")
                 if isinstance(spent, bool) or not isinstance(spent, (int, float)) or not 0 < spent <= MAX_TIME_REPORT:

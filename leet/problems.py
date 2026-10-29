@@ -74,6 +74,13 @@ class Problem:
     def load_cases(self):
         return json.loads((self.dir / "tests.json").read_text())
 
+    @property
+    def custom_path(self):
+        return self.dir / "custom.json"
+
+    def load_custom(self):
+        return json.loads(self.custom_path.read_text()) if self.custom_path.exists() else []
+
 
 def _load(meta_path):
     meta = json.loads(meta_path.read_text())

@@ -174,3 +174,55 @@ def test_activity_endpoint_reports_runs_and_streaks(server, tmp_path, monkeypatc
     progress.record(PROBLEM, False)
     status, data = call(server, "/api/activity")
     assert (data["days"][data["today"]], data["current_streak"]) == (1, 1)
+
+
+@pytest.fixture
+def no_custom_file():
+    path = find(PROBLEM).custom_path
+    assert not path.exists()
+    yield path
+    path.unlink(missing_ok=True)
+
+
+def test_custom_cases_are_saved_beside_the_problem_and_served_back(server, no_custom_file):
+    cases = [{"args": [[1, 2, 1]], "expected": True}, {"args": [[3]]}]
+    assert call(server, f"/api/problems/{PROBLEM}/custom", {"cases": cases})[1] == {"cases": cases}
+    status, data = call(server, f"/api/problems/{PROBLEM}")
+    assert data["custom"] == cases
+    assert data["sample"] == find(PROBLEM).load_cases()[0]
+    call(server, f"/api/problems/{PROBLEM}/custom", {"cases": []})
+    assert not no_custom_file.exists()
+    assert call(server, f"/api/problems/{PROBLEM}")[1]["custom"] == []
+
+
+@pytest.mark.parametrize("cases", [
+    "nope", [1], [{"expected": 1}], [{"args": "x"}], [{"args": [], "extra": 1}], [{"args": []}] * 51,
+])
+def test_custom_cases_must_be_well_formed(server, no_custom_file, cases):
+    assert call(server, f"/api/problems/{PROBLEM}/custom", {"cases": cases})[0] == 400
+    assert not no_custom_file.exists()
+
+
+def test_run_custom_checks_cases_that_have_an_expected_value_and_shows_the_rest(server, untouched_solution):
+    code = "class Solution:\n    def longestConsecutive(self, nums):\n        print('hi')\n        return len(set(nums))\n"
+    cases = [{"args": [[1, 1, 1]], "expected": 1}, {"args": [[1, 1, 1]], "expected": 2}, {"args": [[4, 5]]}]
+    before = progress.summary()
+    status, outcome = call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": code, "cases": cases})
+    assert status == 200
+    ok, bad, free = outcome["results"]
+    assert (ok["ok"], bad["ok"], free["ok"]) == (True, False, None)
+    assert "expected" not in free and free["got"] == 2
+    assert ok["stdout"] == "hi\n"
+    assert "hidden" not in outcome
+    assert progress.summary() == before
+
+
+def test_run_custom_reports_an_error_in_the_solution(server, untouched_solution):
+    code = "class Solution:\n    def longestConsecutive(self, nums):\n        return 1 / 0\n"
+    status, outcome = call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": code, "cases": [{"args": [[1]]}]})
+    assert "ZeroDivisionError" in outcome["results"][0]["error"]
+
+
+def test_run_custom_needs_code_and_cases(server, untouched_solution):
+    assert call(server, f"/api/problems/{PROBLEM}/run-custom", {"cases": [{"args": [[1]]}]})[0] == 400
+    assert call(server, f"/api/problems/{PROBLEM}/run-custom", {"code": "x = 1", "cases": []})[0] == 400
