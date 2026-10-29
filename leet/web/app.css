@@ -384,6 +384,16 @@ body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn,
   box-shadow: -4px 0 24px rgba(0, 0, 0, 0.18);
 }
 #roadmap-topic[hidden] { display: none; }
+@keyframes topic-in { from { opacity: 0; transform: translateX(28px); } }
+@keyframes topic-in-up { from { opacity: 0; transform: translateY(28px); } }
+@keyframes topic-list-in { from { opacity: 0; transform: translateY(6px); } }
+@media (prefers-reduced-motion: no-preference) {
+  #roadmap-topic:not([hidden]) { animation: topic-in 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+  #roadmap-topic-list.swap { animation: topic-list-in 0.2s ease-out; }
+}
+@media (max-width: 700px) and (prefers-reduced-motion: no-preference) {
+  #roadmap-topic:not([hidden]) { animation-name: topic-in-up; }
+}
 #roadmap-topic-head { display: flex; align-items: center; gap: 10px; padding: 12px 14px; border-bottom: 1px solid var(--border); }
 #roadmap-topic-head .muted { flex: 1; }
 #roadmap-topic-list { overflow: auto; padding: 6px 8px 16px; }
@@ -455,6 +465,22 @@ body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn,
 .heat.l2 { background: color-mix(in srgb, var(--pass) 52%, var(--panel)); }
 .heat.l3 { background: color-mix(in srgb, var(--pass) 76%, var(--panel)); }
 .heat.l4 { background: var(--pass); }
+@media (min-width: 701px) {
+  #stats-activity { max-height: 220px; overflow: hidden; }
+  /* While a topic's problems are open the card tucks away: no heatmap, a smaller ring. */
+  #roadmap-main:has(#roadmap-topic:not([hidden])) #roadmap-stats { padding: 12px 16px 10px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden])) #stats-activity { max-height: 0; opacity: 0; margin-top: 0; padding-top: 0; border-top-width: 0; }
+  #roadmap-main:has(#roadmap-topic:not([hidden])) #stats-ring { width: 96px; height: 96px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden])) .ring-label strong { font-size: 26px; }
+  #roadmap-main:has(#roadmap-topic:not([hidden])) #stats-actions { margin-top: 8px; }
+}
+@media (min-width: 701px) and (prefers-reduced-motion: no-preference) {
+  #roadmap-stats { transition: padding 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+  #stats-ring { transition: width 0.26s cubic-bezier(0.22, 1, 0.36, 1), height 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+  .ring-label strong { transition: font-size 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+  #stats-actions { transition: margin-top 0.26s cubic-bezier(0.22, 1, 0.36, 1); }
+  #stats-activity { transition: max-height 0.26s cubic-bezier(0.22, 1, 0.36, 1), opacity 0.2s ease, margin-top 0.26s cubic-bezier(0.22, 1, 0.36, 1), padding-top 0.26s cubic-bezier(0.22, 1, 0.36, 1), border-top-width 0.26s; }
+}
 #stats-actions { display: flex; justify-content: center; gap: 8px; margin-top: 14px; }
 #stats-actions button { width: 44px; height: 38px; padding: 0; display: grid; place-items: center; border-radius: 10px; color: var(--muted); }
 #stats-actions button:hover:not(:disabled) { color: var(--text); }

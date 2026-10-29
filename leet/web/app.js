@@ -397,6 +397,12 @@ function selectRoadmapTopic(node, focusPanel = false) {
   $("#roadmap-topic-name").textContent = ROADMAP_NODES[cat].label.join(" ");
   $("#roadmap-topic-count").textContent = `${solved} / ${items.length} solved`;
   $("#roadmap-topic-list").innerHTML = items.map(problemRow).join("");
+  const list = $("#roadmap-topic-list");
+  if (!$("#roadmap-topic").hidden) {
+    list.classList.remove("swap");
+    void list.offsetWidth;
+    list.classList.add("swap");
+  }
   $("#roadmap-topic").hidden = false;
   if (focusPanel) $("#roadmap-topic-close").focus();
 }
