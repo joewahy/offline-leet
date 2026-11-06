@@ -12,3 +12,4 @@ progress.json.lock
 .leet-backups/
 .leet-cache/
 .impeccable/
+.leet-sync.json

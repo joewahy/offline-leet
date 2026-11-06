@@ -352,7 +352,7 @@ body.resizing iframe, body.resizing #editor { pointer-events: none; }
 }
 #roadmap[hidden] { display: none; }
 body.roadmap-open main { display: none; }
-body.roadmap-open :is(#solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn, #save-state) { display: none; }
+body.roadmap-open :is(#random-problem-btn, #solution-btn, #reset-btn, #prev-btn, #next-btn, #run-btn, #save-state) { display: none; }
 #roadmap-head { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border-bottom: 1px solid var(--border); background: var(--panel); }
 #roadmap-main { flex: 1; min-height: 0; display: flex; overflow: hidden; }
 #roadmap-stage { flex: 1; min-width: 0; position: relative; display: flex; }
@@ -487,7 +487,7 @@ dialog#solution {
 }
 dialog#solution[open] { display: flex; flex-direction: column; }
 dialog#solution::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
-dialog#confirm {
+dialog#confirm, dialog#sync {
   width: min(420px, 90vw);
   padding: 0;
   color: var(--text);
@@ -496,17 +496,32 @@ dialog#confirm {
   border-radius: 12px;
   box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
 }
-dialog#confirm::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
-#confirm form { padding: 22px 24px 18px; }
-#confirm h2 { margin: 0 0 8px; font-size: 16px; }
+dialog:is(#confirm, #sync)::backdrop { background: rgba(0, 0, 0, 0.5); backdrop-filter: blur(2px); }
+#confirm form, #sync form { padding: 22px 24px 18px; }
+#confirm h2, #sync h2 { margin: 0 0 8px; font-size: 16px; }
+dialog#sync { width: min(560px, 92vw); max-height: 86vh; }
+dialog#sync[open] { display: flex; }
+#sync form { display: flex; flex-direction: column; min-height: 0; width: 100%; }
+#sync p { margin: 0 0 12px; }
+.sync-field { display: flex; flex-direction: column; gap: 4px; margin-bottom: 10px; }
+.sync-field input { padding: 7px 10px; color: var(--text); background: var(--panel); border: 1px solid var(--border); border-radius: 6px; font: inherit; }
+.sync-field input:focus-visible { outline: 2px solid var(--accent); outline-offset: 1px; }
+#sync-status { min-height: 1.4em; color: var(--muted); }
+#sync-status.error { color: var(--fail); }
+#sync-results { min-height: 0; overflow: auto; }
+#sync-results:not(:empty) { margin-top: 8px; max-height: 40vh; }
+.sync-group { margin: 0 0 8px; }
+.sync-group summary { cursor: pointer; padding: 4px 0; }
+.sync-group ul { margin: 2px 0 0; padding-left: 20px; color: var(--muted); }
+.sync-group li { padding: 1px 0; }
 #confirm-message p { margin: 0 0 6px; color: var(--muted); }
 .dialog-actions { display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px; }
 button.primary.danger { background: var(--fail); border-color: var(--fail); }
 @keyframes dialog-in { from { opacity: 0; transform: translateY(8px) scale(0.97); } }
 @keyframes backdrop-in { from { opacity: 0; } }
 @media (prefers-reduced-motion: no-preference) {
-  dialog:is(#solution, #confirm)[open] { animation: dialog-in 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
-  dialog:is(#solution, #confirm)[open]::backdrop { animation: backdrop-in 0.2s ease-out; }
+  dialog:is(#solution, #confirm, #sync)[open] { animation: dialog-in 0.2s cubic-bezier(0.22, 1, 0.36, 1); }
+  dialog:is(#solution, #confirm, #sync)[open]::backdrop { animation: backdrop-in 0.2s ease-out; }
 }
 #solution-head { display: flex; justify-content: space-between; align-items: center; padding: 10px 14px; border-bottom: 1px solid var(--border); }
 #solution-body { min-height: 0; overflow: auto; padding: 4px 16px 14px; }

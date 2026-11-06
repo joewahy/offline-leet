@@ -7,7 +7,7 @@ from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from leet import progress
+from leet import neetcode, progress
 from leet.fsutil import atomic_write_text
 from leet.execute import all_passed, run_custom, run_perf, run_problem
 from leet.problems import all_problems, find
@@ -89,6 +89,8 @@ def make_handler():
                 return self._json([_problem_summary(p, tried) for p in all_problems()])
             if path == "/api/activity":
                 return self._json(progress.activity())
+            if path == "/api/sync":
+                return self._json(neetcode.state())
             if path.startswith("/api/problems/"):
                 parts = path.removeprefix("/api/problems/").split("/")
                 if len(parts) == 3 and parts[1] == "hint":
@@ -131,6 +133,16 @@ def make_handler():
                 "solved": solved,
             })
 
+        def _start_sync(self):
+            try:
+                repo = str(self._body().get("repo") or neetcode.load_repo()).strip()
+                neetcode.save_repo(repo)
+            except (ValueError, json.JSONDecodeError) as exc:
+                return self._error(400, str(exc))
+            if not neetcode.start(repo):
+                return self._error(409, "A sync is already running")
+            self._json(neetcode.state())
+
         def _get_hint(self, key, n):
             try:
                 hints = find(key).load_hints()
@@ -157,6 +169,8 @@ def make_handler():
             if parts == ["api", "progress", "reset"]:
                 backup = progress.reset_all()
                 return self._json({"backed_up": backup is not None})
+            if parts == ["api", "sync", "start"]:
+                return self._start_sync()
             if len(parts) != 4 or parts[:2] != ["api", "problems"]:
                 return self._error(404, "not found")
             try:

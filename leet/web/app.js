@@ -117,6 +117,7 @@ function nextUp() {
 
 function renderList() {
   const solved = problems.filter((p) => p.status === "solved").length;
+  $("#random-problem-btn").disabled = solved === problems.length;
   $("#progress-count").textContent = `${solved} / ${problems.length} solved`;
   const counts = { all: problems.length, todo: problems.length - solved };
   document.querySelectorAll("#problem-filter button").forEach((b) => {
@@ -322,6 +323,76 @@ async function openRandomUnsolved() {
   const choices = pool.length ? pool : open;
   if (!choices.length) return;
   await openProblem(choices[Math.floor(Math.random() * choices.length)].key);
+}
+
+const SYNC_GROUPS = [
+  ["solved", "Imported and passing"],
+  ["imported", "Imported, not passing yet"],
+  ["kept", "Skipped, you already have code"],
+  ["current", "Already up to date"],
+  ["skipped", "Skipped, not Python"],
+  ["unmatched", "No matching problem here"],
+];
+let syncTimer = null;
+
+function renderSync(s) {
+  const status = $("#sync-status");
+  status.classList.toggle("error", Boolean(s.error));
+  if (s.error) status.textContent = s.error;
+  else if (s.running) status.textContent = s.total ? `Checking ${s.done} of ${s.total}\u2026` : "Fetching the repository\u2026";
+  else if (s.finished_at) status.textContent = `Finished ${s.finished_at}.`;
+  else status.textContent = "";
+  $("#sync-go").disabled = s.running;
+  $("#sync-repo").readOnly = s.running;
+  const groups = SYNC_GROUPS.map(([id, label]) => {
+    const rows = s.results.filter((r) => r.status === id);
+    if (!rows.length) return "";
+    const items = rows.map((r) => `<li>${esc(r.title || r.slug)}${r.status === "imported" ? ` <span class="small">(${esc(r.detail)})</span>` : ""}</li>`).join("");
+    return `<details class="sync-group"${id === "solved" || id === "imported" ? " open" : ""}><summary>${label}: ${rows.length}</summary><ul>${items}</ul></details>`;
+  });
+  $("#sync-results").innerHTML = groups.join("");
+}
+
+async function pollSync() {
+  clearTimeout(syncTimer);
+  const s = await api("/api/sync").catch(() => null);
+  if (!s) return;
+  renderSync(s);
+  if (s.running) {
+    syncTimer = setTimeout(pollSync, 800);
+    return;
+  }
+  const imported = s.results.filter((r) => r.status === "solved" || r.status === "imported");
+  if (imported.length) await refreshAfterSync(imported);
+}
+
+async function refreshAfterSync(imported) {
+  problems = await api("/api/problems");
+  renderList();
+  if (!$("#roadmap").hidden) openRoadmapContents();
+  // Reload the open problem only if sync filled it in and nothing of yours is waiting to be saved.
+  const here = current && imported.some((r) => r.key === current.key);
+  if (here && !saveTimer && $("#roadmap").hidden) await openProblem(current.key);
+}
+
+async function openSync() {
+  const s = await api("/api/sync");
+  $("#sync-repo").value = s.repo;
+  renderSync(s);
+  $("#sync").showModal();
+  if (s.running) pollSync();
+  else if (!s.repo) $("#sync-repo").focus();
+}
+
+async function startSync() {
+  try {
+    renderSync(await api("/api/sync/start", { repo: $("#sync-repo").value.trim() }));
+  } catch (err) {
+    $("#sync-status").classList.add("error");
+    $("#sync-status").textContent = err.message;
+    return;
+  }
+  pollSync();
 }
 
 async function clearProgress() {
@@ -1061,7 +1132,20 @@ async function start() {
   $("#stats-activity").onpointerout = (e) => {
     if (e.target.closest(".heat")) hideHeatTip();
   };
+  $("#stats-actions").onpointerover = $("#stats-actions").onfocusin = (e) => {
+    const btn = e.target.closest("[data-tip]");
+    if (btn) showHeatTip(btn);
+  };
+  $("#stats-actions").onpointerout = $("#stats-actions").onfocusout = (e) => {
+    if (e.target.closest("[data-tip]")) hideHeatTip();
+  };
   $("#random-btn").onclick = openRandomUnsolved;
+  $("#sync-btn").onclick = openSync;
+  $("#sync-close").onclick = () => $("#sync").close();
+  $("#sync-form").onsubmit = (e) => {
+    e.preventDefault();
+    startSync();
+  };
   $("#clear-progress-btn").onclick = clearProgress;
   $("#roadmap-topic-list").onclick = (e) => {
     const row = e.target.closest(".problem-row");
@@ -1102,6 +1186,7 @@ async function start() {
   $("#notes-text").oninput = scheduleNotes;
   setupSplitters();
   $("#reset-btn").onclick = resetCode;
+  $("#random-problem-btn").onclick = openRandomUnsolved;
   $("#solution-btn").onclick = showSolution;
   $("#confirm").addEventListener("click", (e) => {
     if (e.target === e.currentTarget) e.currentTarget.close("cancel");
