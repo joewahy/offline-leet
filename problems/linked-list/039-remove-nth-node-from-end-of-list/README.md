@@ -12,6 +12,8 @@ Input:  head = [5], n = 1
 Output: []
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= number of nodes <= 5000`

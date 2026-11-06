@@ -12,6 +12,8 @@ Input:  lists = []
 Output: []
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `0 <= k <= 10^4`

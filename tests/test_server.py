@@ -248,3 +248,31 @@ def test_notes_need_text(server, no_notes_file):
     assert call(server, f"/api/problems/{PROBLEM}/notes", {"text": 5})[0] == 400
     assert call(server, f"/api/problems/{PROBLEM}/notes", {})[0] == 400
     assert not no_notes_file.exists()
+
+
+def fetch(base, path):
+    try:
+        with urllib.request.urlopen(base + path, timeout=10) as response:
+            return response.status, response.headers.get_content_type(), response.read()
+    except urllib.error.HTTPError as exc:
+        return exc.code, exc.headers.get_content_type(), exc.read()
+
+
+def test_problem_images_are_served_from_the_problem_folder(server):
+    key = "046-invert-binary-tree"
+    status, ctype, body = fetch(server, f"/problems/{key}/diagram.svg")
+    assert (status, ctype) == (200, "image/svg+xml")
+    assert body.startswith(b"<svg")
+    assert f"![Diagram of example 1](diagram.svg)" in call(server, f"/api/problems/{key}")[1]["readme"]
+
+
+@pytest.mark.parametrize("path", [
+    "/problems/046-invert-binary-tree/README.md",
+    "/problems/046-invert-binary-tree/tests.json",
+    "/problems/046-invert-binary-tree/missing.svg",
+    "/problems/046-invert-binary-tree/../045-reverse-nodes-in-k-group/diagram.svg",
+    "/problems/..%2Fleet/diagram.svg",
+    "/problems/nope/diagram.svg",
+])
+def test_only_images_inside_a_problem_folder_are_served(server, path):
+    assert fetch(server, path)[0] == 404

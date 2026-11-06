@@ -17,6 +17,8 @@ Input:  grid = [["1","0"],["0","1"]]
 Output: 2
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= rows, cols <= 60`

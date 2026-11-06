@@ -12,6 +12,8 @@ Input:  root = [1, 2, 3], subRoot = [1, 2]
 Output: False
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= number of nodes in root <= 2000`, `1 <= number of nodes in subRoot <= 1000`

@@ -21,6 +21,8 @@ Output: [[3, -1, 0, 1],
          [0, -1, 3, 4]]
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= rows, cols`, and `rows * cols <= 10^5`

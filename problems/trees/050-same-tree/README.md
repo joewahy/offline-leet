@@ -12,6 +12,8 @@ Input:  p = [4, 7], q = [4, null, 7]
 Output: False
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `0 <= number of nodes in each tree <= 3000`

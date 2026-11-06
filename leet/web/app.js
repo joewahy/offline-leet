@@ -37,7 +37,10 @@ function inline(text) {
   return esc(text).replace(/`([^`]+)`/g, "<code>$1</code>");
 }
 
-function renderMarkdown(md) {
+// A line that is only `![alt](file.png)` shows an image from the problem's own folder (bare file names only).
+const IMAGE_LINE = /^!\[([^\]]*)\]\(([\w.-]+\.(?:svg|png|jpe?g|gif|webp))\)\s*$/i;
+
+function renderMarkdown(md, key) {
   const out = [];
   let list = false;
   let fence = null;
@@ -54,10 +57,30 @@ function renderMarkdown(md) {
     const item = line.match(/^[-*]\s+(.*)/);
     if (item) { if (!list) { out.push("<ul>"); list = true; } out.push(`<li>${inline(item[1])}</li>`); continue; }
     closeList();
+    const image = key && line.match(IMAGE_LINE);
+    if (image) { out.push(`<figure><img src="/problems/${encodeURIComponent(key)}/${image[2]}" alt="${esc(image[1])}"></figure>`); continue; }
     if (line.trim()) out.push(`<p>${inline(line)}</p>`);
   }
   closeList();
   return out.join("\n");
+}
+
+// An <img> cannot see the page's CSS variables, so SVG diagrams are fetched and inlined to follow the theme.
+async function inlineSvgs(root) {
+  for (const img of root.querySelectorAll('img[src$=".svg"]')) {
+    try {
+      const res = await fetch(img.getAttribute("src"));
+      if (!res.ok || !img.isConnected) continue;
+      const svg = new DOMParser().parseFromString(await res.text(), "image/svg+xml").documentElement;
+      if (svg.localName !== "svg") continue;
+      svg.querySelectorAll("script, foreignObject").forEach((el) => el.remove());
+      for (const el of [svg, ...svg.querySelectorAll("*")]) {
+        for (const attr of [...el.attributes]) if (/^on/i.test(attr.name)) el.removeAttribute(attr.name);
+      }
+      svg.setAttribute("aria-label", img.alt);
+      if (img.isConnected) img.replaceWith(document.importNode(svg, true));
+    } catch { /* the plain <img> stays */ }
+  }
 }
 
 async function api(path, body) {
@@ -588,7 +611,8 @@ async function openProblem(key) {
   const pill = $("#difficulty");
   pill.textContent = data.difficulty;
   pill.className = `pill ${data.difficulty}`;
-  $("#statement").innerHTML = renderMarkdown(data.readme);
+  $("#statement").innerHTML = renderMarkdown(data.readme, data.key);
+  inlineSvgs($("#statement"));
   $("#statement").scrollTop = 0;
   loadingCode = true;
   editor.setValue(data.code);

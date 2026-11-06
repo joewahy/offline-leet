@@ -17,6 +17,8 @@ Output: [["X","X","X","X"],
          ["X","O","X","X"]]
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= rows, cols <= 60`

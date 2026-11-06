@@ -14,6 +14,8 @@ Input:  values = [1, 2], pos = -1
 Output: False
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `0 <= number of nodes <= 5000`

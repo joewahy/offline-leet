@@ -141,6 +141,9 @@ def main(argv):
 
     complexity.apply_all()
     hiddenlib.apply_all()
+    import diagrams
+
+    diagrams.apply_all()
 
 
 if __name__ == "__main__":

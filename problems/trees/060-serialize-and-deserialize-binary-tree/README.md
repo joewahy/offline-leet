@@ -16,6 +16,8 @@ Input:  root = []
 deserialize(serialize(root)) must give back []
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `0 <= number of nodes <= 3000`

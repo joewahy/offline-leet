@@ -12,6 +12,8 @@ Input:  list1 = [], list2 = [0]
 Output: [0]
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `0 <= length of each list <= 5000`

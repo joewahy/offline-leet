@@ -16,6 +16,8 @@ Input:  grid = [[2,1,1],[0,1,1],[1,0,1]]
 Output: -1
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= rows, cols`, and `rows * cols <= 10^5`

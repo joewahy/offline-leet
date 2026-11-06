@@ -14,6 +14,8 @@ Input:  head = [1, 2, 3, 4, 5], k = 3
 Output: [3, 2, 1, 4, 5]
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= k <= number of nodes <= 5000`

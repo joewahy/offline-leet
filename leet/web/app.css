@@ -154,6 +154,9 @@ main { flex: 1; display: flex; min-height: 0; }
 #statement h2 { font-size: 14px; margin: 22px 0 6px; text-transform: uppercase; letter-spacing: 0.04em; color: var(--muted); }
 #statement p { margin: 0 0 10px; }
 #statement ul { padding-left: 20px; margin: 0 0 10px; }
+#statement figure { margin: 0 0 14px; }
+#statement figure img, #statement figure svg { display: block; max-width: 100%; height: auto; }
+#statement figure img { border-radius: 6px; }
 code, pre { font-family: ui-monospace, "SF Mono", Menlo, monospace; font-size: 13px; }
 :not(pre) > code { background: var(--code-bg); padding: 1px 5px; border-radius: 4px; }
 pre {

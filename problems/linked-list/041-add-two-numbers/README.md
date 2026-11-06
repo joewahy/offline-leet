@@ -14,6 +14,8 @@ Input:  l1 = [9, 9], l2 = [1]
 Output: [0, 0, 1]          # 99 + 1 = 100
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= number of nodes in each list <= 3000`

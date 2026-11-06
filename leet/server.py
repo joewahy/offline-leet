@@ -16,7 +16,8 @@ from leet.reset import reset
 WEB_DIR = Path(__file__).resolve().parent / "web"
 MAX_BODY = 1_000_000
 MAX_CUSTOM_CASES = 50
-HINTS_BLOCK = re.compile(r"\n<details>.*?</details>\n", re.DOTALL)
+IMAGE_NAME = re.compile(r"^[\w.-]+\.(svg|png|jpe?g|gif|webp)$", re.IGNORECASE)
+HINTS_BLOCK =re.compile(r"\n<details>.*?</details>\n", re.DOTALL)
 
 
 def _problem_summary(p, tried=None):
@@ -99,7 +100,19 @@ def make_handler():
                     force = parse_qs(urlparse(self.path).query).get("force") == ["1"]
                     return self._get_solution(parts[0], force)
                 return self._get_problem(parts[0])
+            if path.startswith("/problems/"):
+                return self._problem_image(path.removeprefix("/problems/"))
             self._static(path)
+
+        def _problem_image(self, rest):
+            """Serve an image that sits next to a problem's README, so statements can show diagrams."""
+            key, _, name = rest.partition("/")
+            folder = next((p.dir for p in all_problems() if p.key == key), None)
+            target = folder / name if folder and IMAGE_NAME.match(name) else None
+            if target is None or not target.is_file():
+                return self._error(404, "not found")
+            ctype = mimetypes.guess_type(name)[0] or "application/octet-stream"
+            self._send(200, target.read_bytes(), ctype)
 
         def _get_problem(self, key):
             try:

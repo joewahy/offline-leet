@@ -16,6 +16,8 @@ Input:  head = [2, 4, 6, 8, 10]
 Output: [2, 10, 4, 8, 6]
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= number of nodes <= 10^5`

@@ -14,6 +14,8 @@ Input:  preorder = [1, 2], inorder = [1, 2]
 Output: [1, null, 2]
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= len(preorder) == len(inorder) <= 3000`

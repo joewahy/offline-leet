@@ -12,6 +12,8 @@ Input:  root = [5, 3, 6, 2, 4, null, null, 1], k = 3
 Output: 3
 ```
 
+![Diagram of example 1](diagram.svg)
+
 ## Constraints
 
 - `1 <= k <= number of nodes <= 3000`
