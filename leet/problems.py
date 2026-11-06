@@ -1,5 +1,6 @@
 import json
 import re
+import shutil
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -110,6 +111,9 @@ class Problem:
 
 def _load(meta_path):
     meta = json.loads(meta_path.read_text())
+    solution = meta_path.with_name("solution.py")
+    if not solution.exists():  # solution.py is git-ignored, so a fresh clone starts from the starter code
+        shutil.copy(meta_path.with_name("starter.py"), solution)
     if meta.get("arg_types") is not None:
         meta["arg_types"] = tuple(meta["arg_types"])
     return Problem(dir=meta_path.parent, **meta)

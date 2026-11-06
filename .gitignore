@@ -13,3 +13,6 @@ progress.json.lock
 .leet-cache/
 .impeccable/
 .leet-sync.json
+notes.md
+custom.json
+solution.py
